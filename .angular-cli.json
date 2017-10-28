@@ -62,6 +62,10 @@
     }
   },
   "defaults": {
+    "serve": {
+      "port": 8080,
+      "host": "ip-172-31-32-215"
+    },
     "styleExt": "css",
     "class": {
       "spec": false
