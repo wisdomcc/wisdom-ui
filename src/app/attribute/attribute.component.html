@@ -1,0 +1,18 @@
+<div class="row form-group">
+	<div class="col"><label for="type" class="col-form-label">Type</label></div>
+	<div class="col">
+		<select class="form-control" [(ngModel)]="questionModel.type" id="type">
+			<option *ngFor="let type of types" value="{{type}}">{{type}}</option>
+		</select>
+	</div>
+	<div class="col"><label for="marks" class="col-form-label">Marks</label></div>
+	<div class="col">
+		<input type="text" [(ngModel)]="questionModel.marks" id="marks" class="form-control" />
+	</div>
+	<div class="col">
+		<label [hidden]="isNormalType()" for="year" class="col-form-label">Year</label>
+	</div>
+	<div class="col" >
+		<input [hidden]="isNormalType()" type="text" class="form-control" id="year" [(ngModel)]="questionModel.year" />
+	</div>
+</div>

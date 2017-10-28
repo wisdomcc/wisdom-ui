@@ -1,0 +1,23 @@
+<div class="container" style="border: dashed;" (click)="previewQuestion()" >
+	<div class="row">
+		<div class="col">
+			<div [innerHtml]="questionModel.question" ></div>
+		</div>
+	</div>
+	<div class="row" [hidden]="!isImageAvailable()" >
+		<div class="col">
+			<div *ngFor="let path of questionModel.images.paths">
+				<img height="50px" width="70px" alt="" [src]="path">
+			</div>
+		</div>
+	</div>
+	<div class="row" *ngFor="let option of questionModel.options.option">
+		<div [innerHtml]="option" ></div>
+	</div>
+	<div class="row">
+		<div class="col-7"></div>
+		<div class="col" [hidden]="questionModel.year === ''">[Gate {{questionModel.year}}]</div>
+		<div class="col" [hidden]="questionModel.marks === ''">[{{questionModel.marks}} Marks]</div>
+		<div class="col" [hidden]="questionModel.type === ''">[{{questionModel.type}}]</div>
+	</div>
+</div>

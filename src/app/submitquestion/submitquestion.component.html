@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col">
+    <input type="submit" class="btn btn-primary addnew float-sm-left"
+        value="Question Submit Form" disabled="disabled"> 
+    <input type="button" class="btn btn-primary addnew float-sm-right"
+        (click)="addQuestion()" value="+" /> 
+  </div>
+</div>
+<div *ngFor="let questionModel of questionModels; let index=index">
+  <div class="row">
+      <div class="col">
+        <input type="submit" class="btn btn-primary addnew float-sm-left"
+        value="Question Id : {{questionModel.id}}" disabled="disabled">
+        <input type="button" class="btn btn-danger remove float-sm-right"
+        (click)="removeQuestion(index)" value="-" />
+        <button class="btn btn-info float-sm-right" type="button" (click)="expandCollapse(index)">
+        <img [src]="qeProperty[index].image" height="8px" width="10px">
+        </button>
+      </div>
+  </div>
+  <div id="index" [hidden]="qeProperty[index].collapse">
+    <app-question [questionModel]="questionModel" [categoryData]="category"></app-question>
+  </div>
+</div>
+<div class="row" [hidden]="hideSubmitPreviewButton" >
+  <div class="btn-group col" >
+    <button class="btn btn-success ml-auto " (click)="submitQuestions()" >Submit</button>
+  </div>
+</div>
+<app-notification [nid]="id"></app-notification>

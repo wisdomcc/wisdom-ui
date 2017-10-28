@@ -1,0 +1,7 @@
+<div class="row" [hidden]="hideAlert" id="alert{{nid}}">
+    <div class="col"></div>
+    <div class="col {{alertColor}}">
+      <strong [innerHtml]="alertStatus">Success!</strong> <span [innerHtml]="alertMsg">Indicates a successful or positive action.</span>
+    </div>
+    <div class="col"></div>
+</div>

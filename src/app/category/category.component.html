@@ -1,0 +1,76 @@
+<div class="row">
+	<div class="col"><input type="button"
+		class="btn btn-primary addnew float-sm-left"
+		value="Related To" disabled="disabled"></div>
+</div>
+<div class="row form-group">
+	<div class="col-2">Exam{{selectedExam}}</div>
+	<div class="col-2">Stream</div>
+	<div class="col-2">Subject</div>
+	<div class="col-3">Topic</div>
+	<div class="col-3">Sub-Topic</div>
+</div>
+<div class="row form-group">
+	<div class="col-2">
+		<select class="form-control" [(ngModel)]="selectedExam" (ngModelChange)="getStreams()">
+			<option *ngFor="let exams of categoryData.exams" value="{{exams.exam}}">
+				{{exams.exam}}
+			</option>
+		</select>
+	</div>
+	<div class="col-2">
+		<select class="form-control" [(ngModel)]="selectedStream" (ngModelChange)="getSubjects()">
+				<option *ngFor="let stream of streams" value="{{stream}}">
+					{{stream}}
+				</option>
+		</select>
+	</div>
+	<div class="col-2">
+		<select class="form-control" [(ngModel)]="selectedSubject" (ngModelChange)="getTopics()">
+			<option *ngFor="let subject of subjects" value="{{subject}}">
+				{{subject}}
+			</option>
+		</select>
+	</div>
+	<div class="col-3">
+		<select class="form-control" [(ngModel)]="selectedTopic" (ngModelChange)="getSubTopics()">
+			<option *ngFor="let topic of topics" value="{{topic}}">
+				{{topic}}
+			</option>
+		</select>
+	</div>
+	<div class="col-3">
+		<select class="form-control" [(ngModel)]="selectedSubTopic">
+			<option *ngFor="let subTopic of subTopics" value="{{subTopic}}">
+				{{subTopic}}
+			</option>
+		</select>
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col">
+		<input type="button" (click)="addRelatedField()"
+						class="btn btn-primary remove float-sm-right" value="+" />
+	</div>
+</div>
+<div class="row form-group" *ngFor="let exam of questionModel.relatedTo.exam; let cIndex = index">
+	<div class="col-1"><input type="text" value="{{questionModel.relatedTo.exam[cIndex]}}" class="form-control" disabled/></div>
+	<div class="col-1"><input type="text" value="{{questionModel.relatedTo.stream[cIndex]}}" class="form-control" disabled/></div>
+	<div class="col-3"><input type="text" value="{{questionModel.relatedTo.subject[cIndex]}}" class="form-control" disabled/></div>
+	<div class="col-3"><input type="text" value="{{questionModel.relatedTo.topic[cIndex]}}" class="form-control" disabled/></div>
+	<div class="col-3"><input type="text" value="{{questionModel.relatedTo.subTopic[cIndex]}}" class="form-control" disabled/></div>								
+	<div class="col-1"><input class="btn btn-danger remove float-sm-right" type="button"
+		ng-click="removeRelatedField(cIndex)" value="-" /></div>
+</div>
+<div class="row form-group">
+	<div class="col">Tags</div>
+	<div class="col-6">
+		<select multiple class="form-control" [(ngModel)]="questionModel.relatedTo.tags">
+			<option *ngFor="let tag of tags" value="{{tag}}">
+				{{tag}}
+			</option>			
+		</select>
+	</div>
+	<div class="col">
+	</div>
+</div>

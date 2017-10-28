@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col"></div>
+	<div class="col">
+    <p class="text-success">Search Question of GATE CS Subject/Topic/Year wise</p>
+  </div>
+  <div class="col"></div>
+</div>
+<div class="row form-group" >
+	<div class="col">Subject(Optional)</div>
+  <div class="col">Topic(Optional)</div>
+  <div class="col">From Year</div>
+	<div class="col">To Year(Optional)</div>
+</div>
+<div class="row form-group">
+	<div class="col" (click)="getSubjects()">
+		<select class="form-control" [(ngModel)]="selectedSubject" (ngModelChange)="getTopics()" >
+        <option *ngFor="let subject of subjects" value="{{subject}}">
+          {{subject}}
+        </option>
+		</select>
+	</div>
+	<div class="col">
+		<select class="form-control" [(ngModel)]="selectedTopic">
+        <option *ngFor="let topic of topics" value="{{topic}}">
+          {{topic}}
+        </option>
+    </select>
+  </div>
+  <div class="col">
+		<select class="form-control" [(ngModel)]="searchCriteria.fromYear" (ngModelChange)="getToYears()">
+        <option *ngFor="let fromYear of fromYears" value="{{fromYear}}">
+          {{fromYear}}
+        </option>
+    </select>
+	</div>
+	<div class="col">
+		<select class="form-control" [(ngModel)]="searchCriteria.toYear">
+        <option *ngFor="let toYear of toYears" value="{{toYear}}">
+          {{toYear}}
+        </option>
+    </select>
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col">
+		<button class="btn btn-success btn-lg" (click)="viewQuestion()" >Search</button>
+	</div>
+</div>
+<app-notification [nid]="id"></app-notification>
+<div class="row" [hidden]="!isDataPresent">
+  <div class="col">
+    <app-previewquestion></app-previewquestion>
+  </div>
+</div>

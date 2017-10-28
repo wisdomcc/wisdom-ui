@@ -1,0 +1,84 @@
+<div class="row form-group">
+	<div class="col">
+	<input type="button" class="btn btn-primary addnew float-sm-left" value="Options Type"
+		disabled="disabled">
+	</div>
+	<div class="col form-check">
+        <label class="form-check-label">
+        	<input type="radio" class="form-check-input" (click)="changeOptionState('NoOption')" name="textAndImageOption{{index}}" value="NoOption" >
+        	No Option
+        </label>
+    </div>
+	<div class="col form-check">
+        <label class="form-check-label">
+        	<input type="radio" class="form-check-input" (click)="changeOptionState('Text')" name="textAndImageOption{{index}}" value="Text" checked>
+        	Text
+        </label>
+    </div>
+    <div class="col form-check">
+    	<label class="form-check-label">
+        	<input type="radio" class="form-check-input" (click)="changeOptionState('Image')" name="textAndImageOption{{index}}" value="Image" >
+        	Image
+        </label>
+    </div>
+    <div class="col form-check">
+    	<label class="form-check-label">
+        	<input type="radio" class="form-check-input" (click)="changeOptionState('TextAndImage')" name="textAndImageOption{{index}}" value="TextAndImage" >
+        	Text & Image
+        </label>
+    </div>
+    <div class="col-8"></div>
+</div>
+<app-notification [nid]="id"></app-notification>
+<div class="row" [hidden]="getStatus('NoOption')">
+</div>
+<div class="row form-group" [hidden]="getStatus('TextAndImage')">
+	<div class="col-6">
+		<textarea rows="2" class="form-control" [(ngModel)]="newOptionVal" ></textarea>
+	</div>
+	<div class="col-4">
+		<input type="file" #fileTextAndImage (change)="getFile(fileTextAndImage.files)">
+	</div>
+	<div class="col">
+		<input type="button" class="btn btn-success addnew float-sm-right"
+		(click)="uploadOptionsImage()" value="Upload" />
+	</div>
+	<div class="col">
+		<input type="button" (click)="addOption()"
+			class="btn btn-primary addnew float-sm-right" value="+" />
+	</div>
+</div>
+<div class="row form-group" [hidden]="getStatus('Text')">
+	<div class="col-11">
+		<textarea rows="2" class="form-control" [(ngModel)]="newOptionVal" ></textarea>
+	</div>
+	<div class="col">
+		<input type="button" (click)="addOption()"
+			class="btn btn-primary addnew float-sm-right" value="+" />
+	</div>
+</div>
+<div class="row form-group" [hidden]="getStatus('Image')">
+	<div class="col-10">
+		<input type="file" #fileImage (change)="getFile(fileImage.files)">
+	</div>
+	<div class="col">
+		<input type="button" class="btn btn-success addnew float-sm-right"
+		(click)="uploadOptionsImage()" value="Upload" />
+	</div>
+</div>
+<div class="row form-group" [hidden]="getStatus('Text')" *ngFor="let option of questionModel.options.option; let childIndex=index">
+	<div class="col" ><input type="text" [value]="option" class="form-control" disabled/></div>
+	<div class="col-1"><input type="button" class="btn btn-danger remove float-sm-right"
+			(click)="removeOption(childIndex)" value="-" /></div>
+</div>
+<div class="row form-group" [hidden]="getStatus('Image')" *ngFor="let path of questionModel.options.imagePath; let childIndex=index">
+	<div class="col" ><input type="text" [value]="path" class="form-control" disabled/></div>
+	<div class="col-1"><input type="button" class="btn btn-danger remove float-sm-right"
+			(click)="removeOptionImagePath(childIndex)" value="-" /></div>
+</div>
+<div class="row form-group" [hidden]="getStatus('TextAndImage')" *ngFor="let option of questionModel.options.option; let childIndex=index">
+	<div class="col" ><input type="text" [value]="option" class="form-control" disabled/></div>
+	<div class="col" ><input type="text" value="{{questionModel.options.imagePath[childIndex]}}" class="form-control" disabled/></div>
+	<div class="col-1"><input type="button" class="btn btn-danger remove float-sm-right"
+			(click)="removeOptionAndImagePath(childIndex)" value="-" /></div>
+</div>
