@@ -16,10 +16,10 @@ export class DataService {
   categoryData: any;
   responseData: any;
   iqResponseData: any;
-  categoryUrl = 'http://localhost:8080/question/viewAllExam';
-  viewQuestionUrl = 'http://localhost:8080/question/fetch';
-  insertQuestionUrl = 'http://localhost:8080/question/insert';
-  uploadImageUrl = 'http://localhost:8080/question/uploadImage';
+  categoryUrl = 'http://ec2-52-15-133-54.us-east-2.compute.amazonaws.com:8080/question/viewAllExam';
+  viewQuestionUrl = 'http://ec2-52-15-133-54.us-east-2.compute.amazonaws.com:8080/question/fetch';
+  insertQuestionUrl = 'http://ec2-52-15-133-54.us-east-2.compute.amazonaws.com:8080/question/insert';
+  uploadImageUrl = 'http://ec2-52-15-133-54.us-east-2.compute.amazonaws.com:8080/question/uploadImage';
   constructor(private http: Http) {
     this.fetchCategoryDetails();
   }
