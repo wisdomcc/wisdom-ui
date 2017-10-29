@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService } from '../data.service';
-import { QuestionModel } from '../../models/question.model';
-import { NotificationComponent } from '../notification/notification.component';
+import { QuestionService } from '../../../../services/question/question.service';
+import { QuestionModel } from '../../../../models/question/question.model';
+import { NotificationComponent } from '../../../common/notification/notification.component';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class SubmitquestionComponent implements OnInit {
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
 
-  constructor(private dataService: DataService) {}
+  constructor(private questionService: QuestionService) {}
 
   ngOnInit() {
     this.hideSubmitPreviewButton = true;
@@ -36,7 +36,7 @@ export class SubmitquestionComponent implements OnInit {
 
   addQuestion() {
     if (this.isFirstTime) {
-      this.category = this.dataService.getCategoryDetails();
+      this.category = this.questionService.getCategoryDetails();
       console.log(this.category);
       this.isFirstTime = false;
     }
@@ -60,7 +60,7 @@ export class SubmitquestionComponent implements OnInit {
   }
 
   submitQuestions() {
-    this.dataService.insertQuestionModels(this);
+    this.questionService.insertQuestionModels(this);
   }
 
   showNotification(msg: string, type: string) {

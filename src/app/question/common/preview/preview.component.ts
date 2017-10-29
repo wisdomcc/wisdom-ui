@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { QuestionModel } from '../../models/question.model';
+import { QuestionModel } from '../../../../models/question/question.model';
 
 @Component({
   selector: 'app-preview',

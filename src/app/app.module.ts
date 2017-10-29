@@ -6,31 +6,31 @@ import { RouterModule } from '@angular/router';
 import { Ng2TableModule, NG_TABLE_DIRECTIVES, NgTablePagingDirective } from 'ng2-table/ng2-table';
 import { PaginationModule } from 'ng2-bootstrap';
 
-import { DataService } from './data.service';
+import { QuestionService } from '../services/question/question.service';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { NavigationComponent } from './navigation/navigation.component';
-import { QuestionComponent } from './question/question.component';
-import { OptionsComponent } from './options/options.component';
-import { AttributeComponent } from './attribute/attribute.component';
+import { LoginComponent } from './user/login/login.component';
+import { NavigationComponent } from './common/navigation/navigation.component';
+import { QuestionComponent } from './question/common/question/question.component';
+import { OptionsComponent } from './question/common/options/options.component';
+import { AttributeComponent } from './question/common/attribute/attribute.component';
 import { AnswerComponent } from './answer/answer.component';
-import { PreviewComponent } from './preview/preview.component';
-import { CategoryComponent } from './category/category.component';
-import { SubmitquestionComponent } from './submitquestion/submitquestion.component';
-import { ViewquestionComponent } from './viewquestion/viewquestion.component';
-import { UpdatequestionComponent } from './updatequestion/updatequestion.component';
-import { UpdatecategoryComponent } from './updatecategory/updatecategory.component';
-import { RegistrationComponent } from './registration/registration.component';
-import { QuestiontextComponent } from './questiontext/questiontext.component';
-import { HomepageComponent } from './homepage/homepage.component';
-import { AboutusComponent } from './aboutus/aboutus.component';
-import { ContactusComponent } from './contactus/contactus.component';
+import { PreviewComponent } from './question/common/preview/preview.component';
+import { CategoryComponent } from './question/common/category/category.component';
+import { SubmitquestionComponent } from './question/insert/submitquestion/submitquestion.component';
+import { ViewquestionComponent } from './question/search/viewquestion/viewquestion.component';
+import { UpdatequestionComponent } from './question/update/updatequestion/updatequestion.component';
+import { UpdatecategoryComponent } from './question/update/updatecategory/updatecategory.component';
+import { RegistrationComponent } from './user/registration/registration.component';
+import { QuestiontextComponent } from './question/common/questiontext/questiontext.component';
+import { HomepageComponent } from './common/homepage/homepage.component';
+import { AboutusComponent } from './common/aboutus/aboutus.component';
+import { ContactusComponent } from './common/contactus/contactus.component';
 import { ProductsComponent } from './products/products.component';
-import { TestComponent } from './test/test.component';
-import { FooterComponent } from './footer/footer.component';
-import { NotificationComponent } from './notification/notification.component';
-import { PreviewquestionComponent } from './previewquestion/previewquestion.component';
+import { TestComponent } from './testseries/test.component';
+import { FooterComponent } from './common/footer/footer.component';
+import { NotificationComponent } from './common/notification/notification.component';
+import { PreviewquestionComponent } from './question/search/previewquestion/previewquestion.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +74,10 @@ import { PreviewquestionComponent } from './previewquestion/previewquestion.comp
         component: ProductsComponent
       },
       {
+        path: 'registration',
+        component: RegistrationComponent
+      },
+      {
         path: 'aboutus',
         component: AboutusComponent
       },
@@ -99,7 +103,7 @@ import { PreviewquestionComponent } from './previewquestion/previewquestion.comp
       }
     ])
   ],
-  providers: [DataService],
+  providers: [QuestionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

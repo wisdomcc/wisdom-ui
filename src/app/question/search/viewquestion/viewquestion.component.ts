@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { QuestionModel } from '../../models/question.model';
-import { SearchCriteria } from '../../models/searchcriteria.model';
-import { DataService } from '../data.service';
-import { NotificationComponent } from '../notification/notification.component';
+import { QuestionModel } from '../../../../models/question/question.model';
+import { SearchCriteria } from '../../../../models/question/searchcriteria.model';
+import { QuestionService } from '../../../../services/question/question.service';
+import { NotificationComponent } from '../../../common/notification/notification.component';
 import { PreviewquestionComponent } from '../previewquestion/previewquestion.component';
 
 @Component({
@@ -25,7 +25,7 @@ export class ViewquestionComponent implements OnInit {
   @ViewChild(NotificationComponent) notification: NotificationComponent;
   @ViewChild(PreviewquestionComponent) previewQuestion: PreviewquestionComponent;
 
-  constructor(private dataService: DataService) { }
+  constructor(private questionService: QuestionService) { }
 
   ngOnInit() {
     this.searchCriteria = new SearchCriteria();
@@ -49,7 +49,7 @@ export class ViewquestionComponent implements OnInit {
 
   getSubjects() {
     if (this.categoryData === undefined) {
-      this.categoryData = this.dataService.getCategoryDetails();
+      this.categoryData = this.questionService.getCategoryDetails();
       for (let i = 0; i < this.categoryData.exams.length; i++) {
         if ('Gate' === this.categoryData.exams[i].exam) {
           for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
@@ -113,7 +113,7 @@ export class ViewquestionComponent implements OnInit {
         this.searchCriteria.relatedTo.topic.pop();
       }
     }
-    this.dataService.viewQuestion(this);
+    this.questionService.viewQuestion(this);
   }
 
   showNotification(msg: string, type: string) {

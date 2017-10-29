@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SearchResult } from '../../models/searchresult.model';
+import { SearchResult } from '../../../../models/question/searchresult.model';
 
 @Component({
   selector: 'app-previewquestion',
@@ -14,7 +14,7 @@ export class PreviewquestionComponent implements OnInit {
     {title: 'Marks', width: 1, className: 'office-header text-success', name: 'marks'}
   ];
   public page = 1;
-  public itemsPerPage = 10;
+  public itemsPerPage = 2;
   public maxSize = 5;
   public numPages = 1;
   public length = 0;
@@ -55,7 +55,7 @@ export class PreviewquestionComponent implements OnInit {
       let sort: string = void 0;
 
       for (let i = 0; i < columns.length; i++) {
-        if (columns[i].sort !== '' && columns[i].sort !== false) {
+        if (columns[i].sort !== undefined) {
           columnName = columns[i].name;
           sort = columns[i].sort;
         }
@@ -129,11 +129,14 @@ export class PreviewquestionComponent implements OnInit {
     const filteredData = this.changeFilter(this.data, this.config);
     const sortedData = this.changeSort(filteredData, this.config);
     if (sortedData !== undefined && sortedData.length > 0) {
-      console.log(sortedData);
       for (let i = 0; i < sortedData.length; i++) {
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, sortedData[i].question]);
       }
-      this.rows = page && config.paging ? this.changePage(page, sortedData) : sortedData;
+      if (config.name) {
+        this.rows = page ? this.changePage(page, sortedData) : sortedData;
+      } else {
+        this.rows = page && config.paging ? this.changePage(page, sortedData) : sortedData;
+      }
       this.length = sortedData.length;
     }
   }

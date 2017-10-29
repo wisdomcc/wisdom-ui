@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { QuestionModel } from '../../models/question.model';
-import { DataService } from '../data.service';
-import { NotificationComponent } from '../notification/notification.component';
+import { QuestionModel } from '../../../../models/question/question.model';
+import { QuestionService } from '../../../../services/question/question.service';
+import { NotificationComponent } from '../../../common/notification/notification.component';
 
 @Component({
   selector: 'app-options',
@@ -17,7 +17,7 @@ export class OptionsComponent implements OnInit {
   @Input() questionModel: QuestionModel;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
-  constructor(private dataservice: DataService) {}
+  constructor(private dataservice: QuestionService) {}
 
   ngOnInit() {
     this.optionState = 'Text';

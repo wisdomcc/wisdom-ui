@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { QuestionModel } from '../../models/question.model';
+import { QuestionModel } from '../../../../models/question/question.model';
 import { PreviewComponent } from '../preview/preview.component';
 
 

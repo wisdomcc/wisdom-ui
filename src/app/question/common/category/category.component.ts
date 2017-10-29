@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { QuestionModel } from '../../models/question.model';
+import { QuestionModel } from '../../../../models/question/question.model';
 
 @Component({
   selector: 'app-category',
