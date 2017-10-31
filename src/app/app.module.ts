@@ -2,11 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
+import { routing } from './app.routing';
 import { Ng2TableModule, NG_TABLE_DIRECTIVES, NgTablePagingDirective } from 'ng2-table/ng2-table';
 import { PaginationModule } from 'ng2-bootstrap';
 
 import { QuestionService } from '../services/question/question.service';
+import { UserService } from '../services/user/user.service';
+import { UrlSecurityService } from '../services/security/url.security.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './user/login/login.component';
@@ -63,47 +65,10 @@ import { PreviewquestionComponent } from './question/search/previewquestion/prev
     FormsModule,
     HttpModule,
     Ng2TableModule,
-    PaginationModule.forRoot(),
-    RouterModule.forRoot([
-      {
-        path: 'submitquestion',
-        component: SubmitquestionComponent
-      },
-      {
-        path: 'products',
-        component: ProductsComponent
-      },
-      {
-        path: 'registration',
-        component: RegistrationComponent
-      },
-      {
-        path: 'aboutus',
-        component: AboutusComponent
-      },
-      {
-        path: 'contactus',
-        component: ContactusComponent
-      },
-      {
-        path: 'login',
-        component: LoginComponent
-      },
-      {
-        path: 'homepage',
-        component: HomepageComponent
-      },
-      {
-        path: 'updatequestion',
-        component: UpdatequestionComponent
-      },
-      {
-        path: 'viewquestion',
-        component: ViewquestionComponent
-      }
-    ])
+    routing,
+    PaginationModule.forRoot()
   ],
-  providers: [QuestionService],
+  providers: [QuestionService, UserService, UrlSecurityService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
