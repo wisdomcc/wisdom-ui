@@ -25,7 +25,7 @@ export class QuestionService {
   }
 
   fetchCategoryDetails() {
-    this.http.get(this.categoryUrl)
+    this.http.get(this.categoryUrl, {withCredentials: true})
       .map((res: Response) => res)
         .subscribe(res => {
           this.categoryData = JSON.parse(' { "exams" : ' + res.text() + '}');
@@ -38,7 +38,7 @@ export class QuestionService {
 
   insertQuestionModels(submitQuestion: SubmitquestionComponent) {
     const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
     this.http.post(this.insertQuestionUrl, submitQuestion.questionModels, options)
       .map((res: Response) => res)
         .subscribe(
@@ -58,7 +58,7 @@ export class QuestionService {
     formData.append('file', questiontextComponent.questionImage);
     formData.append('questionid', questiontextComponent.questionModel.id);
     formData.append('option', 'false');
-    this.http.post(this.uploadImageUrl, formData)
+    this.http.post(this.uploadImageUrl, formData, {withCredentials: true})
       .map((res: Response) => res)
         .subscribe(
           res => {
@@ -77,7 +77,7 @@ export class QuestionService {
     formData.append('file', optionsComponent.optionImage);
     formData.append('questionid', optionsComponent.questionModel.id);
     formData.append('option', 'true');
-    this.http.post(this.uploadImageUrl, formData)
+    this.http.post(this.uploadImageUrl, formData, {withCredentials: true})
       .map((res: Response) => res)
         .subscribe(
           res => {
@@ -93,7 +93,7 @@ export class QuestionService {
 
   viewQuestion(viewQuestion: ViewquestionComponent) {
     const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
     this.http.post(this.viewQuestionUrl, JSON.stringify(viewQuestion.searchCriteria), options)
     .map((res: Response) => res)
       .subscribe(res => {

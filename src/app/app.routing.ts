@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { UrlSecurityService } from '../services/security/url.security.service';
 import { LoginComponent } from './user/login/login.component';
+import { LogoutComponent } from './user/logout/logout.component';
 import { SubmitquestionComponent } from './question/insert/submitquestion/submitquestion.component';
 import { ViewquestionComponent } from './question/search/viewquestion/viewquestion.component';
 import { UpdatequestionComponent } from './question/update/updatequestion/updatequestion.component';
@@ -18,6 +19,7 @@ const appRoutes: Routes = [
     { path: 'aboutus', component: AboutusComponent, canActivate: [UrlSecurityService] },
     { path: 'contactus', component: ContactusComponent, canActivate: [UrlSecurityService] },
     { path: 'login', component: LoginComponent },
+    { path: 'logout', component: LogoutComponent },
     { path: 'homepage', component: HomepageComponent, canActivate: [UrlSecurityService] },
     { path: 'updatequestion', component: UpdatequestionComponent, canActivate: [UrlSecurityService] },
     { path: 'viewquestion', component: ViewquestionComponent, canActivate: [UrlSecurityService] },

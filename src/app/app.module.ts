@@ -33,6 +33,7 @@ import { TestComponent } from './testseries/test.component';
 import { FooterComponent } from './common/footer/footer.component';
 import { NotificationComponent } from './common/notification/notification.component';
 import { PreviewquestionComponent } from './question/search/previewquestion/previewquestion.component';
+import { LogoutComponent } from './user/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { PreviewquestionComponent } from './question/search/previewquestion/prev
     TestComponent,
     FooterComponent,
     NotificationComponent,
-    PreviewquestionComponent
+    PreviewquestionComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

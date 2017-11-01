@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavigationComponent } from './common/navigation/navigation.component';
 import { UserService } from '../services/user/user.service';
+import { WisdomUser } from '../models/user/wisdomuser.model';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ import { UserService } from '../services/user/user.service';
 export class AppComponent {
   title = 'Kunal';
 
-  isloggedIn: boolean;
+  isloggedIn: WisdomUser;
 
   constructor(private userService: UserService) {
     userService.loggedIn$.subscribe(
@@ -23,6 +24,6 @@ export class AppComponent {
 
   loggedInStatus() {
     console.log(this.navigation);
-    this.navigation.loggedIn = true;
+    this.navigation.loggedIn = this.isloggedIn;
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { WisdomUser } from '../../../models/user/wisdomuser.model';
 
 @Component({
   selector: 'app-navigation',
@@ -8,15 +9,15 @@ import { Router } from '@angular/router';
 })
 export class NavigationComponent implements OnInit {
 
-  @Input() loggedIn: boolean;
+  @Input() loggedIn: WisdomUser;
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.loggedIn = false;
+    this.loggedIn = new WisdomUser(false, false, '', false, '', false, 0, '');
   }
 
   logout() {
-    this.loggedIn = false;
+    this.loggedIn = new WisdomUser(false, false, '', false, '', false, 0, '');
     localStorage.clear();
     this.router.navigateByUrl('/login');
   }

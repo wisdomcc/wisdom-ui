@@ -3,25 +3,28 @@
  
   <div class="navbar-toggleable-sm" id="navbar">
       <ul class="nav navbar-nav float-sm-right">
-          <li [hidden]="!loggedIn" class="nav-item">
+            <li [hidden]="!loggedIn.enabled" class="nav-item">
+                <a class="nav-link" href="#" ng-disabled="true">Hi, <Strong>{{loggedIn.username}}</Strong></a>
+            </li>
+          <li [hidden]="!loggedIn.enabled" class="nav-item">
               <a class="nav-link" href="#" routerLink="homepage" >Home</a>
           </li>
           <!-- <li class="nav-item">
               <a class="nav-link" href="#" routerLink="products">Products</a>
           </li> -->
-          <li [hidden]="loggedIn" class="nav-item">
+          <li [hidden]="loggedIn.enabled" class="nav-item">
             <a class="nav-link" href="#" routerLink="registration">Registration</a>
           </li>
-          <li [hidden]="loggedIn" class="nav-item">
+          <li [hidden]="loggedIn.enabled" class="nav-item">
                 <a class="nav-link" href="#" routerLink="login">Login</a>
           </li>
-          <li [hidden]="!loggedIn" class="nav-item dropdown">
+          <li [hidden]="!loggedIn.enabled" class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Services
               </a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                  <a class="dropdown-item" routerLink="submitquestion" href="#">Submit Question</a>
-                  <a class="dropdown-item" routerLink="updatequestion" href="#">Update Question</a>
+                  <a [hidden]="loggedIn.role != 'admin'" class="dropdown-item" routerLink="submitquestion" href="#">Submit Question</a>
+                  <a [hidden]="loggedIn.role != 'admin'" class="dropdown-item" routerLink="updatequestion" href="#">Update Question</a>
                   <a class="dropdown-item" routerLink="viewquestion" href="#">View Question</a>
               </div>
           </li>
@@ -31,8 +34,8 @@
           <li class="nav-item">
                 <a class="nav-link" href="#" routerLink="contactus">Contact Us</a>
           </li>
-          <li [hidden]="!loggedIn" class="nav-item">
-                <a class="nav-link" (click)="logout()" href="#" >Logout</a>
+          <li [hidden]="!loggedIn.enabled" class="nav-item">
+                <a class="nav-link" (click)="logout()" href="#" routerLink="logout">Logout</a>
           </li>
       <!-- Search -->
      <!--  <li>
