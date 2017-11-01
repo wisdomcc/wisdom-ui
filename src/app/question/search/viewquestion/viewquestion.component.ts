@@ -4,6 +4,7 @@ import { SearchCriteria } from '../../../../models/question/searchcriteria.model
 import { QuestionService } from '../../../../services/question/question.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
 import { PreviewquestionComponent } from '../previewquestion/previewquestion.component';
+import { SearchResult } from '../../../../models/question/searchresult.model';
 
 @Component({
   selector: 'app-viewquestion',
@@ -113,7 +114,47 @@ export class ViewquestionComponent implements OnInit {
         this.searchCriteria.relatedTo.topic.pop();
       }
     }
-    this.questionService.viewQuestion(this);
+    this.questionService.viewQuestion(this.searchCriteria)
+      .subscribe(data => {
+        this.previewQuestion.data = this.getSearchResult(JSON.parse(data));
+        this.previewQuestion.onChangeTable(this.previewQuestion.config);
+        if (this.previewQuestion.data.length > 0) {
+          this.isDataPresent = true;
+        } else {
+          this.showNotification('No result for your criteria.', 'status');
+        }
+      },
+      error => {
+        this.showNotification('Some technical issue. Please try after sometime.', 'error');
+      });
+  }
+
+  public getSearchResult(response: QuestionModel[]): Array<SearchResult> {
+    const result = [];
+    for (let i = 0; i < response.length; i++) {
+      const searchresult = new SearchResult();
+      /*if (response[i].question.indexOf('$') > 0) {
+        searchresult.question = '<div id="mathjax">Q) ' + response[i].question + '<br/><br/>';
+      } else {
+        searchresult.question = 'Q) ' + response[i].question + '<br/><br/>';
+      }*/
+      searchresult.question = 'Q) ' + response[i].question;
+      if (response[i].options.type !== 'NoOption') {
+        searchresult.options = [];
+        for (let j = 0; j < response[i].options.option.length; j++) {
+          searchresult.options.push((+j + 1) + ') ' + response[i].options.option[j]);
+        }
+      }
+      /*if (response[i].question.indexOf('$') > 0) {
+        searchresult.question = searchresult.question + '</div>';
+      }*/
+      // MathJax.Hub.Queue([ 'Typeset', MathJax.Hub]);
+      // MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, searchresult.question ]);
+      searchresult.year = response[i].year;
+      searchresult.marks = response[i].marks;
+      result.push(searchresult);
+    }
+    return result;
   }
 
   showNotification(msg: string, type: string) {

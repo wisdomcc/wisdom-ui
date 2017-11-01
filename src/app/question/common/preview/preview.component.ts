@@ -19,7 +19,7 @@ export class PreviewComponent implements OnInit {
   }
 
   isImageAvailable() {
-    if ( this.questionModel.images.paths.length > 0) {
+    if (this.questionModel.images.paths !== undefined && this.questionModel.images.paths.length > 0) {
       return true;
     }
     return false;

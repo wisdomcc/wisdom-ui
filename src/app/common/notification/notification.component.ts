@@ -32,6 +32,9 @@ export class NotificationComponent implements OnInit {
     } else if (type === 'error') {
       this.alertStatus = 'Error!';
       this.alertColor = 'text-danger';
+    } else {
+      this.alertStatus = '';
+      this.alertColor = 'text-success';
     }
     this.alertMsg = message;
     this.hideAlert = false;

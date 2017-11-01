@@ -7,9 +7,9 @@
 </div>
 <div class="row form-group" >
 	<div class="col">Subject(Optional)</div>
-  <div class="col">Topic(Optional)</div>
+  <div class="col"><div [hidden]="selectedSubject == undefined || selectedSubject == 'Select Subject'">Topic(Optional)</div></div>
   <div class="col">From Year</div>
-	<div class="col">To Year(Optional)</div>
+	<div class="col"><div [hidden]="searchCriteria.fromYear == 0">To Year(Optional)</div></div>
 </div>
 <div class="row form-group">
 	<div class="col" (click)="getSubjects()">
@@ -20,7 +20,7 @@
 		</select>
 	</div>
 	<div class="col">
-		<select class="form-control" [(ngModel)]="selectedTopic">
+		<select class="form-control" [hidden]="selectedSubject == undefined || selectedSubject == 'Select Subject'" [(ngModel)]="selectedTopic">
         <option *ngFor="let topic of topics" value="{{topic}}">
           {{topic}}
         </option>
@@ -34,7 +34,7 @@
     </select>
 	</div>
 	<div class="col">
-		<select class="form-control" [(ngModel)]="searchCriteria.toYear">
+		<select class="form-control" [hidden]="searchCriteria.fromYear == 0" [(ngModel)]="searchCriteria.toYear">
         <option *ngFor="let toYear of toYears" value="{{toYear}}">
           {{toYear}}
         </option>

@@ -66,19 +66,25 @@
 		(click)="uploadOptionsImage()" value="Upload" />
 	</div>
 </div>
-<div class="row form-group" [hidden]="getStatus('Text')" *ngFor="let option of questionModel.options.option; let childIndex=index">
-	<div class="col" ><input type="text" [value]="option" class="form-control" disabled/></div>
-	<div class="col-1"><input type="button" class="btn btn-danger remove float-sm-right"
-			(click)="removeOption(childIndex)" value="-" /></div>
+<div *ngIf="questionModel.options.type == 'Text'">
+	<div class="row form-group" *ngFor="let option of questionModel.options.option; let childIndex=index">
+		<div class="col" ><input type="text" [value]="option" class="form-control" disabled/></div>
+		<div class="col-1"><input type="button" class="btn btn-danger remove float-sm-right"
+				(click)="removeOption(childIndex)" value="-" /></div>
+	</div>
 </div>
-<div class="row form-group" [hidden]="getStatus('Image')" *ngFor="let path of questionModel.options.imagePath; let childIndex=index">
-	<div class="col" ><input type="text" [value]="path" class="form-control" disabled/></div>
-	<div class="col-1"><input type="button" class="btn btn-danger remove float-sm-right"
-			(click)="removeOptionImagePath(childIndex)" value="-" /></div>
+<div *ngIf="questionModel.options.type == 'Image'">
+	<div class="row form-group" *ngFor="let path of questionModel.options.imagePath; let childIndex=index">
+		<div class="col" ><input type="text" [value]="path" class="form-control" disabled/></div>
+		<div class="col-1"><input type="button" class="btn btn-danger remove float-sm-right"
+				(click)="removeOptionImagePath(childIndex)" value="-" /></div>
+	</div>
 </div>
-<div class="row form-group" [hidden]="getStatus('TextAndImage')" *ngFor="let option of questionModel.options.option; let childIndex=index">
-	<div class="col" ><input type="text" [value]="option" class="form-control" disabled/></div>
-	<div class="col" ><input type="text" value="{{questionModel.options.imagePath[childIndex]}}" class="form-control" disabled/></div>
-	<div class="col-1"><input type="button" class="btn btn-danger remove float-sm-right"
-			(click)="removeOptionAndImagePath(childIndex)" value="-" /></div>
+<div *ngIf="questionModel.options.type == 'TextAndImage'">
+	<div class="row form-group" *ngFor="let option of questionModel.options.option; let childIndex=index">
+		<div class="col" ><input type="text" [value]="option" class="form-control" disabled/></div>
+		<div class="col" ><input type="text" value="{{questionModel.options.imagePath[childIndex]}}" class="form-control" disabled/></div>
+		<div class="col-1"><input type="button" class="btn btn-danger remove float-sm-right"
+				(click)="removeOptionAndImagePath(childIndex)" value="-" /></div>
+	</div>
 </div>

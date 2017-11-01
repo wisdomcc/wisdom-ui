@@ -37,7 +37,16 @@ export class OptionsComponent implements OnInit {
   }
 
   uploadOptionsImage() {
-    this.dataservice.uploadOptionImage(this);
+    this.dataservice.uploadOptionImage(this.optionImage, this.questionModel.id)
+    .subscribe(
+      data => {
+        this.questionModel.options.imagePath.push(JSON.parse(data).path);
+        this.showNotification('Image uploaded successfully.', 'success');
+      },
+      error => {
+        this.showNotification('Image not uploaded.', 'error');
+      }
+    );
   }
 
   changeOptionState(optionState: string) {

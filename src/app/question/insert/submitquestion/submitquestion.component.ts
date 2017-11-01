@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuestionService } from '../../../../services/question/question.service';
 import { QuestionModel } from '../../../../models/question/question.model';
+import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
 import { NotificationComponent } from '../../../common/notification/notification.component';
-
 
 @Component({
   selector: 'app-submitquestion',
@@ -60,21 +60,21 @@ export class SubmitquestionComponent implements OnInit {
   }
 
   submitQuestions() {
-    this.questionService.insertQuestionModels(this);
+    this.questionService.insertQuestionModels(this.questionModels)
+    .subscribe(
+      data => {
+        this.showNotification('Questions inserted successfully in database.', 'success');
+        this.hideSubmitPreviewButton = true;
+        this.questionModels = [];
+      },
+      error => {
+        this.showNotification('Some error oaccured while inserting questions in database. Please retry.', 'error');
+      }
+    );
   }
 
   showNotification(msg: string, type: string) {
     this.notification.showNotification(msg, type, this.id);
   }
 
-}
-
-export class QuestionElementProperty {
-  image: string;
-  collapse: boolean;
-
-  constructor() {
-    this.image = '../../assets/images/right.png';
-    this.collapse = true;
-  }
 }

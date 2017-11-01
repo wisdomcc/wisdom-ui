@@ -1,3 +1,75 @@
-<p>
-  updatequestion works!
-</p>
+<div class="row">
+    <div class="col"></div>
+	<div class="col">
+    <p class="text-success">Search Question of GATE CS Subject/Topic/Year wise</p>
+  </div>
+  <div class="col"></div>
+</div>
+<div class="row form-group" >
+	<div class="col">Subject(Optional)</div>
+  <div class="col"><div [hidden]="selectedSubject == undefined || selectedSubject == 'Select Subject'">Topic(Optional)</div></div>
+  <div class="col">From Year</div>
+	<div class="col"><div [hidden]="searchCriteria.fromYear == 0">To Year(Optional)</div></div>
+</div>
+<div class="row form-group">
+	<div class="col" (click)="getSubjects()">
+		<select class="form-control" [(ngModel)]="selectedSubject" (ngModelChange)="getTopics()" >
+        <option *ngFor="let subject of subjects" value="{{subject}}">
+          {{subject}}
+        </option>
+		</select>
+	</div>
+	<div class="col">
+		<select class="form-control" [hidden]="selectedSubject == undefined || selectedSubject == 'Select Subject'" [(ngModel)]="selectedTopic">
+        <option *ngFor="let topic of topics" value="{{topic}}">
+          {{topic}}
+        </option>
+    </select>
+  </div>
+  <div class="col">
+		<select class="form-control" [(ngModel)]="searchCriteria.fromYear" (ngModelChange)="getToYears()">
+        <option *ngFor="let fromYear of fromYears" value="{{fromYear}}">
+          {{fromYear}}
+        </option>
+    </select>
+	</div>
+	<div class="col">
+		<select class="form-control" [hidden]="searchCriteria.fromYear == 0" [(ngModel)]="searchCriteria.toYear">
+        <option *ngFor="let toYear of toYears" value="{{toYear}}">
+          {{toYear}}
+        </option>
+    </select>
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col">
+		<button class="btn btn-success btn-lg" (click)="viewQuestion()" >Search</button>
+	</div>
+</div>
+<app-notification [nid]="id"></app-notification>
+<div class="row" [hidden]="!isDataPresent">
+  <div class="col">
+      <div *ngFor="let questionModel of questionModels; let index=index">
+          <div class="row">
+              <div class="col">
+                <input type="submit" class="btn btn-primary addnew float-sm-left"
+                value="Question Id : {{questionModel.id}}" disabled="disabled">
+                <input type="button" class="btn btn-danger remove float-sm-right"
+                (click)="removeQuestion(index)" value="-" />
+                <button class="btn btn-info float-sm-right" type="button" (click)="expandCollapse(index)">
+                <img [src]="qeProperty[index].image" height="8px" width="10px">
+                </button>
+              </div>
+          </div>
+          <div id="index" [hidden]="qeProperty[index].collapse">
+            <app-question [questionModel]="questionModel" [categoryData]="categoryData"></app-question>
+          </div>
+        </div>
+        <div class="row" [hidden]="hideSubmitPreviewButton" >
+          <div class="btn-group col" >
+            <button class="btn btn-success ml-auto " (click)="submitQuestions()" >Submit</button>
+          </div>
+        </div>
+        <app-notification [nid]="id"></app-notification>
+  </div>
+</div>

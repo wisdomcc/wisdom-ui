@@ -35,7 +35,16 @@ export class QuestiontextComponent implements OnInit {
   }
 
   uploadQuestionImage() {
-    this.dataservice.uploadQuestionImage(this);
+    this.dataservice.uploadQuestionImage(this.questionImage, this.questionModel.id)
+    .subscribe(
+      data => {
+        this.questionModel.images.paths.push(JSON.parse(data).path);
+        this.showNotification('Image uploaded successfully.', 'success');
+      },
+      error => {
+        this.showNotification('Image not uploaded.', 'error');
+      }
+    );
   }
 
   showNotification(msg: string, type: string) {
