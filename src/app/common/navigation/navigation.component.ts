@@ -10,10 +10,22 @@ import { WisdomUser } from '../../../models/user/wisdomuser.model';
 export class NavigationComponent implements OnInit {
 
   @Input() loggedIn: WisdomUser;
+
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.loggedIn = new WisdomUser(false, false, '', false, '', false, 0, '');
+  }
+
+  get enabled(): any {
+    return localStorage.getItem('enabled');
+  }
+
+  get username(): any {
+    return localStorage.getItem('username');
+  }
+
+  get role(): any {
+    return localStorage.getItem('role');
   }
 
   logout() {
