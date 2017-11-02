@@ -10,6 +10,8 @@ export class UserService {
   loggedIn$ = this.loggedIn.asObservable();
   loginUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/login';
   registrationUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/registration';
+  isUsernameExistingUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/isusernamepresent';
+  isEmailExistingUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/isemailpresent';
 
   constructor(private http: Http) {
   }
@@ -31,7 +33,21 @@ export class UserService {
     formData.append('username', username);
     formData.append('password', password);
     formData.append('emailid', emailid);
-    return this.http.post(this.loginUrl, formData)
+    return this.http.post(this.registrationUrl, formData)
+      .map((res: Response) => res.text());
+  }
+
+  isUsernameExisting(username: string) {
+    const formData = new FormData();
+    formData.append('username', username);
+    return this.http.post(this.isUsernameExistingUrl, formData)
+      .map((res: Response) => res.text());
+  }
+
+  isEmailExisting(emailid: string) {
+    const formData = new FormData();
+    formData.append('emailid', emailid);
+    return this.http.post(this.isEmailExistingUrl, formData)
       .map((res: Response) => res.text());
   }
 

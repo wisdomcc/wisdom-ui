@@ -1,4 +1,5 @@
 <br/>
+<app-notification [nid]="id"></app-notification>
 <div class="row">
   <div class="col-md-3"></div>
   <div class="col-md-6">
@@ -8,21 +9,21 @@
 </div>
 <div class="row">
   <div class="col-md-3 field-label-responsive">
-      <label for="name">Name</label>
+      <label for="name">Username</label>
   </div>
   <div class="col-md-6">
       <div class="form-group">
           <div class="input-group mb-2 mr-sm-2 mb-sm-0">
               <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-user"></i></div>
-              <input type="text" name="name" class="form-control" id="name" [(ngModel)]="username"
-                     placeholder="Your Name" required autofocus>
+              <input type="text" name="name" (blur)="validateUsername()" class="form-control" id="name" [(ngModel)]="username"
+                     placeholder="Your Username" required autofocus>
           </div>
       </div>
   </div>
   <div class="col-md-3">
       <div class="form-control-feedback">
               <span class="text-danger align-middle">
-                  <!-- Put name validation error messages here -->
+                  {{usernameError}}
               </span>
       </div>
   </div>
@@ -35,7 +36,7 @@
       <div class="form-group">
           <div class="input-group mb-2 mr-sm-2 mb-sm-0">
               <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
-              <input type="text" name="email" class="form-control" id="email" [(ngModel)]="emailid"
+              <input type="text" (blur)="validateEmail()" name="email" class="form-control" (blur)="validateUsername()" id="email" [(ngModel)]="emailid"
                      placeholder="you@example.com" required autofocus>
           </div>
       </div>
@@ -43,7 +44,7 @@
   <div class="col-md-3">
       <div class="form-control-feedback">
               <span class="text-danger align-middle">
-                  <!-- Put e-mail validation error messages here -->
+                {{emailError}}
               </span>
       </div>
   </div>
@@ -56,7 +57,7 @@
       <div class="form-group">
           <div class="input-group mb-2 mr-sm-2 mb-sm-0">
               <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-key"></i></div>
-              <input type="password" name="password" class="form-control" id="password" [(ngModel)]="password"
+              <input type="password" (blur)="validatePassword()" name="password" class="form-control" id="password" [(ngModel)]="password"
                      placeholder="Password" required>
           </div>
       </div>
@@ -64,7 +65,7 @@
   <div class="col-md-3">
       <div class="form-control-feedback">
               <span class="text-danger align-middle">
-                  <!-- <i class="fa fa-close"> Example Error Message</i> -->
+                {{passwordError}}
               </span>
       </div>
   </div>
@@ -79,7 +80,7 @@
               <div class="input-group-addon" style="width: 2.6rem">
                   <i class="fa fa-repeat"></i>
               </div>
-              <input type="password" name="password-confirmation" class="form-control" [(ngModel)]="confirmpassword"
+              <input type="password" (blur)="validateConfirmPassword()" name="password-confirmation" class="form-control" [(ngModel)]="confirmpassword"
                      id="password-confirm" placeholder="Password" required>
           </div>
       </div>
