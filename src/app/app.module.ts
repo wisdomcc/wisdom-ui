@@ -9,6 +9,7 @@ import { PaginationModule } from 'ng2-bootstrap';
 import { QuestionService } from '../services/question/question.service';
 import { UserService } from '../services/user/user.service';
 import { UrlSecurityService } from '../services/security/url.security.service';
+import { EmailService } from '../services/email/email.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './user/login/login.component';
@@ -70,7 +71,7 @@ import { LogoutComponent } from './user/logout/logout.component';
     routing,
     PaginationModule.forRoot()
   ],
-  providers: [QuestionService, UserService, UrlSecurityService],
+  providers: [QuestionService, UserService, UrlSecurityService, EmailService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

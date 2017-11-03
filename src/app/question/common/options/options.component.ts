@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { QuestionModel } from '../../../../models/question/question.model';
 import { QuestionService } from '../../../../services/question/question.service';
+import { UserService } from '../../../../services/user/user.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
 
 @Component({
@@ -17,7 +18,8 @@ export class OptionsComponent implements OnInit {
   @Input() questionModel: QuestionModel;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
-  constructor(private dataservice: QuestionService) {}
+  constructor(private questionService: QuestionService,
+              private userService: UserService) {}
 
   ngOnInit() {
     this.optionState = 'Text';
@@ -33,20 +35,40 @@ export class OptionsComponent implements OnInit {
     // const target: HTMLInputElement = <HTMLInputElement> eventObj.target;
     // const files: FileList = target.files;
     this.optionImage = files[0];
-    console.log(this.optionImage);
+    // console.log(this.optionImage);
   }
 
   uploadOptionsImage() {
-    this.dataservice.uploadOptionImage(this.optionImage, this.questionModel.id)
+    this.questionService.uploadOptionImage(this.optionImage, this.questionModel.id)
     .subscribe(
       data => {
-        this.questionModel.options.imagePath.push(JSON.parse(data).path);
-        this.showNotification('Image uploaded successfully.', 'success');
+        this.getUploadedImage(JSON.parse(data).path);
       },
       error => {
+        if (error.status === 401) {
+          this.userService.logout();
+        }
         this.showNotification('Image not uploaded.', 'error');
       }
     );
+  }
+
+  getUploadedImage(path: string) {
+    this.questionService.getUploadedImage(path)
+      .subscribe(
+        data => {
+          this.questionModel.options.imagePath.push(this.questionService.getImageUrl + path);
+          this.showNotification('Image uploaded successfully.', 'success');
+        },
+        error => {
+          if (error.status === 401) {
+            this.userService.logout();
+          }
+          setTimeout(() => {
+            this.getUploadedImage(path);
+          }, 2000);
+        }
+      );
   }
 
   changeOptionState(optionState: string) {

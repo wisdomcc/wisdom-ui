@@ -23,7 +23,7 @@ export class AppComponent {
   @ViewChild(NavigationComponent) navigation: NavigationComponent;
 
   loggedInStatus() {
-    console.log(this.navigation);
+    // console.log(this.navigation);
     this.navigation.loggedIn = this.isloggedIn;
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { WisdomUser } from '../../models/user/wisdomuser.model';
 
@@ -13,7 +14,7 @@ export class UserService {
   isUsernameExistingUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/isusernamepresent';
   isEmailExistingUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/isemailpresent';
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private router: Router) {
   }
 
   isLoggedIn(user: WisdomUser) {
@@ -49,6 +50,12 @@ export class UserService {
     formData.append('emailid', emailid);
     return this.http.post(this.isEmailExistingUrl, formData)
       .map((res: Response) => res.text());
+  }
+
+  logout() {
+    // console.log('user getting logged out as session is expired.');
+    localStorage.clear();
+    this.router.navigateByUrl('/login');
   }
 
 }

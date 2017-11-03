@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { QuestionModel } from '../../../../models/question/question.model';
 import { QuestionService } from '../../../../services/question/question.service';
+import { UserService } from '../../../../services/user/user.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
 
 @Component({
@@ -19,7 +20,8 @@ export class QuestiontextComponent implements OnInit {
   @Input() index: number;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
-  constructor(private dataservice: QuestionService) { }
+  constructor(private questionService: QuestionService,
+              private userService: UserService) { }
 
   ngOnInit() {
     this.isImageAvailable = false;
@@ -31,20 +33,40 @@ export class QuestiontextComponent implements OnInit {
     // const target: HTMLInputElement = <HTMLInputElement> eventObj.target;
     // const files: FileList = target.files;
     this.questionImage = files[0];
-    console.log(this.questionImage);
+    // console.log(this.questionImage);
   }
 
   uploadQuestionImage() {
-    this.dataservice.uploadQuestionImage(this.questionImage, this.questionModel.id)
+    this.questionService.uploadQuestionImage(this.questionImage, this.questionModel.id)
     .subscribe(
       data => {
-        this.questionModel.images.paths.push(JSON.parse(data).path);
-        this.showNotification('Image uploaded successfully.', 'success');
+        this.getUploadedImage(JSON.parse(data).path);
       },
       error => {
+        if (error.status === 401) {
+          this.userService.logout();
+        }
         this.showNotification('Image not uploaded.', 'error');
       }
     );
+  }
+
+  getUploadedImage(path: string) {
+    this.questionService.getUploadedImage(path)
+      .subscribe(
+        data => {
+          this.questionModel.images.paths.push(path);
+          this.showNotification('Image uploaded successfully.', 'success');
+        },
+        error => {
+          if (error.status === 401) {
+            this.userService.logout();
+          }
+          setTimeout(() => {
+            this.getUploadedImage(path);
+          }, 2000);
+        }
+      );
   }
 
   showNotification(msg: string, type: string) {

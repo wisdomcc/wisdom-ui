@@ -107,7 +107,7 @@ export class CategoryComponent implements OnInit {
     this.questionModel.relatedTo.subject.push((this.selectedSubject) ? this.selectedSubject : 'BLANK');
     this.questionModel.relatedTo.topic.push((this.selectedTopic) ? this.selectedTopic : 'BLANK');
     this.questionModel.relatedTo.subTopic.push((this.selectedSubTopic) ? this.selectedSubTopic : 'BLANK');
-    console.log(this.questionModel.relatedTo);
+    // console.log(this.questionModel.relatedTo);
   }
 
   removeRelatedField(index) {

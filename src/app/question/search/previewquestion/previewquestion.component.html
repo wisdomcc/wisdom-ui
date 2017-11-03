@@ -21,8 +21,14 @@
         <tr *ngFor="let row of rows">
           <td>
             <div [innerHtml]="row.question"></div><br/>
-            <div *ngFor="let option of row.options">
-              {{option}}<br/>
+            <div *ngFor="let path of row.images.paths">
+                <img height="100px" width="120px" alt="" [src]="path"><br/>
+            </div>
+            <div *ngFor="let option of row.options.option; let index=index">
+              {{index+1}})&nbsp;{{option}}<br/>
+              <div *ngIf="row.options.imagePath !== undefined && row.options.imagePath[index]">
+                  <img height="100px" width="120px" alt="" [src]="row.options.imagePath[index]"><br/>
+              </div>
             </div>
           </td>
           <td>{{row.year}}</td>

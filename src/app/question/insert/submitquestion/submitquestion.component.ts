@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuestionService } from '../../../../services/question/question.service';
+import { UserService } from '../../../../services/user/user.service';
 import { QuestionModel } from '../../../../models/question/question.model';
 import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
 import { NotificationComponent } from '../../../common/notification/notification.component';
@@ -23,7 +24,8 @@ export class SubmitquestionComponent implements OnInit {
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
 
-  constructor(private questionService: QuestionService) {}
+  constructor(private questionService: QuestionService,
+              private userService: UserService) {}
 
   ngOnInit() {
     this.hideSubmitPreviewButton = true;
@@ -37,7 +39,7 @@ export class SubmitquestionComponent implements OnInit {
   addQuestion() {
     if (this.isFirstTime) {
       this.category = this.questionService.getCategoryDetails();
-      console.log(this.category);
+      // console.log(this.category);
       this.isFirstTime = false;
     }
     this.hideSubmitPreviewButton = false;
@@ -68,6 +70,9 @@ export class SubmitquestionComponent implements OnInit {
         this.questionModels = [];
       },
       error => {
+        if (error.status === 401) {
+          this.userService.logout();
+        }
         this.showNotification('Some error oaccured while inserting questions in database. Please retry.', 'error');
       }
     );

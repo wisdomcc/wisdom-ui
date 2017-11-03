@@ -7,12 +7,17 @@
 	<div class="row" [hidden]="!isImageAvailable()" >
 		<div class="col">
 			<div *ngFor="let path of questionModel.images.paths">
-				<img height="50px" width="70px" alt="" [src]="path">
+				<img height="100px" width="120px" alt="" [src]="path">
 			</div>
 		</div>
 	</div>
-	<div class="row" *ngFor="let option of questionModel.options.option">
-		<div [innerHtml]="option" ></div>
+	<div class="row" *ngFor="let option of questionModel.options.option; let childIndex=index">
+		<div class="col">
+			<div [innerHtml]="option" ></div>
+			<div *ngIf="questionModel.options.imagePath !== undefined && questionModel.options.imagePath[childIndex]">
+				<img height="100px" width="120px" alt="" [src]="questionModel.options.imagePath[childIndex]">
+			</div>
+		</div>
 	</div>
 	<div class="row">
 		<div class="col-7"></div>

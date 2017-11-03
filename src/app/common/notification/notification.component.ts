@@ -21,7 +21,7 @@ export class NotificationComponent implements OnInit {
   }
 
   showNotification(message: string, type: string, id: string) {
-    console.log('Notification for : ' + id);
+    // console.log('Notification for : ' + id);
     setTimeout(function() {
       this.hideAlert = true;
       this.$('#alert' + id).removeClass('hide');

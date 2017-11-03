@@ -3,6 +3,7 @@ import { QuestionModel } from '../../../../models/question/question.model';
 import { SearchCriteria } from '../../../../models/question/searchcriteria.model';
 import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
 import { QuestionService } from '../../../../services/question/question.service';
+import { UserService } from '../../../../services/user/user.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
 
 @Component({
@@ -29,7 +30,8 @@ export class UpdatequestionComponent implements OnInit {
   isDataPresent: boolean;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
-  constructor(private questionService: QuestionService) { }
+  constructor(private questionService: QuestionService,
+              private userService: UserService) { }
 
   ngOnInit() {
     this.hideSubmitPreviewButton = true;
@@ -139,6 +141,9 @@ export class UpdatequestionComponent implements OnInit {
         }
       },
       error => {
+        if (error.status === 401) {
+          this.userService.logout();
+        }
         this.showNotification('Some technical issue. Please try after sometime.', 'error');
       }
     );
@@ -166,6 +171,9 @@ export class UpdatequestionComponent implements OnInit {
         this.questionModels = [];
       },
       error => {
+        if (error.status === 401) {
+          this.userService.logout();
+        }
         this.showNotification('Some error oaccured while inserting questions in database. Please retry.', 'error');
       }
     );

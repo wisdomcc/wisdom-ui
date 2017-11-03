@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
 import { QuestionModel } from '../../models/question/question.model';
 import { SearchCriteria } from '../../models/question/searchcriteria.model';
+import { UserService } from '../user/user.service';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -13,16 +14,25 @@ export class QuestionService {
   viewQuestionUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/fetch';
   insertQuestionUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/insert';
   uploadImageUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/uploadImage';
-  constructor(private http: Http) {
+  getImageUrl = window.location.protocol + '//' + window.location.hostname + ':8080';
+
+  constructor(private http: Http, private userService: UserService) {
     this.fetchCategoryDetails();
   }
 
   fetchCategoryDetails() {
     this.http.get(this.categoryUrl, {withCredentials: true})
       .map((res: Response) => res)
-        .subscribe(res => {
-          this.categoryData = JSON.parse(' { "exams" : ' + res.text() + '}');
-        });
+        .subscribe(
+          data => {
+            this.categoryData = JSON.parse(' { "exams" : ' + data.text() + '}');
+          },
+          error => {
+            if (error.status === 401) {
+              this.userService.logout();
+            }
+          }
+        );
   }
 
   getCategoryDetails() {
@@ -60,6 +70,11 @@ export class QuestionService {
     return this.http.post(this.viewQuestionUrl, JSON.stringify(searchCriteria), options)
       .map((res: Response) => res.text());
 
+  }
+
+  getUploadedImage(path: string) {
+    return this.http.get(this.getImageUrl + path, {withCredentials: true})
+      .map((res: Response) => res.text());
   }
 
 }
