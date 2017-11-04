@@ -40,7 +40,11 @@ export class QuestiontextComponent implements OnInit {
     this.questionService.uploadQuestionImage(this.questionImage, this.questionModel.id)
     .subscribe(
       data => {
-        this.getUploadedImage(JSON.parse(data).path);
+        setTimeout(() => {
+          this.questionModel.images.paths.push(JSON.parse(data).path);
+          this.showNotification('Image uploaded successfully.', 'success');
+        }, 2000);
+        // this.getUploadedImage(JSON.parse(data).path);
       },
       error => {
         if (error.status === 401) {

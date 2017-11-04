@@ -11,11 +11,25 @@
 			</div>
 		</div>
 	</div>
-	<div class="row" *ngFor="let option of questionModel.options.option; let childIndex=index">
-		<div class="col">
-			<div [innerHtml]="option" ></div>
-			<div *ngIf="questionModel.options.imagePath !== undefined && questionModel.options.imagePath[childIndex]">
-				<img height="100px" width="120px" alt="" [src]="questionModel.options.imagePath[childIndex]">
+	<div *ngIf="questionModel.options.type == 'Text'">
+		<div class="row" *ngFor="let option of questionModel.options.option">
+			<div class="col">
+				<div [innerHtml]="option" ></div>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="questionModel.options.type == 'Image'">
+		<div class="row" *ngFor="let path of questionModel.options.imagePath">
+			<div class="col">
+				<div><img height="100px" width="120px" alt="" [src]="path"></div>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="questionModel.options.type == 'TextAndImage'">
+		<div class="row" *ngFor="let option of questionModel.options.option; let childIndex=index">
+			<div class="col">
+				<div [innerHtml]="option" ></div>
+				<div><img height="100px" width="120px" alt="" [src]="questionModel.options.imagePath[childIndex]"></div>
 			</div>
 		</div>
 	</div>

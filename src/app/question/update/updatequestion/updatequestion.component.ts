@@ -163,7 +163,7 @@ export class UpdatequestionComponent implements OnInit {
   }
 
   submitQuestions() {
-    this.questionService.insertQuestionModels(this.questionModels)
+    this.questionService.updateQuestionModels(this.questionModels)
     .subscribe(
       data => {
         this.showNotification('Questions inserted successfully in database.', 'success');

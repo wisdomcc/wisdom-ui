@@ -24,9 +24,19 @@
             <div *ngFor="let path of row.images.paths">
                 <img height="100px" width="120px" alt="" [src]="path"><br/>
             </div>
-            <div *ngFor="let option of row.options.option; let index=index">
-              {{index+1}})&nbsp;{{option}}<br/>
-              <div *ngIf="row.options.imagePath !== undefined && row.options.imagePath[index]">
+            <div *ngIf="row.options.type == 'Text'">
+                <div *ngFor="let option of row.options.option; let index=index">
+                    {{index+1}})&nbsp;{{option}}<br/>
+                </div>
+            </div>
+            <div *ngIf="row.options.type == 'Image'">
+              <div *ngFor="let path of row.options.imagePath; let index=index">
+                  {{index+1}})&nbsp;<img height="100px" width="120px" alt="" [src]="path"><br/>
+              </div>
+            </div>
+            <div *ngIf="row.options.type == 'TextAndImage'">
+              <div *ngFor="let option of row.options.option; let index=index">
+                  {{index+1}})&nbsp;{{option}}<br/>
                   <img height="100px" width="120px" alt="" [src]="row.options.imagePath[index]"><br/>
               </div>
             </div>

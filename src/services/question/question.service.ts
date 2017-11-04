@@ -13,6 +13,7 @@ export class QuestionService {
   categoryUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/viewAllExam';
   viewQuestionUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/fetch';
   insertQuestionUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/insert';
+  updateQuestionUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/update';
   uploadImageUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/uploadImage';
   getImageUrl = window.location.protocol + '//' + window.location.hostname + ':8080';
 
@@ -43,6 +44,13 @@ export class QuestionService {
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.post(this.insertQuestionUrl, questionModels, options)
+      .map((res: Response) => res.text());
+  }
+
+  updateQuestionModels(questionModels: QuestionModel[]) {
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.post(this.updateQuestionUrl, questionModels, options)
       .map((res: Response) => res.text());
   }
 
