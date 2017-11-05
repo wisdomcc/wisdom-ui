@@ -35,6 +35,8 @@ import { FooterComponent } from './common/footer/footer.component';
 import { NotificationComponent } from './common/notification/notification.component';
 import { PreviewquestionComponent } from './question/search/previewquestion/previewquestion.component';
 import { LogoutComponent } from './user/logout/logout.component';
+import { ParagraphComponent } from './question/common/paragraph/paragraph.component';
+import { LinkedquestionComponent } from './question/common/linkedquestion/linkedquestion.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { LogoutComponent } from './user/logout/logout.component';
     FooterComponent,
     NotificationComponent,
     PreviewquestionComponent,
-    LogoutComponent
+    LogoutComponent,
+    ParagraphComponent,
+    LinkedquestionComponent
   ],
   imports: [
     BrowserModule,

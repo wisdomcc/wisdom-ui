@@ -119,6 +119,7 @@ export class ViewquestionComponent implements OnInit {
     this.questionService.viewQuestion(this.searchCriteria)
       .subscribe(data => {
         this.previewQuestion.data = JSON.parse(data);
+        console.log(this.previewQuestion.data);
         this.previewQuestion.onChangeTable(this.previewQuestion.config);
         if (this.previewQuestion.data.length > 0) {
           this.isDataPresent = true;

@@ -1,4 +1,4 @@
-<div class="row form-group">
+<div class="row form-group" *ngIf="!isLinkedQuestion">
 	<div class="col"><label for="type" class="col-form-label">Type</label></div>
 	<div class="col">
 		<select class="form-control" [(ngModel)]="questionModel.type" id="type">
@@ -15,4 +15,11 @@
 	<div class="col" >
 		<input [hidden]="isNormalType()" type="text" class="form-control" id="year" [(ngModel)]="questionModel.year" />
 	</div>
+</div>
+<div class="row form-group" *ngIf="isLinkedQuestion">
+	<div class="col"><label for="marks" class="col-form-label">Marks</label></div>
+	<div class="col">
+		<input type="text" [(ngModel)]="questionModel.marks" id="marks" class="form-control" />
+	</div>
+	<div class="col-8"></div>
 </div>

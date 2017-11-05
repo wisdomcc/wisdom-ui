@@ -9,7 +9,7 @@ import { QuestionModel } from '../../../../models/question/question.model';
 export class AttributeComponent implements OnInit {
 
   @Input() questionModel: QuestionModel;
-  @Input() index: number;
+  @Input() isLinkedQuestion: boolean;
   types: string[];
   constructor() { }
 

@@ -1,4 +1,16 @@
 <div class="container" style="border: dashed;" (click)="previewQuestion()" >
+	<div class="row" *ngIf="!isLinkedQuestion">
+		<div class="col">
+			<div [innerHtml]="questionModel.paragraph.paragraph" ></div>
+		</div>
+	</div>
+	<div class="row" [hidden]="!isParaImageAvailable()" *ngIf="!isLinkedQuestion" >
+		<div class="col">
+			<div *ngFor="let path of questionModel.paragraph.images.paths">
+				<img height="100px" width="120px" alt="" [src]="path">
+			</div>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col">
 			<div [innerHtml]="questionModel.question" ></div>
@@ -33,10 +45,14 @@
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row" *ngIf="!isLinkedQuestion">
 		<div class="col-7"></div>
 		<div class="col" [hidden]="questionModel.year === ''">[Gate {{questionModel.year}}]</div>
 		<div class="col" [hidden]="questionModel.marks === ''">[{{questionModel.marks}} Marks]</div>
 		<div class="col" [hidden]="questionModel.type === ''">[{{questionModel.type}}]</div>
+	</div>
+	<div class="row" *ngIf="isLinkedQuestion">
+		<div class="col-10"></div>
+		<div class="col" [hidden]="questionModel.marks === ''">[{{questionModel.marks}} Marks]</div>
 	</div>
 </div>

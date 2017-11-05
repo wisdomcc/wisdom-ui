@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SearchResult } from '../../../../models/question/searchresult.model';
+import { QuestionModel } from '../../../../models/question/question.model';
 
 @Component({
   selector: 'app-previewquestion',
@@ -7,7 +7,7 @@ import { SearchResult } from '../../../../models/question/searchresult.model';
   styleUrls: ['./previewquestion.component.css']
 })
 export class PreviewquestionComponent implements OnInit {
-  public rows: Array<SearchResult> = [];
+  public rows: Array<QuestionModel> = [];
   public columns: Array<any> = [
     {title: 'Question', width: 10, name: 'question', filtering: {filterString: '', placeholder: 'Filter by question'}},
     {title: 'Year', name: 'year', width: 1, className: 'office-header text-success', sort: 'desc'},
@@ -26,7 +26,7 @@ export class PreviewquestionComponent implements OnInit {
     className: ['table-striped', 'table-bordered']
   };
 
-  data: SearchResult[];
+  data: QuestionModel[];
 
   public constructor() {
   }
@@ -141,7 +141,7 @@ export class PreviewquestionComponent implements OnInit {
     }
   }
 
-  public onCellClick(rows: SearchResult[]) {
+  public onCellClick(rows: QuestionModel[]) {
     MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
   }
 }

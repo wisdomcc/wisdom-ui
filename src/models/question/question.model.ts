@@ -1,6 +1,7 @@
 export class QuestionModel {
     id: any;
     question: string;
+    paragraph: Paragraph;
     images: Images;
     type: string;
     options: Options;
@@ -8,13 +9,33 @@ export class QuestionModel {
     marks: string;
     year: string;
     relatedTo: RelatedTo;
+    linkedQuestions: LinkedQuestionModel[];
 
     constructor() {
         this.id = Math.random().toString().slice(2, 12);
+        this.paragraph = new Paragraph(this.id);
         this.images = new Images();
         this.options = new Options();
         this.relatedTo = new RelatedTo();
+        this.linkedQuestions = [];
         this.type = 'Previous Year';
+    }
+}
+
+export class LinkedQuestionModel {
+    id: any;
+    parentQuestionId: any;
+    question: string;
+    images: Images;
+    options: Options;
+    hints: string;
+    marks: string;
+
+    constructor(parentId: any) {
+        this.id = Math.random().toString().slice(2, 12);
+        this.parentQuestionId = parentId;
+        this.images = new Images();
+        this.options = new Options();
     }
 }
 
@@ -51,5 +72,17 @@ class Options {
     this.type = 'Text';
     this.option = [];
     this.imagePath = [];
+    }
+}
+class Paragraph {
+    id: any;
+    questionId: any;
+    paragraph: string;
+    images: Images;
+
+    constructor(questionId: any) {
+        this.id = Math.random().toString().slice(2, 12);
+        this.questionId = questionId;
+        this.images = new Images();
     }
 }

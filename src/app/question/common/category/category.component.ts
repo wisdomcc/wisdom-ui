@@ -10,7 +10,6 @@ import { QuestionModel } from '../../../../models/question/question.model';
 export class CategoryComponent implements OnInit {
 
   @Input() questionModel: QuestionModel;
-  @Input() index: number;
   @Input() categoryData: any;
   selectedExam: string;
   selectedStream: string;
