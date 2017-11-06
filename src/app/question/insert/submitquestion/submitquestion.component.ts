@@ -62,20 +62,86 @@ export class SubmitquestionComponent implements OnInit {
   }
 
   submitQuestions() {
-    this.questionService.insertQuestionModels(this.questionModels)
-    .subscribe(
-      data => {
-        this.showNotification('Questions inserted successfully in database.', 'success');
-        this.hideSubmitPreviewButton = true;
-        this.questionModels = [];
-      },
-      error => {
-        if (error.status === 401) {
-          this.userService.logout();
+    if (this.validateQuestionModels()) {
+      this.questionService.insertQuestionModels(this.questionModels)
+      .subscribe(
+        data => {
+          this.showNotification('Questions inserted successfully in database.', 'success');
+          this.hideSubmitPreviewButton = true;
+          this.questionModels = [];
+        },
+        error => {
+          if (error.status === 401) {
+            this.userService.logout();
+          }
+          this.showNotification('Some error oaccured while inserting questions in database. Please retry.', 'error');
         }
-        this.showNotification('Some error oaccured while inserting questions in database. Please retry.', 'error');
+      );
+    }
+  }
+
+  validateQuestionModels(): boolean {
+    for (let index = 0; index < this.questionModels.length; index++) {
+      if (this.questionModels[index].question.trim() === '') {
+        this.notification.showNotification('Question should not be empty. For QuestionId : '
+         + this.questionModels[index].id, 'error', this.id);
+        return false;
       }
-    );
+      if (this.questionModels[index].options.type === 'Text' &&
+         this.questionModels[index].options.option.length === 0) {
+          this.notification.showNotification('Options Text is not added. For QuestionId : '
+          + this.questionModels[index].id, 'error', this.id);
+          return false;
+      }
+      if (this.questionModels[index].options.type === 'Image' &&
+          this.questionModels[index].options.imagePath.length === 0) {
+          this.notification.showNotification('Options Image is not added. For QuestionId : '
+          + this.questionModels[index].id, 'error', this.id);
+          return false;
+      }
+      if (this.questionModels[index].relatedTo.exam.length === 0) {
+        this.notification.showNotification('Related To is not added. For QuestionId : '
+        + this.questionModels[index].id, 'error', this.id);
+        return false;
+      }
+      if (this.questionModels[index].marks.trim() === '') {
+        this.notification.showNotification('Marks is not added. For QuestionId : '
+        + this.questionModels[index].id, 'error', this.id);
+        return false;
+      }
+      if (this.questionModels[index].year.trim() === '') {
+        this.notification.showNotification('Year is not added. For QuestionId : '
+        + this.questionModels[index].id, 'error', this.id);
+        return false;
+      }
+      if (this.questionModels[index].linkedQuestions.length > 0) {
+        for (let lindex = 0; lindex < this.questionModels[index].linkedQuestions.length; lindex++) {
+          if (this.questionModels[index].linkedQuestions[lindex].question.trim() === '') {
+            this.notification.showNotification('Question should not be empty. For Linked QuestionId : '
+             + this.questionModels[index].linkedQuestions[lindex].id, 'error', this.id);
+            return false;
+          }
+          if (this.questionModels[index].linkedQuestions[lindex].options.type === 'Text' &&
+              this.questionModels[index].linkedQuestions[lindex].options.option.length === 0) {
+              this.notification.showNotification('Options Text is not added. For Linked QuestionId : '
+              + this.questionModels[index].linkedQuestions[lindex].id, 'error', this.id);
+              return false;
+          }
+          if (this.questionModels[index].linkedQuestions[lindex].options.type === 'Image' &&
+              this.questionModels[index].linkedQuestions[lindex].options.imagePath.length === 0) {
+              this.notification.showNotification('Options Image is not added. For Linked QuestionId : '
+              + this.questionModels[index].linkedQuestions[lindex].id, 'error', this.id);
+              return false;
+          }
+          if (this.questionModels[index].linkedQuestions[lindex].marks.trim() === '') {
+            this.notification.showNotification('Marks is not added. For Linked QuestionId : '
+            + this.questionModels[index].linkedQuestions[lindex].id, 'error', this.id);
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
 
   showNotification(msg: string, type: string) {

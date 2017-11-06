@@ -42,7 +42,11 @@ export class OptionsComponent implements OnInit {
     this.questionService.uploadOptionImage(this.optionImage, this.questionModel.id)
     .subscribe(
       data => {
-        this.getUploadedImage(JSON.parse(data).path);
+        setTimeout(() => {
+          this.questionModel.options.imagePath.push(this.questionService.getImageUrl + JSON.parse(data).path);
+          this.showNotification('Image uploaded successfully.', 'success');
+        }, 2000);
+        // this.getUploadedImage(JSON.parse(data).path);
       },
       error => {
         if (error.status === 401) {

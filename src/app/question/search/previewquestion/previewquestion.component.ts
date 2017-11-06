@@ -10,8 +10,7 @@ export class PreviewquestionComponent implements OnInit {
   public rows: Array<QuestionModel> = [];
   public columns: Array<any> = [
     {title: 'Question', width: 10, name: 'question', filtering: {filterString: '', placeholder: 'Filter by question'}},
-    {title: 'Year', name: 'year', width: 1, className: 'office-header text-success', sort: 'desc'},
-    {title: 'Marks', width: 1, className: 'office-header text-success', name: 'marks'}
+    {title: 'Year', name: 'year', width: 1, className: 'office-header text-success', sort: 'desc'}
   ];
   public page = 1;
   public itemsPerPage = 2;

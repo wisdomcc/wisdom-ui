@@ -24,7 +24,7 @@ export class NotificationComponent implements OnInit {
     // console.log('Notification for : ' + id);
     setTimeout(function() {
       this.hideAlert = true;
-      this.$('#alert' + id).removeClass('hide');
+      this.$('#' + id).removeClass('hide');
     });
     if (type === 'success') {
       this.alertStatus = 'Success!';
@@ -41,7 +41,7 @@ export class NotificationComponent implements OnInit {
     if (id === 'options' || id === 'questiontext') {
       setTimeout(function() {
         this.hideAlert = true;
-        this.$('#alert' + id).addClass('hide');
+        this.$('#' + id).addClass('hide');
       }, 2000);
     }
   }

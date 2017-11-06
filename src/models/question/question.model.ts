@@ -13,12 +13,15 @@ export class QuestionModel {
 
     constructor() {
         this.id = Math.random().toString().slice(2, 12);
+        this.question = '';
         this.paragraph = new Paragraph(this.id);
         this.images = new Images();
         this.options = new Options();
         this.relatedTo = new RelatedTo();
         this.linkedQuestions = [];
         this.type = 'Previous Year';
+        this.marks = '';
+        this.year = '';
     }
 }
 
@@ -36,6 +39,8 @@ export class LinkedQuestionModel {
         this.parentQuestionId = parentId;
         this.images = new Images();
         this.options = new Options();
+        this.marks = '';
+        this.question = '';
     }
 }
 

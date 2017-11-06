@@ -27,7 +27,7 @@ export class ParagraphComponent implements OnInit {
   ngOnInit() {
     this.isImageAvailable = false;
     this.isParagraphAvailable = false;
-    this.id = 'questiontext';
+    this.id = 'paragraphtext';
   }
 
   getFile (files) {

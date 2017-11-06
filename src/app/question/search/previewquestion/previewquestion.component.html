@@ -26,7 +26,7 @@
                 <img height="100px" width="120px" alt="" [src]="path"><br/>
               </div>
             </div>
-            <div [innerHtml]="row.question"></div><br/>
+            <div [innerHtml]="row.question"></div>
             <div *ngFor="let path of row.images.paths">
                 <img height="100px" width="120px" alt="" [src]="path"><br/>
             </div>
@@ -46,8 +46,9 @@
                   <img height="100px" width="120px" alt="" [src]="row.options.imagePath[index]"><br/>
               </div>
             </div>
+            <div class="float-right">[{{row.marks}} Marks]</div>
             <div *ngFor="let linkedQuestion of row.linkedQuestions">
-                <br/><div [innerHtml]="linkedQuestion.question"></div><br/>
+                <br/><div [innerHtml]="linkedQuestion.question"></div>
                 <div *ngFor="let path of linkedQuestion.images.paths">
                     <img height="100px" width="120px" alt="" [src]="path"><br/>
                 </div>
@@ -67,10 +68,10 @@
                       <img height="100px" width="120px" alt="" [src]="linkedQuestion.options.imagePath[index]"><br/>
                   </div>
                 </div>
+                <div class="float-right">[{{linkedQuestion.marks}} Marks]</div>
             </div>
           </td>
           <td>{{row.year}}</td>
-          <td>{{row.marks}}</td>
         </tr>
   </tbody>
 </table>
