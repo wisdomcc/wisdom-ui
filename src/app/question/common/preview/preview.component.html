@@ -1,10 +1,10 @@
 <div class="container" style="border: dashed;" (click)="previewQuestion()" >
-	<div class="row" *ngIf="!isLinkedQuestion">
+	<div class="row" *ngIf="!isLinkedQuestion && questionModel.paragraph != undefined">
 		<div class="col">
 			<div [innerHtml]="questionModel.paragraph.paragraph" ></div>
 		</div>
 	</div>
-	<div class="row" [hidden]="!isParaImageAvailable()" *ngIf="!isLinkedQuestion" >
+	<div class="row" [hidden]="!isParaImageAvailable()" *ngIf="!isLinkedQuestion && questionModel.paragraph != undefined" >
 		<div class="col">
 			<div *ngFor="let path of questionModel.paragraph.images.paths">
 				<img height="100px" width="120px" alt="" [src]="path">

@@ -15,6 +15,7 @@ import { NotificationComponent } from '../../../common/notification/notification
 export class LinkedquestionComponent implements OnInit {
 
   isLinkedQuestion: boolean;
+  @Input() isUpdateSearch: boolean;
   qeProperty: QuestionElementProperty[];
   @Input() questionModel: QuestionModel;
   @Input() categoryData: any;
@@ -25,7 +26,13 @@ export class LinkedquestionComponent implements OnInit {
               private userService: UserService) {}
 
   ngOnInit() {
+    // console.log('update search : ' + this.isUpdateSearch);
     this.qeProperty = [];
+    if (this.isUpdateSearch && this.questionModel.linkedQuestions !== undefined) {
+      for (let i = 0; i < this.questionModel.linkedQuestions.length; i++) {
+        this.qeProperty.push(new QuestionElementProperty());
+      }
+    }
     this.isLinkedQuestion = true;
     this.rightImagePath = '../../assets/images/right.png';
     this.downImagePath = '../../assets/images/down.png';

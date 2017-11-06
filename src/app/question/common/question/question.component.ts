@@ -15,6 +15,7 @@ export class QuestionComponent implements OnInit {
   @Input() questionModel: QuestionModel;
   @Input() categoryData: any;
   @Input() isLinkedQuestion: boolean;
+  @Input() isUpdateSearch: boolean;
 
   ngOnInit() {
   }

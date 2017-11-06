@@ -10,5 +10,5 @@
 </div>
     <app-attribute [questionModel]="questionModel" [isLinkedQuestion]="isLinkedQuestion"></app-attribute>
 <div *ngIf="!isLinkedQuestion">
-    <app-linkedquestion [questionModel]="questionModel" [categoryData]="categoryData" ></app-linkedquestion>
+    <app-linkedquestion [questionModel]="questionModel" [categoryData]="categoryData" [isUpdateSearch]="isUpdateSearch"></app-linkedquestion>
 </div>
