@@ -54,20 +54,11 @@ export class QuestionService {
       .map((res: Response) => res.text());
   }
 
-  uploadQuestionImage(questionImage: any, id: string) {
+  uploadImage(questionImage: any, id: string, type: string) {
     const formData = new FormData();
     formData.append('file', questionImage);
     formData.append('questionid', id);
-    formData.append('option', 'false');
-    return this.http.post(this.uploadImageUrl, formData, {withCredentials: true})
-      .map((res: Response) => res.text());
-  }
-
-  uploadOptionImage(optionImage: any, id: string) {
-    const formData = new FormData();
-    formData.append('file', optionImage);
-    formData.append('questionid', id);
-    formData.append('option', 'true');
+    formData.append('type', type);
     return this.http.post(this.uploadImageUrl, formData, {withCredentials: true})
       .map((res: Response) => res.text());
   }

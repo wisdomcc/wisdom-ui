@@ -13,6 +13,7 @@ export class QuestiontextComponent implements OnInit {
 
   isImageAvailable: boolean;
   questionImage: any;
+  previewQuestionImage: string;
   imagePath: string;
   id: string;
 
@@ -28,16 +29,23 @@ export class QuestiontextComponent implements OnInit {
     this.id = 'questiontext';
   }
 
-  getFile (files) {
+  getFile (files, event: any) {
     // const eventObj: MSInputMethodContext = <MSInputMethodContext> fileInput;
     // const target: HTMLInputElement = <HTMLInputElement> eventObj.target;
     // const files: FileList = target.files;
     this.questionImage = files[0];
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.previewQuestionImage = event.target.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
     // console.log(this.questionImage);
   }
 
   uploadQuestionImage() {
-    this.questionService.uploadQuestionImage(this.questionImage, this.questionModel.id)
+    this.questionService.uploadImage(this.questionImage, this.questionModel.id, 'question')
     .subscribe(
       data => {
         setTimeout(() => {

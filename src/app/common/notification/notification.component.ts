@@ -38,12 +38,10 @@ export class NotificationComponent implements OnInit {
     }
     this.alertMsg = message;
     this.hideAlert = false;
-    if (id === 'options' || id === 'questiontext') {
-      setTimeout(function() {
+    setTimeout(function() {
         this.hideAlert = true;
         this.$('#' + id).addClass('hide');
       }, 2000);
-    }
   }
 
 }

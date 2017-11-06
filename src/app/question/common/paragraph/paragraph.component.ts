@@ -13,7 +13,8 @@ export class ParagraphComponent implements OnInit {
 
   isImageAvailable: boolean;
   isParagraphAvailable: boolean;
-  questionImage: any;
+  paragraphImage: any;
+  previewParagraphImage: string;
   imagePath: string;
   id: string;
 
@@ -30,16 +31,23 @@ export class ParagraphComponent implements OnInit {
     this.id = 'paragraphtext';
   }
 
-  getFile (files) {
+  getFile (files, event: any) {
     // const eventObj: MSInputMethodContext = <MSInputMethodContext> fileInput;
     // const target: HTMLInputElement = <HTMLInputElement> eventObj.target;
     // const files: FileList = target.files;
-    this.questionImage = files[0];
+    this.paragraphImage = files[0];
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.previewParagraphImage = event.target.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
     // console.log(this.questionImage);
   }
 
-  uploadQuestionImage() {
-    this.questionService.uploadQuestionImage(this.questionImage, this.questionModel.id)
+  uploadParagraphImage() {
+    this.questionService.uploadImage(this.paragraphImage, this.questionModel.id, 'paragraph')
     .subscribe(
       data => {
         setTimeout(() => {

@@ -53,16 +53,19 @@
 						class="btn btn-primary remove float-sm-right" value="+" />
 	</div>
 </div>
-<div class="row form-group" *ngFor="let exam of questionModel.relatedTo.exam; let cIndex = index">
-	<div class="col-1"><input type="text" value="{{questionModel.relatedTo.exam[cIndex]}}" class="form-control" disabled/></div>
-	<div class="col-1"><input type="text" value="{{questionModel.relatedTo.stream[cIndex]}}" class="form-control" disabled/></div>
-	<div class="col-3"><input type="text" value="{{questionModel.relatedTo.subject[cIndex]}}" class="form-control" disabled/></div>
-	<div class="col-3"><input type="text" value="{{questionModel.relatedTo.topic[cIndex]}}" class="form-control" disabled/></div>
-	<div class="col-3"><input type="text" value="{{questionModel.relatedTo.subTopic[cIndex]}}" class="form-control" disabled/></div>								
-	<div class="col-1"><input class="btn btn-danger remove float-sm-right" type="button"
-		ng-click="removeRelatedField(cIndex)" value="-" /></div>
+<div class="row" *ngFor="let exam of questionModel.relatedTo.exam; let cIndex = index">
+	<div class="col">
+		<div class="alert alert-success alert-dismissible" role="alert">
+			<button type="button" (click)="removeRelatedField(cIndex)" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			{{questionModel.relatedTo.exam[cIndex]}} # 
+			{{questionModel.relatedTo.stream[cIndex]}} #
+			{{questionModel.relatedTo.subject[cIndex]}} #
+			{{questionModel.relatedTo.topic[cIndex]}} #
+			{{questionModel.relatedTo.subTopic[cIndex]}}
+		</div>
+	</div>
 </div>
-<div class="row form-group">
+<!-- <div class="row form-group">
 	<div class="col">Tags</div>
 	<div class="col-6">
 		<select multiple class="form-control" [(ngModel)]="questionModel.relatedTo.tags">
@@ -73,4 +76,4 @@
 	</div>
 	<div class="col">
 	</div>
-</div>
+</div> -->

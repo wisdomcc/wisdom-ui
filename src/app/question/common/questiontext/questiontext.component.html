@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col">
 		<textarea rows="5" class="form-control"
-					[(ngModel)]="questionModel.question" ></textarea>
+					[(ngModel)]="questionModel.question" placeholder="Enter your question here"></textarea>
 	</div>
 </div>
 <div class="row">
@@ -12,13 +12,13 @@
 	</div>
 	<div class="col form-check">
         <label class="form-check-label">
-        	<input type="radio" class="form-check-input" (click)="changeImageAvailibility('true')" name="imageOption" value="true" >
+        	<input type="radio" class="form-check-input" (click)="changeImageAvailibility('true')" name="imageOption{{questionModel.id}}" value="true" >
         	Yes
         </label>
     </div>
     <div class="col form-check">
     	<label class="form-check-label">
-        	<input type="radio" class="form-check-input" (click)="changeImageAvailibility('false')" name="imageOption" value="false" checked >
+        	<input type="radio" class="form-check-input" (click)="changeImageAvailibility('false')" name="imageOption{{questionModel.id}}" value="false" checked >
         	No
         </label>
     </div>
@@ -27,7 +27,8 @@
 <app-notification [nid]="id"></app-notification>
 <div class="row" [hidden]="!isImageAvailable">
    	<div class="col-10">
-		  <input type="file" #file (change)="getFile(file.files)">
+		  <input type="file" #file (change)="getFile(file.files, $event)">
+		  <img [src]="previewQuestionImage" />
 	</div>
 	<div class="col">
 		<input type="button" class="btn btn-success addnew float-sm-right"
@@ -36,10 +37,9 @@
 </div>
 <div class="row" *ngFor="let path of questionModel.images.paths; let pIndex = index">
 	<div class="col" >
-		{{path}}
-	</div>	
-	<div class="col">
-		<input type="button" class="btn btn-danger remove float-sm-right"
-				(click)="questionModel.images.paths.splice(pIndex,1)" value="-" />
+		<div class="alert alert-success alert-dismissible" role="alert">
+			<button type="button" (click)="questionModel.images.paths.splice(pIndex,1)" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			{{path}}
+		</div>
 	</div>
 </div>

@@ -5,25 +5,25 @@
 	</div>
 	<div class="col form-check">
         <label class="form-check-label">
-        	<input type="radio" class="form-check-input" (click)="changeOptionState('NoOption')" name="textAndImageOption" value="NoOption" >
+        	<input type="radio" class="form-check-input" (click)="changeOptionState('NoOption')" name="textAndImageOption{{questionModel.id}}" value="NoOption" >
         	No Option
         </label>
     </div>
 	<div class="col form-check">
         <label class="form-check-label">
-        	<input type="radio" class="form-check-input" (click)="changeOptionState('Text')" name="textAndImageOption" value="Text" checked>
+        	<input type="radio" class="form-check-input" (click)="changeOptionState('Text')" name="textAndImageOption{{questionModel.id}}" value="Text" checked>
         	Text
         </label>
     </div>
     <div class="col form-check">
     	<label class="form-check-label">
-        	<input type="radio" class="form-check-input" (click)="changeOptionState('Image')" name="textAndImageOption" value="Image" >
+        	<input type="radio" class="form-check-input" (click)="changeOptionState('Image')" name="textAndImageOption{{questionModel.id}}" value="Image" >
         	Image
         </label>
     </div>
     <div class="col form-check">
     	<label class="form-check-label">
-        	<input type="radio" class="form-check-input" (click)="changeOptionState('TextAndImage')" name="textAndImageOption" value="TextAndImage" >
+        	<input type="radio" class="form-check-input" (click)="changeOptionState('TextAndImage')" name="textAndImageOption{{questionModel.id}}" value="TextAndImage" >
         	Text & Image
         </label>
     </div>
@@ -34,10 +34,11 @@
 </div>
 <div class="row form-group" [hidden]="getStatus('TextAndImage')">
 	<div class="col-6">
-		<textarea rows="2" class="form-control" [(ngModel)]="newOptionVal" ></textarea>
+		<textarea rows="2" class="form-control" [(ngModel)]="newOptionVal" placeholder="Enter your option here"></textarea>
 	</div>
 	<div class="col-4">
-		<input type="file" #fileTextAndImage (change)="getFile(fileTextAndImage.files)">
+		<input type="file" #fileTextAndImage (change)="getFile(fileTextAndImage.files, $event)">
+		<img [src]="previewOptionImage" />
 	</div>
 	<div class="col">
 		<input type="button" class="btn btn-success addnew float-sm-right"
@@ -50,7 +51,7 @@
 </div>
 <div class="row form-group" [hidden]="getStatus('Text')">
 	<div class="col-11">
-		<textarea rows="2" class="form-control" [(ngModel)]="newOptionVal" ></textarea>
+		<textarea rows="2" class="form-control" [(ngModel)]="newOptionVal" placeholder="Enter your option here"></textarea>
 	</div>
 	<div class="col">
 		<input type="button" (click)="addOption()"
@@ -59,7 +60,8 @@
 </div>
 <div class="row form-group" [hidden]="getStatus('Image')">
 	<div class="col-10">
-		<input type="file" #fileImage (change)="getFile(fileImage.files)">
+		<input type="file" #fileImage (change)="getFile(fileImage.files, $event)">
+		<img [src]="previewOptionImage" />
 	</div>
 	<div class="col">
 		<input type="button" class="btn btn-success addnew float-sm-right"
@@ -67,24 +69,32 @@
 	</div>
 </div>
 <div *ngIf="questionModel.options.type == 'Text'">
-	<div class="row form-group" *ngFor="let option of questionModel.options.option; let childIndex=index">
-		<div class="col" ><input type="text" [value]="option" class="form-control" disabled/></div>
-		<div class="col-1"><input type="button" class="btn btn-danger remove float-sm-right"
-				(click)="removeOption(childIndex)" value="-" /></div>
+	<div class="row" *ngFor="let option of questionModel.options.option; let childIndex=index">
+		<div class="col">
+			<div class="alert alert-success alert-dismissible" role="alert">
+				<button type="button" (click)="removeOption(childIndex)" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				{{option}}
+			</div>
+		</div>
 	</div>
 </div>
 <div *ngIf="questionModel.options.type == 'Image'">
-	<div class="row form-group" *ngFor="let path of questionModel.options.imagePath; let childIndex=index">
-		<div class="col" ><input type="text" [value]="path" class="form-control" disabled/></div>
-		<div class="col-1"><input type="button" class="btn btn-danger remove float-sm-right"
-				(click)="removeOptionImagePath(childIndex)" value="-" /></div>
+	<div class="row" *ngFor="let path of questionModel.options.imagePath; let childIndex=index">
+		<div class="col">
+			<div class="alert alert-success alert-dismissible" role="alert">
+				<button type="button" (click)="removeOptionImagePath(childIndex)" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				{{path}}
+			</div>
+		</div>
 	</div>
 </div>
 <div *ngIf="questionModel.options.type == 'TextAndImage'">
-	<div class="row form-group" *ngFor="let option of questionModel.options.option; let childIndex=index">
-		<div class="col" ><input type="text" [value]="option" class="form-control" disabled/></div>
-		<div class="col" ><input type="text" value="{{questionModel.options.imagePath[childIndex]}}" class="form-control" disabled/></div>
-		<div class="col-1"><input type="button" class="btn btn-danger remove float-sm-right"
-				(click)="removeOptionAndImagePath(childIndex)" value="-" /></div>
+	<div class="row" *ngFor="let option of questionModel.options.option; let childIndex=index">
+		<div class="col">
+			<div class="alert alert-success alert-dismissible" role="alert">
+				<button type="button" (click)="removeOptionAndImagePath(childIndex)" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				{{option}} # {{questionModel.options.imagePath[childIndex]}}
+			</div>
+		</div>
 	</div>
 </div>

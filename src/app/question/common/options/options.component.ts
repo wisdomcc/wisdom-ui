@@ -14,6 +14,7 @@ export class OptionsComponent implements OnInit {
   id: string;
   newOptionVal: string;
   optionImage: string;
+  previewOptionImage: string;
   optionState: string;
   @Input() questionModel: QuestionModel;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
@@ -30,16 +31,24 @@ export class OptionsComponent implements OnInit {
     this.notification.showNotification(msg, type, this.id);
   }
 
-  getFile (files) {
+  getFile (files, event: any) {
     // const eventObj: MSInputMethodContext = <MSInputMethodContext> fileInput;
     // const target: HTMLInputElement = <HTMLInputElement> eventObj.target;
     // const files: FileList = target.files;
     this.optionImage = files[0];
+    // this.previewOptionImage = URL.createObjectURL(this.optionImage);
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.previewOptionImage = event.target.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
     // console.log(this.optionImage);
   }
 
   uploadOptionsImage() {
-    this.questionService.uploadOptionImage(this.optionImage, this.questionModel.id)
+    this.questionService.uploadImage(this.optionImage, this.questionModel.id, 'option')
     .subscribe(
       data => {
         setTimeout(() => {

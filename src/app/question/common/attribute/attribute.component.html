@@ -7,19 +7,19 @@
 	</div>
 	<div class="col"><label for="marks" class="col-form-label">Marks</label></div>
 	<div class="col">
-		<input type="text" [(ngModel)]="questionModel.marks" id="marks" class="form-control" />
+		<input type="text" placeholder="Enter marks" [(ngModel)]="questionModel.marks" id="marks" class="form-control" />
 	</div>
 	<div class="col">
 		<label [hidden]="isNormalType()" for="year" class="col-form-label">Year</label>
 	</div>
 	<div class="col" >
-		<input [hidden]="isNormalType()" type="text" class="form-control" id="year" [(ngModel)]="questionModel.year" />
+		<input [hidden]="isNormalType()" placeholder="Enter year" type="text" class="form-control" id="year" [(ngModel)]="questionModel.year" />
 	</div>
 </div>
 <div class="row form-group" *ngIf="isLinkedQuestion">
 	<div class="col"><label for="marks" class="col-form-label">Marks</label></div>
 	<div class="col">
-		<input type="text" [(ngModel)]="questionModel.marks" id="marks" class="form-control" />
+		<input type="text" placeholder="Enter marks" [(ngModel)]="questionModel.marks" id="marks" class="form-control" />
 	</div>
 	<div class="col-8"></div>
 </div>
