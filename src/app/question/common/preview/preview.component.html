@@ -1,4 +1,5 @@
-<div class="container" style="border: dashed;" (click)="previewQuestion()" >
+<div class="wisdom-container wisdom-pale-green wisdom-leftbar wisdom-border-green" (click)="previewQuestion()" >
+	<strong>Click anywhere in preview area to view question/options/paragraph entered in Latex or Html format.</strong>
 	<div class="row" *ngIf="!isLinkedQuestion && questionModel.paragraph != undefined">
 		<div class="col">
 			<div [innerHtml]="questionModel.paragraph.paragraph" ></div>
