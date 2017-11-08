@@ -185,9 +185,8 @@ export class SubmitanswerComponent implements OnInit {
       for (let i = 0; i < laModels.length; i++) {
         this.answerModels.push(laModels[i]);
       }
-      console.log(this.answerModels);
-      return;
-      /*this.answerService.insertAnswerModels(this.answerModels)
+      // console.log(this.answerModels);
+      this.answerService.insertAnswerModels(this.answerModels)
       .subscribe(
         data => {
           this.showNotification('Answers inserted successfully in database.', 'success');
@@ -202,7 +201,7 @@ export class SubmitanswerComponent implements OnInit {
           }
           this.showNotification('Some error oaccured while inserting answers in database. Please retry.', 'error');
         }
-      );*/
+      );
     }
   }
 
