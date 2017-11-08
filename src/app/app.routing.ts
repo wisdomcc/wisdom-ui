@@ -11,9 +11,14 @@ import { HomepageComponent } from './common/homepage/homepage.component';
 import { AboutusComponent } from './common/aboutus/aboutus.component';
 import { ContactusComponent } from './common/contactus/contactus.component';
 import { ProductsComponent } from './products/products.component';
+import { SubmitanswerComponent } from './answer/insert/submitanswer/submitanswer.component';
+import { UpdateanswerComponent } from './answer/update/updateanswer/updateanswer.component';
 
 const appRoutes: Routes = [
+    { path: '', component: HomepageComponent, canActivate: [UrlSecurityService] },
     { path: 'submitquestion', component: SubmitquestionComponent, canActivate: [UrlSecurityService] },
+    { path: 'submitanswer', component: SubmitanswerComponent, canActivate: [UrlSecurityService] },
+    { path: 'updateanswer', component: UpdateanswerComponent, canActivate: [UrlSecurityService] },
     { path: 'products', component: ProductsComponent, canActivate: [UrlSecurityService] },
     { path: 'registration', component: RegistrationComponent },
     { path: 'aboutus', component: AboutusComponent },

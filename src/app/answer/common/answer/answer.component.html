@@ -1,0 +1,45 @@
+<div class="row">
+	<div class="col">
+		<textarea rows="5" class="form-control"
+					[(ngModel)]="answerModel.explanation.description" placeholder="Enter your explanation for option selected or answer entered"></textarea>
+	</div>
+</div>
+<div class="row">
+	<div class="col">
+		<input type="button"
+				class="btn btn-primary addnew float-sm-left"
+				value="Answer Having Image" disabled="disabled">
+	</div>
+	<div class="col form-check">
+        <label class="form-check-label">
+        	<input type="radio" class="form-check-input" (click)="changeImageAvailibility('true')" name="answerImageOption{{answerModel.id}}" value="true" >
+        	Yes
+        </label>
+    </div>
+    <div class="col form-check">
+    	<label class="form-check-label">
+        	<input type="radio" class="form-check-input" (click)="changeImageAvailibility('false')" name="answerImageOption{{answerModel.id}}" value="false" checked >
+        	No
+        </label>
+    </div>
+    <div class="col-6"></div>
+</div>
+<app-notification [nid]="id"></app-notification>
+<div class="row" [hidden]="!isImageAvailable">
+   	<div class="col-10">
+		  <input type="file" #file (change)="getFile(file.files, $event)">
+		  <img [src]="previewAnswerImage" />
+	</div>
+	<div class="col">
+		<input type="button" class="btn btn-success addnew float-sm-right"
+				(click)="uploadAnswerImage()" value="Upload" />
+	</div>
+</div>
+<div class="row" *ngFor="let path of answerModel.explanation.imagePath; let pIndex = index">
+	<div class="col" >
+		<div class="alert alert-success alert-dismissible" role="alert">
+			<button type="button" (click)="answerModel.explanation.imagePath.splice(pIndex,1)" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			{{path}}
+		</div>
+	</div>
+</div>

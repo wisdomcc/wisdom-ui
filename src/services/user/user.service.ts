@@ -10,6 +10,7 @@ export class UserService {
   private loggedIn = new Subject<WisdomUser>();
   loggedIn$ = this.loggedIn.asObservable();
   loginUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/login';
+  logoutUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/logout';
   registrationUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/registration';
   isUsernameExistingUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/isusernamepresent';
   isEmailExistingUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/isemailpresent';
@@ -54,6 +55,16 @@ export class UserService {
 
   logout() {
     // console.log('user getting logged out as session is expired.');
+    this.http.get(this.logoutUrl, {withCredentials: true})
+      .map((res: Response) => res)
+      .subscribe(
+        data => {
+          console.log('logout successful');
+        },
+        error => {
+          console.log('logout failed');
+        }
+      );
     localStorage.clear();
     this.router.navigateByUrl('/login');
   }

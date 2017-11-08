@@ -10,6 +10,7 @@ import { QuestionService } from '../services/question/question.service';
 import { UserService } from '../services/user/user.service';
 import { UrlSecurityService } from '../services/security/url.security.service';
 import { EmailService } from '../services/email/email.service';
+import { AnswerService } from '../services/answer/answer.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './user/login/login.component';
@@ -17,7 +18,7 @@ import { NavigationComponent } from './common/navigation/navigation.component';
 import { QuestionComponent } from './question/common/question/question.component';
 import { OptionsComponent } from './question/common/options/options.component';
 import { AttributeComponent } from './question/common/attribute/attribute.component';
-import { AnswerComponent } from './answer/answer.component';
+import { AnswerComponent } from './answer/common/answer/answer.component';
 import { PreviewComponent } from './question/common/preview/preview.component';
 import { CategoryComponent } from './question/common/category/category.component';
 import { SubmitquestionComponent } from './question/insert/submitquestion/submitquestion.component';
@@ -37,6 +38,9 @@ import { PreviewquestionComponent } from './question/search/previewquestion/prev
 import { LogoutComponent } from './user/logout/logout.component';
 import { ParagraphComponent } from './question/common/paragraph/paragraph.component';
 import { LinkedquestionComponent } from './question/common/linkedquestion/linkedquestion.component';
+import { AnspreviewComponent } from './answer/insert/anspreview/anspreview.component';
+import { SubmitanswerComponent } from './answer/insert/submitanswer/submitanswer.component';
+import { UpdateanswerComponent } from './answer/update/updateanswer/updateanswer.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +69,10 @@ import { LinkedquestionComponent } from './question/common/linkedquestion/linked
     PreviewquestionComponent,
     LogoutComponent,
     ParagraphComponent,
-    LinkedquestionComponent
+    LinkedquestionComponent,
+    AnspreviewComponent,
+    SubmitanswerComponent,
+    UpdateanswerComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +82,7 @@ import { LinkedquestionComponent } from './question/common/linkedquestion/linked
     routing,
     PaginationModule.forRoot()
   ],
-  providers: [QuestionService, UserService, UrlSecurityService, EmailService],
+  providers: [QuestionService, UserService, UrlSecurityService, EmailService, AnswerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

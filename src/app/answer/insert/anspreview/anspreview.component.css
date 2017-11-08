@@ -1,0 +1,14 @@
+.wisdom-border-green, .wisdom-hover-border-green:hover {
+    border-color: green !important;
+}
+.wisdom-pale-green, .wisdom-hover-pale-green:hover {
+    color: #000 !important;
+    background-color: lightgreen !important;
+}
+.wisdom-leftbar {
+    border-left: 6px solid green !important;
+    border-left-color: rgb(204, 204, 204);
+}
+.wisdom-container, .wisdom-panel {
+    padding: 0.01em 16px;
+}

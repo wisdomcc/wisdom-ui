@@ -1,0 +1,96 @@
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { AnswerModel } from '../../../../models/answer/answer.model';
+import { QuestionService } from '../../../../services/question/question.service';
+import { UserService } from '../../../../services/user/user.service';
+import { NotificationComponent } from '../../../common/notification/notification.component';
+
+@Component({
+  selector: 'app-answer',
+  templateUrl: './answer.component.html',
+  styleUrls: ['./answer.component.css']
+})
+export class AnswerComponent implements OnInit {
+
+  isImageAvailable: boolean;
+  answerImage: any;
+  previewAnswerImage: string;
+  imagePath: string;
+  id: string;
+
+  @Input() answerModel: AnswerModel;
+  @ViewChild(NotificationComponent) notification: NotificationComponent;
+
+  constructor(private questionService: QuestionService,
+              private userService: UserService) { }
+
+  ngOnInit() {
+    this.isImageAvailable = false;
+    this.id = 'answer';
+  }
+
+  getFile (files, event: any) {
+    // const eventObj: MSInputMethodContext = <MSInputMethodContext> fileInput;
+    // const target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+    // const files: FileList = target.files;
+    this.answerImage = files[0];
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.previewAnswerImage = event.target.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+    // console.log(this.questionImage);
+  }
+
+  uploadAnswerImage() {
+    this.questionService.uploadImage(this.answerImage, this.answerModel.questionId, 'answer')
+    .subscribe(
+      data => {
+        setTimeout(() => {
+          this.answerModel.explanation.imagePath.push(JSON.parse(data).path);
+          this.showNotification('Image uploaded successfully.', 'success');
+        }, 2000);
+        // this.getUploadedImage(JSON.parse(data).path);
+      },
+      error => {
+        if (error.status === 401) {
+          this.userService.logout();
+        }
+        this.showNotification('Image not uploaded.', 'error');
+      }
+    );
+  }
+
+  getUploadedImage(path: string) {
+    this.questionService.getUploadedImage(path)
+      .subscribe(
+        data => {
+          this.answerModel.explanation.imagePath.push(path);
+          this.showNotification('Image uploaded successfully.', 'success');
+        },
+        error => {
+          if (error.status === 401) {
+            this.userService.logout();
+          }
+          setTimeout(() => {
+            this.getUploadedImage(path);
+          }, 2000);
+        }
+      );
+  }
+
+  showNotification(msg: string, type: string) {
+    this.notification.showNotification(msg, type, this.id);
+  }
+
+  changeImageAvailibility(isImageAvailable: string) {
+    if (isImageAvailable === 'true') {
+      this.isImageAvailable = true;
+    } else {
+      this.isImageAvailable = false;
+    }
+  }
+
+}
+

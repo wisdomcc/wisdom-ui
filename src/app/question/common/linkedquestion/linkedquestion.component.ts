@@ -30,7 +30,7 @@ export class LinkedquestionComponent implements OnInit {
     this.qeProperty = [];
     if (this.isUpdateSearch && this.questionModel.linkedQuestions !== undefined) {
       for (let i = 0; i < this.questionModel.linkedQuestions.length; i++) {
-        this.qeProperty.push(new QuestionElementProperty());
+        this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
       }
     }
     this.isLinkedQuestion = true;
@@ -41,7 +41,7 @@ export class LinkedquestionComponent implements OnInit {
   addQuestion() {
     const question = new LinkedQuestionModel(this.questionModel.id);
     this.questionModel.linkedQuestions.push(question);
-    this.qeProperty.push(new QuestionElementProperty());
+    this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
   }
 
   removeQuestion(index: number) {

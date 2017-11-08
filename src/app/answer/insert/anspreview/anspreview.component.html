@@ -1,0 +1,98 @@
+<div class="wisdom-container wisdom-pale-green wisdom-leftbar wisdom-border-green" (click)="previewQuestion()" >
+	<strong>Click anywhere in preview area to view question/options/paragraph entered in Latex or Html format.</strong>
+	<div class="float-right">[Gate {{questionModel.year}}]&nbsp;&nbsp;[{{questionModel.type}}]</div>
+	<div class="row" *ngIf="!isLinkedQuestion && questionModel.paragraph != undefined">
+		<div class="col">
+			<div [innerHtml]="questionModel.paragraph.paragraph" ></div>
+		</div>
+	</div>
+	<div class="row" [hidden]="!isParaImageAvailable()" *ngIf="!isLinkedQuestion && questionModel.paragraph != undefined" >
+		<div class="col">
+			<div *ngFor="let path of questionModel.paragraph.images.paths">
+				<img height="100px" width="120px" alt="" [src]="path">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<div [innerHtml]="questionModel.question" ></div>
+		</div>
+	</div>
+	<div class="row" [hidden]="!isImageAvailable()" >
+		<div class="col">
+			<div *ngFor="let path of questionModel.images.paths">
+				<img height="100px" width="120px" alt="" [src]="path">
+			</div>
+		</div>
+	</div>
+	<div class="float-right">[{{questionModel.marks}} Marks]</div>
+	<div *ngIf="questionModel.options.type == 'NoOption'">
+		<div class="col">
+			<input type="text" placeholder="Enter your answer here" [(ngModel)]="answerModel.answer" id="answer" class="form-control" />
+		</div>
+	</div>
+	<div *ngIf="questionModel.options.type == 'Text'">
+		<div *ngFor="let option of questionModel.options.option; let index=index">
+			<label class="form-check-label">
+				<input type="radio" class="form-check-input" (click)="markAnswer(index+1)" name="answerPreviewImageOption{{answerModel.id}}" value="true" >
+				{{option}}<br/>
+			</label>
+		</div>
+	</div>
+	<div *ngIf="questionModel.options.type == 'Image'">
+	  <div *ngFor="let path of questionModel.options.imagePath; let index=index">
+			<label class="form-check-label">
+				<input type="radio" class="form-check-input" (click)="markAnswer(index+1)" name="answerPreviewImageOption{{answerModel.id}}" value="true" >
+				<img height="100px" width="120px" alt="" [src]="path"><br/>
+			</label>
+	  </div>
+	</div>
+	<div *ngIf="questionModel.options.type == 'TextAndImage'">
+	  <div *ngFor="let option of questionModel.options.option; let index=index">
+			<label class="form-check-label">
+				<input type="radio" class="form-check-input" (click)="markAnswer(index+1)" name="answerPreviewImageOption{{answerModel.id}}" value="true" >
+				{{option}}<br/>
+				<img height="100px" width="120px" alt="" [src]="questionModel.options.imagePath[index]"><br/>
+			</label>
+	  </div>
+	</div>
+	<app-answer [answerModel]="answerModel"></app-answer>
+	<div *ngFor="let linkedQuestion of questionModel.linkedQuestions; let pindex=index">
+		<br/><div [innerHtml]="linkedQuestion.question"></div>
+		<div *ngFor="let path of linkedQuestion.images.paths">
+			<img height="100px" width="120px" alt="" [src]="path"><br/>
+		</div>
+		<div class="float-right">[{{linkedQuestion.marks}} Marks]</div>
+		<div *ngIf="linkedQuestion.options.type == 'NoOption'">
+			<div class="col">
+				<input type="text" placeholder="Enter your answer here" [(ngModel)]="linkedAnswerModels[pindex].answer" id="answer" class="form-control" />
+			</div>
+		</div>
+		<div *ngIf="linkedQuestion.options.type == 'Text'">
+			<div *ngFor="let option of linkedQuestion.options.option; let index=index">
+				<label class="form-check-label">
+					<input type="radio" class="form-check-input" (click)="markLinkedAnswer(index+1, pindex)" name="answerPreviewImageOption{{linkedQuestion.id}}" value="true" >
+					{{option}}<br/>
+				</label>
+			</div>
+		</div>
+		<div *ngIf="linkedQuestion.options.type == 'Image'">
+			<div *ngFor="let path of linkedQuestion.options.imagePath; let index=index">
+				<label class="form-check-label">
+					<input type="radio" class="form-check-input" (click)="markLinkedAnswer(index+1, pindex)" name="answerPreviewImageOption{{linkedQuestion.id}}" value="true" >
+					<img height="100px" width="120px" alt="" [src]="path"><br/>
+				</label>
+			</div>
+		</div>
+		<div *ngIf="linkedQuestion.options.type == 'TextAndImage'">
+			<div *ngFor="let option of linkedQuestion.options.option; let index=index">
+				<label class="form-check-label">
+					<input type="radio" class="form-check-input" (click)="markLinkedAnswer(index+1, pindex)" name="answerPreviewImageOption{{linkedQuestion.id}}" value="true" >
+					{{option}}<br/>
+					<img height="100px" width="120px" alt="" [src]="linkedQuestion.options.imagePath[index]"><br/>
+				</label>
+			</div>
+		</div>
+		<app-answer [answerModel]="linkedAnswerModels[pindex]"></app-answer>
+	</div>
+</div>

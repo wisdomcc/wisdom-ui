@@ -2,8 +2,8 @@ export class QuestionElementProperty {
     image: string;
     collapse: boolean;
 
-    constructor() {
-      this.image = '../../assets/images/right.png';
+    constructor(image: string) {
+      this.image = image;
       this.collapse = true;
     }
 }

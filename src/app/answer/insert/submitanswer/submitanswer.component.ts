@@ -1,17 +1,20 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { QuestionModel } from '../../../../models/question/question.model';
+import { AnswerModel } from '../../../../models/answer/answer.model';
 import { SearchCriteria } from '../../../../models/question/searchcriteria.model';
 import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
+import { AnswerService } from '../../../../services/answer/answer.service';
 import { QuestionService } from '../../../../services/question/question.service';
 import { UserService } from '../../../../services/user/user.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
+import { AnspreviewComponent } from '../anspreview/anspreview.component';
 
 @Component({
-  selector: 'app-updatequestion',
-  templateUrl: './updatequestion.component.html',
-  styleUrls: ['./updatequestion.component.css']
+  selector: 'app-submitanswer',
+  templateUrl: './submitanswer.component.html',
+  styleUrls: ['./submitanswer.component.css']
 })
-export class UpdatequestionComponent implements OnInit {
+export class SubmitanswerComponent implements OnInit {
 
   id: string;
   hideSubmitPreviewButton: boolean;
@@ -28,18 +31,22 @@ export class UpdatequestionComponent implements OnInit {
   fromYears: number[];
   toYears: number[];
   isDataPresent: boolean;
+  answerModels: AnswerModel[];
   @ViewChild(NotificationComponent) notification: NotificationComponent;
+  @ViewChildren(AnspreviewComponent) ansPreviews: QueryList<AnspreviewComponent>;
 
-  constructor(private questionService: QuestionService,
+  constructor(private answerService: AnswerService,
+              private questionService: QuestionService,
               private userService: UserService) { }
 
   ngOnInit() {
+    this.answerModels = [];
     this.hideSubmitPreviewButton = true;
     this.searchCriteria = new SearchCriteria();
     this.isDataPresent = false;
-    this.rightImagePath = '../../assets/images/right.png';
-    this.downImagePath = '../../assets/images/down.png';
-    this.id = 'updatequestion';
+    this.rightImagePath = '../../../../assets/images/right.png';
+    this.downImagePath = '../../../../assets/images/down.png';
+    this.id = 'submitanswer';
     this.subjects = ['Select Subject'];
     this.topics = ['Select Topic'];
     this.fromYears = [];
@@ -125,6 +132,7 @@ export class UpdatequestionComponent implements OnInit {
         this.searchCriteria.relatedTo.topic.pop();
       }
     }
+    console.log('Search Criteria : ' + JSON.stringify(this.searchCriteria));
     this.questionService.viewQuestion(this.searchCriteria)
     .subscribe(
       data => {
@@ -133,7 +141,8 @@ export class UpdatequestionComponent implements OnInit {
           this.isDataPresent = true;
           this.qeProperty = [];
           this.hideSubmitPreviewButton = false;
-          for (let i = 0; i < data.length; i++) {
+          for (let i = 0; i < this.questionModels.length; i++) {
+            this.answerModels.push(new AnswerModel(this.questionModels[i].id));
             this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
           }
         } else {
@@ -159,24 +168,78 @@ export class UpdatequestionComponent implements OnInit {
       this.hideSubmitPreviewButton = true;
     }
     this.questionModels.splice(index, 1);
+    this.answerModels.splice(index, 1);
     this.qeProperty.splice(index, 1);
   }
 
-  submitQuestions() {
-    this.questionService.updateQuestionModels(this.questionModels)
-    .subscribe(
-      data => {
-        this.showNotification('Questions inserted successfully in database.', 'success');
-        this.hideSubmitPreviewButton = true;
-        this.questionModels = [];
-      },
-      error => {
-        if (error.status === 401) {
-          this.userService.logout();
+  submitAnswers() {
+    if (this.validateAnswerModels()) {
+      let laModels = [];
+      this.ansPreviews.forEach(function(preview) {
+        if (preview.linkedAnswerModels !== undefined) {
+          preview.linkedAnswerModels.forEach(function(linkedAnswerModel) {
+            laModels.push(linkedAnswerModel);
+          });
         }
-        this.showNotification('Some error oaccured while inserting questions in database. Please retry.', 'error');
+      });
+      for (let i = 0; i < laModels.length; i++) {
+        this.answerModels.push(laModels[i]);
       }
-    );
+      console.log(this.answerModels);
+      return;
+      /*this.answerService.insertAnswerModels(this.answerModels)
+      .subscribe(
+        data => {
+          this.showNotification('Answers inserted successfully in database.', 'success');
+          this.hideSubmitPreviewButton = true;
+          this.questionModels = [];
+          this.answerModels = [];
+          this.qeProperty = [];
+        },
+        error => {
+          if (error.status === 401) {
+            this.userService.logout();
+          }
+          this.showNotification('Some error oaccured while inserting answers in database. Please retry.', 'error');
+        }
+      );*/
+    }
+  }
+
+  validateAnswerModels(): boolean {
+    let errorMsg = '';
+    this.answerModels.forEach(function(answerModel) {
+      if (answerModel.answer === '') {
+        errorMsg = 'No Option selected or answer provided. For QuestionId : ' + answerModel.questionId;
+        return;
+      }
+      if (answerModel.explanation.description === '') {
+        errorMsg = 'No explanation for answer provided. For QuestionId : ' + answerModel.questionId;
+        return;
+      }
+    });
+    if (errorMsg === '') {
+      this.ansPreviews.forEach(function(preview) {
+        if (preview.linkedAnswerModels !== undefined) {
+          preview.linkedAnswerModels.forEach(function(linkedAnswerModel) {
+            if (linkedAnswerModel.answer === '') {
+              errorMsg = 'No Option selected or answer provided. For linked question of QuestionId : ' + preview.questionModel.id;
+              return;
+            }
+            if (linkedAnswerModel.explanation.description === '') {
+              errorMsg = 'No explanation for answer provided. For linked question of QuestionId : ' + preview.questionModel.id;
+              return;
+            }
+          });
+        }
+      });
+    }
+    if (errorMsg !== '') {
+      this.notification.showNotification(errorMsg, 'error', this.id);
+      errorMsg = '';
+      return false;
+    }
+    return true;
   }
 
   showNotification(msg: string, type: string) {
