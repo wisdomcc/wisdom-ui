@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { QuestionModel } from '../../../../models/question/question.model';
 import { AnswerModel } from '../../../../models/answer/answer.model';
+import { LinkedAnswerModel } from '../../../../models/answer/answer.model';
 import { SearchCriteria } from '../../../../models/question/searchcriteria.model';
 import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
 import { AnswerService } from '../../../../services/answer/answer.service';
@@ -142,7 +143,13 @@ export class SubmitanswerComponent implements OnInit {
           this.qeProperty = [];
           this.hideSubmitPreviewButton = false;
           for (let i = 0; i < this.questionModels.length; i++) {
-            this.answerModels.push(new AnswerModel(this.questionModels[i].id));
+            let laModels = [];
+            if (this.questionModels[i].linkedQuestions !== undefined) {
+              for (let j = 0; j < this.questionModels[i].linkedQuestions.length; j++) {
+                laModels.push(new LinkedAnswerModel(this.questionModels[i].linkedQuestions[j].id));
+              }
+            }
+            this.answerModels.push(new AnswerModel(this.questionModels[i].id, laModels));
             this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
           }
         } else {
@@ -175,17 +182,6 @@ export class SubmitanswerComponent implements OnInit {
 
   submitAnswers() {
     if (this.validateAnswerModels()) {
-      let laModels = [];
-      this.ansPreviews.forEach(function(preview) {
-        if (preview.linkedAnswerModels !== undefined) {
-          preview.linkedAnswerModels.forEach(function(linkedAnswerModel) {
-            laModels.push(linkedAnswerModel);
-          });
-        }
-      });
-      for (let i = 0; i < laModels.length; i++) {
-        this.answerModels.push(laModels[i]);
-      }
       // console.log(this.answerModels);
       this.answerService.insertAnswerModels(this.answerModels)
       .subscribe(
@@ -208,7 +204,7 @@ export class SubmitanswerComponent implements OnInit {
 
   validateAnswerModels(): boolean {
     let errorMsg = '';
-    console.log('answer : ' + this.answerModels.length);
+    console.log(this.answerModels);
     this.answerModels.forEach(function(answerModel) {
       if (answerModel.answer === '') {
         errorMsg = 'No Option selected or answer provided. For QuestionId : ' + answerModel.questionId;
@@ -218,23 +214,17 @@ export class SubmitanswerComponent implements OnInit {
         errorMsg = 'No explanation for answer provided. For QuestionId : ' + answerModel.questionId;
         return;
       }
-    });
-    if (errorMsg === '') {
-      this.ansPreviews.forEach(function(preview) {
-        if (preview.linkedAnswerModels !== undefined) {
-          preview.linkedAnswerModels.forEach(function(linkedAnswerModel) {
-            if (linkedAnswerModel.answer === '') {
-              errorMsg = 'No Option selected or answer provided. For linked question of QuestionId : ' + preview.questionModel.id;
-              return;
-            }
-            if (linkedAnswerModel.explanation.description === '') {
-              errorMsg = 'No explanation for answer provided. For linked question of QuestionId : ' + preview.questionModel.id;
-              return;
-            }
-          });
+      answerModel.linkedAnswers.forEach(function(linkedAnswerModel) {
+        if (linkedAnswerModel.answer === '') {
+          errorMsg = 'No Option selected or answer provided. For linked question of QuestionId : ' + answerModel.questionId;
+          return;
+        }
+        if (linkedAnswerModel.explanation.description === '') {
+          errorMsg = 'No explanation for answer provided. For linked question of QuestionId : ' + answerModel.questionId;
+          return;
         }
       });
-    }
+    });
     if (errorMsg !== '') {
       this.notification.showNotification(errorMsg, 'error', this.id);
       errorMsg = '';

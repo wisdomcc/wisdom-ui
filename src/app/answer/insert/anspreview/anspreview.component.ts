@@ -11,25 +11,31 @@ export class AnspreviewComponent implements OnInit {
 
   @Input() questionModel: QuestionModel;
   @Input() answerModel: AnswerModel;
-  linkedAnswerModels: AnswerModel[];
 
   constructor() { }
 
-  ngOnInit() {
-    if (this.questionModel.linkedQuestions !== undefined) {
-      this.linkedAnswerModels = [];
-      for (let i = 0; i < this.questionModel.linkedQuestions.length; i++) {
-        this.linkedAnswerModels.push(new AnswerModel(this.questionModel.linkedQuestions[i].id));
-      }
-    }
-  }
+  ngOnInit() {  }
 
   markAnswer(option: string) {
     this.answerModel.answer = 'option' + option;
   }
 
   markLinkedAnswer(option: string, index: number) {
-    this.linkedAnswerModels[index].answer = 'option' + option;
+    this.answerModel.linkedAnswers[index].answer = 'option' + option;
+  }
+
+  getCheckedStatus(index: number) {
+    if (this.answerModel.answer === ('option' + index)) {
+      return true;
+    }
+    return false;
+  }
+
+  getLinkedCheckedStatus(pindex: number, index: number) {
+    if (this.answerModel.linkedAnswers[pindex].answer === ('option' + index)) {
+      return true;
+    }
+    return false;
   }
 
   isImageAvailable() {

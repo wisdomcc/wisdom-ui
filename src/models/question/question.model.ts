@@ -1,3 +1,5 @@
+import { AnswerModel } from '../answer/answer.model';
+
 export class QuestionModel {
     id: any;
     question: string;
@@ -9,6 +11,7 @@ export class QuestionModel {
     marks: string;
     year: string;
     relatedTo: RelatedTo;
+    answer: AnswerModel;
     linkedQuestions: LinkedQuestionModel[];
 
     constructor() {
@@ -33,6 +36,7 @@ export class LinkedQuestionModel {
     options: Options;
     hints: string;
     marks: string;
+    answer: AnswerModel;
 
     constructor(parentId: any) {
         this.id = Math.random().toString().slice(2, 12);
