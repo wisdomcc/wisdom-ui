@@ -163,10 +163,11 @@ export class SubmitanswerComponent implements OnInit {
     this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
   }
 
-  removeQuestion(index: number) {
+  removeAnswer(index: number) {
     if (this.questionModels.length === 1) {
       this.hideSubmitPreviewButton = true;
     }
+    console.log('qid:' + this.questionModels[index].id + '#aqid:' + this.answerModels[index].questionId);
     this.questionModels.splice(index, 1);
     this.answerModels.splice(index, 1);
     this.qeProperty.splice(index, 1);
@@ -207,6 +208,7 @@ export class SubmitanswerComponent implements OnInit {
 
   validateAnswerModels(): boolean {
     let errorMsg = '';
+    console.log('answer : ' + this.answerModels.length);
     this.answerModels.forEach(function(answerModel) {
       if (answerModel.answer === '') {
         errorMsg = 'No Option selected or answer provided. For QuestionId : ' + answerModel.questionId;

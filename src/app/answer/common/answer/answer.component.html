@@ -1,5 +1,10 @@
 <div class="row">
 	<div class="col">
+		<div [innerHtml]="answerModel.explanation.description" ></div>
+	</div>
+</div>
+<div class="row">
+	<div class="col">
 		<textarea rows="5" class="form-control"
 					[(ngModel)]="answerModel.explanation.description" placeholder="Enter your explanation for option selected or answer entered"></textarea>
 	</div>

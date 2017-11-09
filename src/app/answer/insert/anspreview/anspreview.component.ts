@@ -48,8 +48,11 @@ export class AnspreviewComponent implements OnInit {
 
   previewQuestion() {
     MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.questionModel.question ]);
-    for (let i = 0; i < this.questionModel.options.option.length; i++) {
-      MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.questionModel.options.option[i] ]);
+    MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.answerModel.explanation.description ]);
+    if (this.questionModel.options.type !== 'NoOption') {
+      for (let i = 0; i < this.questionModel.options.option.length; i++) {
+        MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.questionModel.options.option[i] ]);
+      }
     }
   }
 
