@@ -1,12 +1,12 @@
 <div class="wisdom-container wisdom-pale-green wisdom-leftbar wisdom-border-green" (click)="previewQuestion()" >
 	<strong>Click anywhere in preview area to view question/options/paragraph entered in Latex or Html format.</strong>
 	<div class="float-right">[Gate {{questionModel.year}}]&nbsp;&nbsp;[{{questionModel.type}}]</div>
-	<div class="row" *ngIf="!isLinkedQuestion && questionModel.paragraph != undefined">
+	<div class="row" *ngIf="questionModel.paragraph != undefined">
 		<div class="col">
 			<div [innerHtml]="questionModel.paragraph.paragraph" ></div>
 		</div>
 	</div>
-	<div class="row" [hidden]="!isParaImageAvailable()" *ngIf="!isLinkedQuestion && questionModel.paragraph != undefined" >
+	<div class="row" [hidden]="!isParaImageAvailable()" *ngIf="questionModel.paragraph != undefined" >
 		<div class="col">
 			<div *ngFor="let path of questionModel.paragraph.images.paths">
 				<img height="100px" width="120px" alt="" [src]="path">
