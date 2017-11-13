@@ -41,6 +41,14 @@ import { LinkedquestionComponent } from './question/common/linkedquestion/linked
 import { AnspreviewComponent } from './answer/insert/anspreview/anspreview.component';
 import { SubmitanswerComponent } from './answer/insert/submitanswer/submitanswer.component';
 import { UpdateanswerComponent } from './answer/update/updateanswer/updateanswer.component';
+import { QuestionassignmentComponent } from './testseries/assignment/questionassignment/questionassignment.component';
+import { QuestionpreviewComponent } from './testseries/assignment/questionpreview/questionpreview.component';
+import { TestseriespreviewComponent } from './testseries/testseries/testseriespreview/testseriespreview.component';
+import { TestseriesstatusComponent } from './testseries/testseries/testseriesstatus/testseriesstatus.component';
+import { SubmittestseriesComponent } from './testseries/insert/submittestseries/submittestseries.component';
+import { TestseriesComponent } from './testseries/testseries/testseries/testseries.component';
+import { TestseriesresultComponent } from './testseries/result/testseriesresult/testseriesresult.component';
+import { EnrolltestseriesComponent } from './testseries/enrolltestseries/enrolltestseries.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +80,15 @@ import { UpdateanswerComponent } from './answer/update/updateanswer/updateanswer
     LinkedquestionComponent,
     AnspreviewComponent,
     SubmitanswerComponent,
-    UpdateanswerComponent
+    UpdateanswerComponent,
+    QuestionassignmentComponent,
+    QuestionpreviewComponent,
+    TestseriespreviewComponent,
+    TestseriesstatusComponent,
+    SubmittestseriesComponent,
+    TestseriesComponent,
+    TestseriesresultComponent,
+    EnrolltestseriesComponent
   ],
   imports: [
     BrowserModule,

@@ -40,6 +40,10 @@ export class RegistrationComponent implements OnInit {
         data => {
             const response = JSON.parse(data);
             this.showNotification(response.message, response.type);
+            this.username = '';
+            this.emailid = '';
+            this.password = '';
+            this.confirmpassword = '';
         },
         error => {
             this.showNotification('Technical issue. Please try after sometime.', 'error');

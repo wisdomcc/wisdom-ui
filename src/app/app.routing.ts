@@ -13,6 +13,11 @@ import { ContactusComponent } from './common/contactus/contactus.component';
 import { ProductsComponent } from './products/products.component';
 import { SubmitanswerComponent } from './answer/insert/submitanswer/submitanswer.component';
 import { UpdateanswerComponent } from './answer/update/updateanswer/updateanswer.component';
+import { QuestionassignmentComponent } from './testseries/assignment/questionassignment/questionassignment.component';
+import { TestseriesComponent } from './testseries/testseries/testseries/testseries.component';
+import { EnrolltestseriesComponent } from './testseries/enrolltestseries/enrolltestseries.component';
+import { TestseriesresultComponent } from './testseries/result/testseriesresult/testseriesresult.component';
+import { SubmittestseriesComponent } from './testseries/insert/submittestseries/submittestseries.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomepageComponent, canActivate: [UrlSecurityService] },
@@ -28,6 +33,11 @@ const appRoutes: Routes = [
     { path: 'homepage', component: HomepageComponent, canActivate: [UrlSecurityService] },
     { path: 'updatequestion', component: UpdatequestionComponent, canActivate: [UrlSecurityService] },
     { path: 'viewquestion', component: ViewquestionComponent, canActivate: [UrlSecurityService] },
+    { path: 'testseries', component: TestseriesComponent, canActivate: [UrlSecurityService] },
+    { path: 'enrolltestseries', component: EnrolltestseriesComponent, canActivate: [UrlSecurityService] },
+    { path: 'submittestseries', component: SubmittestseriesComponent, canActivate: [UrlSecurityService] },
+    { path: 'testseriesresult', component: TestseriesresultComponent, canActivate: [UrlSecurityService] },
+    { path: 'questionassignment', component: QuestionassignmentComponent, canActivate: [UrlSecurityService] },
 
    // otherwise redirect to home
    { path: '**', redirectTo: '' }

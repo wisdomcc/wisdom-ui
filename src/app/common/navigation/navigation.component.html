@@ -30,6 +30,18 @@
                   <a class="dropdown-item" routerLink="viewquestion" href="#">View Question</a>
               </div>
           </li>
+          <li [hidden]="!enabled" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Test Series
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a [hidden]="role != 'admin'" class="dropdown-item" routerLink="submittestseries" href="#">Submit Test Series</a>
+                <a [hidden]="role != 'admin'" class="dropdown-item" routerLink="questionassignment" href="#">Assign Question</a>
+                <a class="dropdown-item" routerLink="enrolltestseries" href="#">Enroll</a>
+                <a class="dropdown-item" routerLink="testseries" href="#">Take Exam</a>
+                <a class="dropdown-item" routerLink="testseriesresult" href="#">Result Analysis</a>
+            </div>
+          </li>
           <li class="nav-item">
                 <a class="nav-link" href="#" routerLink="aboutus">About Us</a>
           </li>
