@@ -1,3 +1,103 @@
-<p>
-  submittestseries works!
-</p>
+<div class="row">
+	<div class="col">
+		<input type="submit" class="btn btn-primary addnew float-sm-left"
+			value="Test Series Submit Form" disabled="disabled"> 
+		<input type="button" class="btn btn-primary addnew float-sm-right"
+			(click)="addTestSeries()" value="+" /> 
+	</div>
+</div>
+<div *ngFor="let testSeriesModel of testSeriesModels; let index=index">
+	<div class="row">
+		<div class="col">
+			<input type="submit" class="btn btn-primary addnew float-sm-left"
+			value="Test Series Id : {{testSeriesModel.id}}" disabled="disabled">
+			<input type="button" class="btn btn-danger remove float-sm-right"
+			(click)="removeTestSeries(index)" value="-" />
+			<button class="btn btn-info float-sm-right" type="button" (click)="expandCollapse(index)">
+			<img [src]="qeProperty[index].image" height="8px" width="10px">
+			</button>
+		</div>
+	</div>
+	<div id="index" [hidden]="qeProperty[index].collapse">
+		<div class="row form-group">
+			<div class="col"><label for="activateDate" class="col-form-label">Activate Date</label></div>
+			<div class="col">
+				<datepicker
+				[(ngModel)]="testSeriesModel.activateDate"
+				[showWeeks]="true"
+				[minDate]="minDate"
+				[dateDisabled]="disabledDate"
+				[onlyCurrentMonth]=true
+				></datepicker>
+			</div>
+			<div class="col"><label for="deactivateDate" class="col-form-label">De-Activate Date</label></div>
+			<div class="col">
+				<datepicker
+				[(ngModel)]="testSeriesModel.deactivateDate"
+				[showWeeks]="true"
+				[minDate]="minDate"
+				[dateDisabled]="disabledDate"
+				[onlyCurrentMonth]=true
+				></datepicker>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col"><label for="type" class="col-form-label">Type</label></div>
+			<div class="col">
+				<select class="form-control" [(ngModel)]="testSeriesModel.type" id="type">
+					<option *ngFor="let type of types" value="{{type}}">{{type}}</option>
+				</select>
+			</div>
+			<div class="col"><label for="duration" class="col-form-label">Duration (In Minutes)</label></div>
+			<div class="col">
+				<input type="text" placeholder="Enter duration" [(ngModel)]="testSeriesModel.duration" id="duration" class="form-control" />
+			</div>
+			<div class="col"><label for="year" class="col-form-label">No. Of Question</label></div>
+			<div class="col" >
+				<input placeholder="Enter no. of question" type="text" class="form-control" id="noq" [(ngModel)]="testSeriesModel.noOfQuestion" />
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-2">Exam</div>
+			<div class="col-2">Stream</div>
+			<div class="col-4">Subject</div>
+			<div class="col-4">Topic</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-2">
+				<select class="form-control" [(ngModel)]="selectedExam" (ngModelChange)="getStreams()">
+					<option *ngFor="let exams of categoryData.exams" value="{{exams.exam}}">
+						{{exams.exam}}
+					</option>
+				</select>
+			</div>
+			<div class="col-2">
+				<select class="form-control" [(ngModel)]="selectedStream" (ngModelChange)="getSubjects()">
+						<option *ngFor="let stream of streams" value="{{stream}}">
+							{{stream}}
+						</option>
+				</select>
+			</div>
+			<div class="col-4">
+				<select class="form-control" [(ngModel)]="selectedSubject" (ngModelChange)="getTopics()">
+					<option *ngFor="let subject of subjects" value="{{subject}}">
+						{{subject}}
+					</option>
+				</select>
+			</div>
+			<div class="col-4">
+				<select class="form-control" [(ngModel)]="selectedTopic" (ngModelChange)="getSubTopics()">
+					<option *ngFor="let topic of topics" value="{{topic}}">
+						{{topic}}
+					</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+<app-notification [nid]="id"></app-notification>
+<div class="row" [hidden]="hideSubmitPreviewButton" >
+  <div class="btn-group col" >
+    <button class="btn btn-success ml-auto " (click)="submitTestSeries()" >Submit Test Series</button>
+  </div>
+</div>

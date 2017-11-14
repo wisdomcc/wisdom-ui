@@ -1,12 +1,16 @@
-export class TestSeries{
+export class TestSeries {
     id: any;
-    activate_date: any;
-    deactivate_date: any;
+    activateDate: any;
+    deactivateDate: any;
     type: string;
-    duration: number;
+    duration: string;
     exam: string;
     stream: string;
     subject: string;
     topic: string;
-    no_of_question: number;
+    noOfQuestion: string;
+
+    constructor() {
+        this.id = Math.random().toString().slice(2, 12);
+    }
 }

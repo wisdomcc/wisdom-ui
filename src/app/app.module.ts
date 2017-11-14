@@ -5,12 +5,14 @@ import { HttpModule } from '@angular/http';
 import { routing } from './app.routing';
 import { Ng2TableModule, NG_TABLE_DIRECTIVES, NgTablePagingDirective } from 'ng2-table/ng2-table';
 import { PaginationModule } from 'ng2-bootstrap';
+import { DatepickerModule } from 'ng2-bootstrap';
 
 import { QuestionService } from '../services/question/question.service';
 import { UserService } from '../services/user/user.service';
 import { UrlSecurityService } from '../services/security/url.security.service';
 import { EmailService } from '../services/email/email.service';
 import { AnswerService } from '../services/answer/answer.service';
+import { TestSeriesService } from '../services/testseries/testseries.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './user/login/login.component';
@@ -92,13 +94,14 @@ import { EnrolltestseriesComponent } from './testseries/enrolltestseries/enrollt
   ],
   imports: [
     BrowserModule,
+    DatepickerModule.forRoot(),
     FormsModule,
     HttpModule,
     Ng2TableModule,
     routing,
     PaginationModule.forRoot()
   ],
-  providers: [QuestionService, UserService, UrlSecurityService, EmailService, AnswerService],
+  providers: [QuestionService, TestSeriesService, UserService, UrlSecurityService, EmailService, AnswerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
