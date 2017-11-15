@@ -74,7 +74,8 @@ export class SubmittestseriesComponent implements OnInit {
     this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
   }
 
-  getStreams() {
+  getStreams(index: number) {
+    this.selectedExam = this.testSeriesModels[index].exam;
     for (let i = 0; i < this.categoryData.exams.length; i++) {
       if (this.selectedExam === this.categoryData.exams[i].exam) {
         for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
@@ -85,7 +86,8 @@ export class SubmittestseriesComponent implements OnInit {
     }
   }
 
-  getSubjects() {
+  getSubjects(index: number) {
+    this.selectedStream = this.testSeriesModels[index].stream;
     for (let i = 0; i < this.categoryData.exams.length; i++) {
       if (this.selectedExam === this.categoryData.exams[i].exam) {
         for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
@@ -100,7 +102,8 @@ export class SubmittestseriesComponent implements OnInit {
     }
   }
 
-  getTopics() {
+  getTopics(index: number) {
+    this.selectedSubject = this.testSeriesModels[index].subject;
     for (let i = 0; i < this.categoryData.exams.length; i++) {
       if (this.selectedExam === this.categoryData.exams[i].exam) {
         for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {

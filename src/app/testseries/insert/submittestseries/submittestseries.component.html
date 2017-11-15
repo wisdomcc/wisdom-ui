@@ -60,33 +60,33 @@
 		<div class="row form-group">
 			<div class="col-2">Exam</div>
 			<div class="col-2">Stream</div>
-			<div class="col-4">Subject</div>
-			<div class="col-4">Topic</div>
+			<div [hidden]="testSeriesModel.type !== 'Subject Wise' && testSeriesModel.type !== 'Topic Wise'" class="col-4">Subject</div>
+			<div [hidden]="testSeriesModel.type !== 'Topic Wise'" class="col-4">Topic</div>
 		</div>
 		<div class="row form-group">
 			<div class="col-2">
-				<select class="form-control" [(ngModel)]="selectedExam" (ngModelChange)="getStreams()">
+				<select class="form-control" [(ngModel)]="testSeriesModel.exam" (ngModelChange)="getStreams(index)">
 					<option *ngFor="let exams of categoryData.exams" value="{{exams.exam}}">
 						{{exams.exam}}
 					</option>
 				</select>
 			</div>
 			<div class="col-2">
-				<select class="form-control" [(ngModel)]="selectedStream" (ngModelChange)="getSubjects()">
+				<select class="form-control" [(ngModel)]="testSeriesModel.stream" (ngModelChange)="getSubjects(index)">
 						<option *ngFor="let stream of streams" value="{{stream}}">
 							{{stream}}
 						</option>
 				</select>
 			</div>
-			<div class="col-4">
-				<select class="form-control" [(ngModel)]="selectedSubject" (ngModelChange)="getTopics()">
+			<div [hidden]="testSeriesModel.type !== 'Subject Wise' && testSeriesModel.type !== 'Topic Wise'" class="col-4">
+				<select class="form-control" [(ngModel)]="testSeriesModel.subject" (ngModelChange)="getTopics(index)">
 					<option *ngFor="let subject of subjects" value="{{subject}}">
 						{{subject}}
 					</option>
 				</select>
 			</div>
-			<div class="col-4">
-				<select class="form-control" [(ngModel)]="selectedTopic" (ngModelChange)="getSubTopics()">
+			<div [hidden]="testSeriesModel.type !== 'Topic Wise'" class="col-4">
+				<select class="form-control" [(ngModel)]="testSeriesModel.topic" (ngModelChange)="getSubTopics(index)">
 					<option *ngFor="let topic of topics" value="{{topic}}">
 						{{topic}}
 					</option>
