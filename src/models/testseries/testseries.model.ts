@@ -14,3 +14,14 @@ export class TestSeries {
         this.id = Math.random().toString().slice(2, 12);
     }
 }
+
+export class TestSeriesQuestionMap {
+    id: any;
+    testSeriesId: any;
+    questionId: any;
+
+    constructor(questionId: any) {
+        this.id = Math.random().toString().slice(2, 12);
+        this.questionId = questionId;
+    }
+}

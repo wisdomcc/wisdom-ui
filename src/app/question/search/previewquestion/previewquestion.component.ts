@@ -13,7 +13,7 @@ export class PreviewquestionComponent implements OnInit {
     {title: 'Year', name: 'year', width: 1, className: 'office-header text-success', sort: 'desc'}
   ];
   public page = 1;
-  public itemsPerPage = 2;
+  public itemsPerPage = 10;
   public maxSize = 5;
   public numPages = 1;
   public length = 0;

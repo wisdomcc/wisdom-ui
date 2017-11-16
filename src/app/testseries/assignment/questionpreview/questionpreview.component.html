@@ -1,3 +1,99 @@
-<p>
-  questionpreview works!
-</p>
+<div class="row">
+  <div class="col-md-4">
+    <input *ngIf="config.filtering" placeholder="Filter by question, year"
+            [ngTableFiltering]="config.filtering"
+            class="form-control"
+            (tableChanged)="onChangeTable(config)"/>
+  </div>
+</div>
+<br>
+<table class="table table-striped table-bordered dataTable">
+  <thead>
+      <tr role="row">
+        <th *ngFor="let column of columns" [ngTableSorting]="config" [column]="column" (sortChanged)="onChangeTable($event)">
+            {{column.title}}
+            <i *ngIf="config && column.sort" class="pull-right fa"
+              [ngClass]="{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}"></i>
+        </th>
+      </tr>
+  </thead>
+  <tbody>
+        <tr *ngFor="let row of rows; let index=index">
+          <td>
+            <div *ngIf="row.paragraph != undefined">
+              <div [innerHtml]="row.paragraph.paragraph"></div><br/>
+              <div *ngFor="let path of row.paragraph.images.paths">
+                <img height="100px" width="120px" alt="" [src]="path"><br/>
+              </div>
+            </div>
+            <div [innerHtml]="row.question"></div>
+            <div *ngFor="let path of row.images.paths">
+                <img height="100px" width="120px" alt="" [src]="path"><br/>
+            </div>
+            <div *ngIf="row.options.type == 'Text'">
+                <div *ngFor="let option of row.options.option; let index=index">
+                    {{index+1}})&nbsp;{{option}}<br/>
+                </div>
+            </div>
+            <div *ngIf="row.options.type == 'Image'">
+              <div *ngFor="let path of row.options.imagePath; let index=index">
+                  {{index+1}})&nbsp;<img height="100px" width="120px" alt="" [src]="path"><br/>
+              </div>
+            </div>
+            <div *ngIf="row.options.type == 'TextAndImage'">
+              <div *ngFor="let option of row.options.option; let index=index">
+                  {{index+1}})&nbsp;{{option}}<br/>
+                  <img height="100px" width="120px" alt="" [src]="row.options.imagePath[index]"><br/>
+              </div>
+            </div>
+            <div class="float-right">[{{row.marks}} Marks]</div>
+            <div *ngFor="let linkedQuestion of row.linkedQuestions">
+                <br/><div [innerHtml]="linkedQuestion.question"></div>
+                <div *ngFor="let path of linkedQuestion.images.paths">
+                    <img height="100px" width="120px" alt="" [src]="path"><br/>
+                </div>
+                <div *ngIf="linkedQuestion.options.type == 'Text'">
+                    <div *ngFor="let option of linkedQuestion.options.option; let index=index">
+                        {{index+1}})&nbsp;{{option}}<br/>
+                    </div>
+                </div>
+                <div *ngIf="linkedQuestion.options.type == 'Image'">
+                  <div *ngFor="let path of linkedQuestion.options.imagePath; let index=index">
+                      {{index+1}})&nbsp;<img height="100px" width="120px" alt="" [src]="path"><br/>
+                  </div>
+                </div>
+                <div *ngIf="linkedQuestion.options.type == 'TextAndImage'">
+                  <div *ngFor="let option of linkedQuestion.options.option; let index=index">
+                      {{index+1}})&nbsp;{{option}}<br/>
+                      <img height="100px" width="120px" alt="" [src]="linkedQuestion.options.imagePath[index]"><br/>
+                  </div>
+                </div>
+                <div class="float-right">[{{linkedQuestion.marks}} Marks]</div>
+            </div>
+          </td>
+          <td>
+              {{row.year}}
+          </td>
+          <td>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input id="selectedQuestion{{index+itemsPerPage*(page-1)}}" (click)="setTestSeriesQuestionMap(row.id)" name="selectedQuestion{{index+itemsPerPage*(page-1)}}" type="checkbox" [(ngModel)]="selectedQuestions[index+itemsPerPage*(page-1)]" class="form-check-input">
+                </label>
+            </div>
+          </td>
+        </tr>
+  </tbody>
+</table>
+<pagination *ngIf="config.paging"
+            class="pagination-sm"
+            [(ngModel)]="page"
+            [totalItems]="length"
+            [itemsPerPage]="itemsPerPage"
+            [maxSize]="maxSize"
+            [boundaryLinks]="true"
+            [rotate]="false"
+            (pageChanged)="onChangeTable(config, $event)"
+            (numPages)="numPages = $event">
+</pagination>
+<pre *ngIf="config.paging" class="card card-block card-header">Page: {{page}} / {{numPages}}</pre>  
+
