@@ -1,3 +1,94 @@
-<p>
-  testseriespreview works!
-</p>
+<div class="wisdom-container wisdom-pale-green wisdom-leftbar wisdom-border-green" (click)="previewQuestion()" >
+    <div class="row" *ngIf="questionModel.paragraph != undefined">
+      <div class="col">
+        <div [innerHtml]="questionModel.paragraph.paragraph" ></div>
+      </div>
+    </div>
+    <div class="row" [hidden]="!isParaImageAvailable()" *ngIf="questionModel.paragraph != undefined" >
+      <div class="col">
+        <div *ngFor="let path of questionModel.paragraph.images.paths">
+          <img height="100px" width="120px" alt="" [src]="path">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div [innerHtml]="questionModel.question" ></div>
+      </div>
+    </div>
+    <div class="row" [hidden]="!isImageAvailable()" >
+      <div class="col">
+        <div *ngFor="let path of questionModel.images.paths">
+          <img height="100px" width="120px" alt="" [src]="path">
+        </div>
+      </div>
+    </div>
+    <div class="float-right">[{{questionModel.marks}} Marks]</div>
+    <div *ngIf="questionModel.options.type == 'NoOption'">
+      <div class="col">
+        <input type="text" placeholder="Enter your answer here" (blur)="changeAnswerStatus()" [(ngModel)]="answerModel.answer" id="answer" class="form-control" />
+      </div>
+    </div>
+    <div *ngIf="questionModel.options.type == 'Text'">
+      <div *ngFor="let option of questionModel.options.option; let index=index">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" [checked]="getCheckedStatus(index+1)" (click)="markAnswer(index+1)" name="answerPreviewImageOption{{answerModel.id}}" value="true" >
+          {{option}}<br/>
+        </label>
+      </div>
+    </div>
+    <div *ngIf="questionModel.options.type == 'Image'">
+      <div *ngFor="let path of questionModel.options.imagePath; let index=index">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" [checked]="getCheckedStatus(index+1)" (click)="markAnswer(index+1)" name="answerPreviewImageOption{{answerModel.id}}" value="true" >
+          <img height="100px" width="120px" alt="" [src]="path"><br/>
+        </label>
+      </div>
+    </div>
+    <div *ngIf="questionModel.options.type == 'TextAndImage'">
+      <div *ngFor="let option of questionModel.options.option; let index=index">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" [checked]="getCheckedStatus(index+1)" (click)="markAnswer(index+1)" name="answerPreviewImageOption{{answerModel.id}}" value="true" >
+          {{option}}<br/>
+          <img height="100px" width="120px" alt="" [src]="questionModel.options.imagePath[index]"><br/>
+        </label>
+      </div>
+    </div>
+    <div *ngFor="let linkedQuestion of questionModel.linkedQuestions; let pindex=index">
+      <br/><div [innerHtml]="linkedQuestion.question"></div>
+      <div *ngFor="let path of linkedQuestion.images.paths">
+        <img height="100px" width="120px" alt="" [src]="path"><br/>
+      </div>
+      <div class="float-right">[{{linkedQuestion.marks}} Marks]</div>
+      <div *ngIf="linkedQuestion.options.type == 'NoOption'">
+        <div class="col">
+          <input type="text" placeholder="Enter your answer here" (blur)="changeLinkedAnswerStatus(pIndex)" [(ngModel)]="answerModel.linkedAnswers[pindex].answer" id="answer" class="form-control" />
+        </div>
+      </div>
+      <div *ngIf="linkedQuestion.options.type == 'Text'">
+        <div *ngFor="let option of linkedQuestion.options.option; let index=index">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" [checked]="getLinkedCheckedStatus(pindex, index+1)" (click)="markLinkedAnswer(index+1, pindex)" name="answerPreviewImageOption{{linkedQuestion.id}}" value="true" >
+            {{option}}<br/>
+          </label>
+        </div>
+      </div>
+      <div *ngIf="linkedQuestion.options.type == 'Image'">
+        <div *ngFor="let path of linkedQuestion.options.imagePath; let index=index">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" [checked]="getLinkedCheckedStatus(pindex, index+1)" (click)="markLinkedAnswer(index+1, pindex)" name="answerPreviewImageOption{{linkedQuestion.id}}" value="true" >
+            <img height="100px" width="120px" alt="" [src]="path"><br/>
+          </label>
+        </div>
+      </div>
+      <div *ngIf="linkedQuestion.options.type == 'TextAndImage'">
+        <div *ngFor="let option of linkedQuestion.options.option; let index=index">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" [checked]="getLinkedCheckedStatus(pindex, index+1)" (click)="markLinkedAnswer(index+1, pindex)" name="answerPreviewImageOption{{linkedQuestion.id}}" value="true" >
+            {{option}}<br/>
+            <img height="100px" width="120px" alt="" [src]="linkedQuestion.options.imagePath[index]"><br/>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>

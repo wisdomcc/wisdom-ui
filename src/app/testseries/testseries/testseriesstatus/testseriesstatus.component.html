@@ -1,3 +1,31 @@
-<p>
-  testseriesstatus works!
-</p>
+<div *ngIf="testSeriesStatus !== undefined">
+  <div class="row">
+    <div class="col text-success"><Strong>Attempted(A)</Strong></div>
+    <div class="col text-success">{{testSeriesStatus.attempted}}</div>
+  </div>
+  <div class="row">
+    <div class="col text-danger"><Strong>UnAttempted(UA)</Strong></div>
+    <div class="col text-danger">{{testSeriesStatus.unattempted}}</div>
+  </div>
+  <div class="row">
+    <div class="col text-info"><Strong>InDoubt(D)</Strong></div>
+    <div class="col text-info">{{testSeriesStatus.indoubt}}</div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col"><Strong>Question Id</Strong></div>
+    <div class="col"><Strong>Status</Strong></div>
+  </div>
+  <div *ngFor="let questionStatus of testSeriesStatus.questionStatus; let index=index">
+    <div class = "row">
+      <div class="col">{{questionStatus.questionId}}</div>
+      <div class="col {{questionStatus.color}}">{{questionStatus.status}}</div>
+    </div>
+    <div *ngFor="let qStatus of questionStatus.linkedQuestionsStatus">
+        <div class = "row">
+          <div class="col">{{qStatus.questionId}}</div>
+          <div class="col {{qStatus.color}}">{{qStatus.status}}</div>
+        </div>
+    </div>
+  </div>
+</div>

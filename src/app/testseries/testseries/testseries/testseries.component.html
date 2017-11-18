@@ -1,3 +1,63 @@
-<p>
-  testseries works!
-</p>
+<div *ngIf="!isTestStarted">
+  <div class="row">
+    <div class="col"><strong>Seriel No</strong></div>
+    <div class="col"><strong>Activation Date</strong></div>
+    <div class="col"><strong>Type</strong></div>
+    <div class="col"><strong>Duration</strong></div>
+    <div class="col"><strong>No Of Question</strong></div>
+    <div class="col"></div>
+  </div>
+  <div class="row" *ngFor="let testSeries of testSeriesModels; let index=index">
+    <div class="col">{{index+1}}</div>
+    <div class="col">{{testSeries.activateDate}}</div>
+    <div class="col">{{testSeries.type}}</div>
+    <div class="col">{{testSeries.duration}}</div>
+    <div class="col">{{testSeries.noOfQuestion}}</div>
+    <div class="col"><button class="btn btn-success ml-auto " [disabled]="!checkActivationDate(testSeries.activateDate)" (click)="startTest(testSeries.id)" >Start Test</button></div>
+  </div>
+</div>
+<app-notification [nid]="id"></app-notification>
+<div *ngIf="isTestStarted">
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-success float-right" (click)="submitTestSeries()" >Submit Test Series</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-9">
+        <table class="table table-striped table-bordered dataTable">
+          <thead>
+              <tr role="row">
+                <th *ngFor="let column of columns" [ngTableSorting]="config" [column]="column" (sortChanged)="onChangeTable($event)">
+                    {{column.title}}
+                    <i *ngIf="config && column.sort" class="pull-right fa"
+                      [ngClass]="{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}"></i>
+                </th>
+              </tr>
+          </thead>
+          <tbody>
+                <tr *ngFor="let row of rows; let index=index">
+                  <td>
+                      <app-testseriespreview [questionModel]="row" [testSeriesStatus]="testSeriesStatus" [answerModel]="answerModels[index+itemsPerPage*(page-1)]" [qIndex]="index+itemsPerPage*(page-1)"></app-testseriespreview>
+                  </td>
+                </tr>
+          </tbody>
+        </table>
+        <pagination *ngIf="config.paging"
+                    class="pagination-sm"
+                    [(ngModel)]="page"
+                    [totalItems]="length"
+                    [itemsPerPage]="itemsPerPage"
+                    [maxSize]="maxSize"
+                    [boundaryLinks]="true"
+                    [rotate]="false"
+                    (pageChanged)="onChangeTable(config, $event)"
+                    (numPages)="numPages = $event">
+        </pagination>
+        <pre *ngIf="config.paging" class="card card-block card-header">Page: {{page}} / {{numPages}}</pre>      
+    </div>
+    <div class="col-3">
+      <app-testseriesstatus [testSeriesStatus]="testSeriesStatus"></app-testseriesstatus>
+    </div>
+  </div>
+</div>

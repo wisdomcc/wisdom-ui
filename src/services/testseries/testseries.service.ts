@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
 import { TestSeries } from '../../models/testseries/testseries.model';
+import { TestSeriesAnswer } from '../../models/testseries/testseries.model';
 import { TestSeriesEnrollment } from '../../models/testseries/testseries.model';
 import { TestSeriesQuestionMap } from '../../models/testseries/testseries.model';
 import { SearchCriteria } from '../../models/question/searchcriteria.model';
@@ -14,6 +15,7 @@ export class TestSeriesService {
   responseData: any;
   viewTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/fetch';
   enrollTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/enroll';
+  submitTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/submit';
   insertTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/insert';
   updateTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/update';
   insertTestSeriesQuestionMapUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/insertmap';
@@ -30,6 +32,13 @@ export class TestSeriesService {
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.post(this.enrollTestSeriesUrl, testSeriesEnrollments, options)
+      .map((res: Response) => res.text());
+  }
+
+  submitTestSeries(answerModels: TestSeriesAnswer[]) {
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.post(this.submitTestSeriesUrl, answerModels, options)
       .map((res: Response) => res.text());
   }
 
