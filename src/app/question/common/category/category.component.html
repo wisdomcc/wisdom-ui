@@ -13,6 +13,7 @@
 <div class="row form-group">
 	<div class="col-2">
 		<select class="form-control" [(ngModel)]="selectedExam" (ngModelChange)="getStreams()">
+			<option value="" ng-selected="true" >Select Exam</option>
 			<option *ngFor="let exams of categoryData.exams" value="{{exams.exam}}">
 				{{exams.exam}}
 			</option>
@@ -20,6 +21,7 @@
 	</div>
 	<div class="col-2">
 		<select class="form-control" [(ngModel)]="selectedStream" (ngModelChange)="getSubjects()">
+				<option value="" ng-selected="true" >Select Stream</option>
 				<option *ngFor="let stream of streams" value="{{stream}}">
 					{{stream}}
 				</option>
@@ -27,6 +29,7 @@
 	</div>
 	<div class="col-2">
 		<select class="form-control" [(ngModel)]="selectedSubject" (ngModelChange)="getTopics()">
+			<option value="" ng-selected="true" >Select Subject</option>
 			<option *ngFor="let subject of subjects" value="{{subject}}">
 				{{subject}}
 			</option>
@@ -34,6 +37,7 @@
 	</div>
 	<div class="col-3">
 		<select class="form-control" [(ngModel)]="selectedTopic" (ngModelChange)="getSubTopics()">
+			<option value="" ng-selected="true" >Select Topic</option>
 			<option *ngFor="let topic of topics" value="{{topic}}">
 				{{topic}}
 			</option>
@@ -41,6 +45,7 @@
 	</div>
 	<div class="col-3">
 		<select class="form-control" [(ngModel)]="selectedSubTopic">
+			<option value="" ng-selected="true" >Select Sub-Topic</option>
 			<option *ngFor="let subTopic of subTopics" value="{{subTopic}}">
 				{{subTopic}}
 			</option>

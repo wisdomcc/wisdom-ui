@@ -1,3 +1,29 @@
-<p>
-  enrolltestseries works!
-</p>
+<div class="row">
+  <div class="col">
+      <p>Click on "Enroll To Test Series" to get enrolled for 10 Full Syllabus Test Series.
+        We are having 10 full Full syllabus this year for Free. 
+      </p>
+      <div class="btn-group col" >
+        <button class="btn btn-success ml-auto " (click)="enrollTestSeries()" [disabled]="isEnrollmentSuccessful" >Enroll To Test Series</button>
+      </div>
+  </div>
+</div>
+<app-notification [nid]="id"></app-notification>
+<div *ngIf="isEnrollmentSuccessful">
+  <div class="row">
+    <div class="col">Seriel No</div>
+    <div class="col">Activation Date</div>
+    <div class="col">De-Activation Date</div>
+    <div class="col">Type</div>
+    <div class="col">Duration</div>
+    <div class="col">No Of Question</div>
+  </div>
+  <div class="row" *ngFor="let testSeries of testSeriesModels; let index=index">
+    <div class="col">{{index+1}}</div>
+    <div class="col">{{testSeries.activateDate}}</div>
+    <div class="col">{{testSeries.deactivateDate}}</div>
+    <div class="col">{{testSeries.type}}</div>
+    <div class="col">{{testSeries.duration}}</div>
+    <div class="col">{{testSeries.noOfQuestion}}</div>
+  </div>
+</div>

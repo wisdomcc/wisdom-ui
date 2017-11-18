@@ -1,70 +1,81 @@
 <div class="row">
+  <div class="btn-group col" >
+    <button class="btn btn-success ml-auto " disabled>Select Test Series</button>
+  </div>
+  <div class="col" >
+    <select class="form-control" [(ngModel)]="selectedTestSeriesId" >
+        <option value="" ng-selected="true" >Select Test Series</option>
+        <option *ngFor="let testSeries of testSeriesModels" value="{{testSeries.id}}">
+          {{testSeries.id}}#{{testSeries.activateDate}}#{{testSeries.type}}
+        </option>
+    </select>
+  </div>
+</div>
+<app-notification [nid]="id"></app-notification>
+<div *ngIf="selectedTestSeriesId !== ''">
+  <div class="row">
+    <div class="col"></div>
+  <div class="col">
+    <p class="text-success">Search Question of GATE CS Subject/Topic/Year wise</p>
+  </div>
   <div class="col"></div>
-<div class="col">
-  <p class="text-success">Search Question of GATE CS Subject/Topic/Year wise</p>
+  </div>
+  <div class="row form-group" >
+  <div class="col">Subject(Optional)</div>
+  <div class="col"><div [hidden]="selectedSubject == undefined || selectedSubject == 'Select Subject'">Topic(Optional)</div></div>
+  <div class="col">From Year</div>
+  <div class="col"><div [hidden]="searchCriteria.fromYear == 0">To Year(Optional)</div></div>
+  </div>
+  <div class="row form-group">
+  <div class="col" (click)="getSubjects()">
+    <select class="form-control" [(ngModel)]="selectedSubject" (ngModelChange)="getTopics()" >
+        <option *ngFor="let subject of subjects" value="{{subject}}">
+          {{subject}}
+        </option>
+    </select>
+  </div>
+  <div class="col">
+    <select class="form-control" [hidden]="selectedSubject == undefined || selectedSubject == 'Select Subject'" [(ngModel)]="selectedTopic">
+        <option *ngFor="let topic of topics" value="{{topic}}">
+          {{topic}}
+        </option>
+    </select>
+  </div>
+  <div class="col">
+    <select class="form-control" [(ngModel)]="searchCriteria.fromYear" (ngModelChange)="getToYears()">
+        <option value="" ng-selected="true" >Select Year</option>
+        <option *ngFor="let fromYear of fromYears" value="{{fromYear}}">
+          {{fromYear}}
+        </option>
+    </select>
+  </div>
+  <div class="col">
+    <select class="form-control" [hidden]="searchCriteria.fromYear == 0" [(ngModel)]="searchCriteria.toYear">
+        <option value="" ng-selected="true" >Select Year</option>
+        <option *ngFor="let toYear of toYears" value="{{toYear}}">
+          {{toYear}}
+        </option>
+    </select>
+  </div>
+  </div>
+  <div class="row form-group">
+  <div class="col">
+    <button class="btn btn-success btn-lg" (click)="viewQuestion()" >Search</button>
+  </div>
+  </div>
+  <app-notification [nid]="searchId"></app-notification>
 </div>
-<div class="col"></div>
-</div>
-<div class="row form-group" >
-<div class="col">Subject(Optional)</div>
-<div class="col"><div [hidden]="selectedSubject == undefined || selectedSubject == 'Select Subject'">Topic(Optional)</div></div>
-<div class="col">From Year</div>
-<div class="col"><div [hidden]="searchCriteria.fromYear == 0">To Year(Optional)</div></div>
-</div>
-<div class="row form-group">
-<div class="col" (click)="getSubjects()">
-  <select class="form-control" [(ngModel)]="selectedSubject" (ngModelChange)="getTopics()" >
-      <option *ngFor="let subject of subjects" value="{{subject}}">
-        {{subject}}
-      </option>
-  </select>
-</div>
-<div class="col">
-  <select class="form-control" [hidden]="selectedSubject == undefined || selectedSubject == 'Select Subject'" [(ngModel)]="selectedTopic">
-      <option *ngFor="let topic of topics" value="{{topic}}">
-        {{topic}}
-      </option>
-  </select>
-</div>
-<div class="col">
-  <select class="form-control" [(ngModel)]="searchCriteria.fromYear" (ngModelChange)="getToYears()">
-      <option *ngFor="let fromYear of fromYears" value="{{fromYear}}">
-        {{fromYear}}
-      </option>
-  </select>
-</div>
-<div class="col">
-  <select class="form-control" [hidden]="searchCriteria.fromYear == 0" [(ngModel)]="searchCriteria.toYear">
-      <option *ngFor="let toYear of toYears" value="{{toYear}}">
-        {{toYear}}
-      </option>
-  </select>
-</div>
-</div>
-<div class="row form-group">
-<div class="col">
-  <button class="btn btn-success btn-lg" (click)="viewQuestion()" >Search</button>
-</div>
-</div>
-<app-notification [nid]="searchId"></app-notification>
-<div [hidden]="!isDataPresent">  
+<div [hidden]="!isDataPresent || selectedTestSeriesId === ''">  
   <div class="row">
   <div class="col">
     <app-questionpreview [selectedQuestions]="selectedQuestions"></app-questionpreview>
   </div>
   </div>
-  <app-notification [nid]="id"></app-notification>
   <div class="row">
     <div class="btn-group col" >
       <button class="btn btn-success ml-auto " (click)="assignQuestions()" >Assign Questions To Test Series</button>
     </div>
-    <div class="col" >
-      <select class="form-control" [(ngModel)]="selectedTestSeriesId" (ngModelChange)="getTopics()" >
-          <option *ngFor="let testSeries of testSeriesModels" value="{{testSeries.id}}">
-            {{testSeries.id}}#{{testSeries.activateDate}}#{{testSeries.type}}
-          </option>
-      </select>
-    </div>
   </div>
+  <app-notification [nid]="id"></app-notification>
 </div>
 

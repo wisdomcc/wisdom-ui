@@ -38,6 +38,7 @@ export class QuestionassignmentComponent implements OnInit {
               private testSeriesService: TestSeriesService) { }
 
   ngOnInit() {
+    this.selectedTestSeriesId = '';
     this.searchCriteria = new SearchCriteria();
     this.isDataPresent = false;
     this.id = 'questionassignment';
@@ -48,6 +49,23 @@ export class QuestionassignmentComponent implements OnInit {
     for (let year = 1991; year < (new Date()).getFullYear(); year++) {
       this.fromYears.push(year);
     }
+    this.fetchTestSeriesDetails();
+  }
+
+  fetchTestSeriesDetails() {
+    this.testSeriesService.fetchTestSeriesModels()
+    .subscribe(tsdata => {
+      this.testSeriesModels = JSON.parse(tsdata);
+      if(this.testSeriesModels.length === 0) {
+        this.showNotification("No Test is Available to assign question", "status");
+      }
+    },
+    error => {
+      if (error.status === 401) {
+        this.userService.logout();
+      }
+      this.showNotification('Some technical issue. Please try after sometime.', 'error');
+    });
   }
 
   getToYears() {
@@ -131,16 +149,6 @@ export class QuestionassignmentComponent implements OnInit {
         this.previewQuestion.onChangeTable(this.previewQuestion.config);
         if (this.previewQuestion.data.length > 0) {
           this.selectedQuestions = [];
-          this.testSeriesService.fetchTestSeriesModels()
-          .subscribe(tsdata => {
-            this.testSeriesModels = JSON.parse(tsdata);
-          },
-          error => {
-            if (error.status === 401) {
-              this.userService.logout();
-            }
-            this.showSearchNotification('Some technical issue. Please try after sometime.', 'error');
-          });
           for(let i = 0; i < this.previewQuestion.length; i++) {
             this.selectedQuestions.push(false);
           }
