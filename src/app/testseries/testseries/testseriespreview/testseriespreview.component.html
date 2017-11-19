@@ -54,6 +54,8 @@
         </label>
       </div>
     </div>
+    <!-- <button class="btn btn-info" (click)="markAnswerInDoubt()" >Mark In Doubt</button> -->
+    <button class="btn btn-info float-right" (click)="clearAnswer()" >Clear Answer</button>
     <div *ngFor="let linkedQuestion of questionModel.linkedQuestions; let pindex=index">
       <br/><div [innerHtml]="linkedQuestion.question"></div>
       <div *ngFor="let path of linkedQuestion.images.paths">
@@ -90,5 +92,7 @@
           </label>
         </div>
       </div>
+      <!-- <button class="btn btn-info" (click)="markLinkedAnswerInDoubt(pindex)" >Mark In Doubt</button> -->
+      <button class="btn btn-info float-right" (click)="clearLinkedAnswer(pindex)" >Clear Answer</button>
     </div>
   </div>

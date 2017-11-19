@@ -55,7 +55,7 @@ export class TestseriespreviewComponent implements OnInit {
   changeStatusToUnAttempted(questionStatus: QuestionStatus) {
     if(questionStatus.status !== 'UA') {
       this.testSeriesStatus.attempted = this.testSeriesStatus.attempted - 1;
-      this.testSeriesStatus.unattempted = this.testSeriesStatus.unattempted - 1;
+      this.testSeriesStatus.unattempted = this.testSeriesStatus.unattempted + 1;
     }
     questionStatus.status = 'UA';
     questionStatus.color = 'text-danger';
@@ -77,17 +77,11 @@ export class TestseriespreviewComponent implements OnInit {
     this.changeStatusToAttempted(this.testSeriesStatus.questionStatus[this.qIndex].linkedQuestionsStatus[index]);
   }
 
-  changeTestSeriesStatus() {
-    this.testSeriesStatus.attempted = this.testSeriesStatus.attempted + 1;
-    this.testSeriesStatus.unattempted = this.testSeriesStatus.unattempted - 1;
-  }
-
   markAnswerInDoubt() {
     this.testSeriesStatus.questionStatus[this.qIndex].status = 'D';
     this.testSeriesStatus.questionStatus[this.qIndex].color = 'text-info';
     this.testSeriesStatus.indoubt = this.testSeriesStatus.indoubt + 1;
   }
-
 
   markLinkedAnswerInDoubt(index: number) {
     this.testSeriesStatus.questionStatus[this.qIndex].linkedQuestionsStatus[index].status = 'D';

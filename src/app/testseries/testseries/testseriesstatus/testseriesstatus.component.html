@@ -7,23 +7,23 @@
     <div class="col text-danger"><Strong>UnAttempted(UA)</Strong></div>
     <div class="col text-danger">{{testSeriesStatus.unattempted}}</div>
   </div>
-  <div class="row">
+  <!-- <div class="row">
     <div class="col text-info"><Strong>InDoubt(D)</Strong></div>
     <div class="col text-info">{{testSeriesStatus.indoubt}}</div>
-  </div>
+  </div> -->
   <hr>
   <div class="row">
-    <div class="col"><Strong>Question Id</Strong></div>
+    <div class="col"><Strong>Question No</Strong></div>
     <div class="col"><Strong>Status</Strong></div>
   </div>
-  <div *ngFor="let questionStatus of testSeriesStatus.questionStatus; let index=index">
+  <div *ngFor="let questionStatus of testSeriesStatus.questionStatus; let pindex=index">
     <div class = "row">
-      <div class="col">{{questionStatus.questionId}}</div>
+      <div class="col">{{pindex+1}}</div>
       <div class="col {{questionStatus.color}}">{{questionStatus.status}}</div>
     </div>
-    <div *ngFor="let qStatus of questionStatus.linkedQuestionsStatus">
+    <div *ngFor="let qStatus of questionStatus.linkedQuestionsStatus;let index=index">
         <div class = "row">
-          <div class="col">{{qStatus.questionId}}</div>
+          <div class="col">{{pindex+1}}->{{index+1}}</div>
           <div class="col {{qStatus.color}}">{{qStatus.status}}</div>
         </div>
     </div>

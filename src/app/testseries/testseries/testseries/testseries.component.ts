@@ -128,7 +128,6 @@ export class TestseriesComponent implements OnInit {
   }
 
   checkActivationDate(activationDate: string) {
-    debugger;
     const todayDate = new Date();
     const date = new Date(activationDate);
     if(todayDate > date) {

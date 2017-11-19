@@ -29,7 +29,7 @@
           <thead>
               <tr role="row">
                 <th *ngFor="let column of columns" [ngTableSorting]="config" [column]="column" (sortChanged)="onChangeTable($event)">
-                    {{column.title}}
+                    {{column.title}}&nbsp;{{page}}
                     <i *ngIf="config && column.sort" class="pull-right fa"
                       [ngClass]="{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}"></i>
                 </th>
@@ -57,7 +57,7 @@
         <pre *ngIf="config.paging" class="card card-block card-header">Page: {{page}} / {{numPages}}</pre>      
     </div>
     <div class="col-3">
-      <app-testseriesstatus [testSeriesStatus]="testSeriesStatus"></app-testseriesstatus>
+      <app-testseriesstatus [testSeriesStatus]="testSeriesStatus" ></app-testseriesstatus>
     </div>
   </div>
 </div>
