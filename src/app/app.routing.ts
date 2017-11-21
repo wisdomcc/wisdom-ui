@@ -18,12 +18,14 @@ import { TestseriesComponent } from './testseries/testseries/testseries/testseri
 import { EnrolltestseriesComponent } from './testseries/enrolltestseries/enrolltestseries.component';
 import { TestseriesresultComponent } from './testseries/result/testseriesresult/testseriesresult.component';
 import { SubmittestseriesComponent } from './testseries/insert/submittestseries/submittestseries.component';
+import { SubmitcategoryComponent } from './question/insert/submitcategory/submitcategory.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomepageComponent, canActivate: [UrlSecurityService] },
     { path: 'submitquestion', component: SubmitquestionComponent, canActivate: [UrlSecurityService] },
     { path: 'submitanswer', component: SubmitanswerComponent, canActivate: [UrlSecurityService] },
     { path: 'updateanswer', component: UpdateanswerComponent, canActivate: [UrlSecurityService] },
+    { path: 'submitcategory', component: SubmitcategoryComponent, canActivate: [UrlSecurityService] },
     { path: 'products', component: ProductsComponent, canActivate: [UrlSecurityService] },
     { path: 'registration', component: RegistrationComponent },
     { path: 'aboutus', component: AboutusComponent },

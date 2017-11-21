@@ -1,0 +1,92 @@
+<div class="row form-group">
+  <div class="col">
+    <input type="button" (click)="getCategoryData()"
+            class="btn btn-success float-sm-right" value="Submit New Category" />
+  </div>
+</div>
+<div *ngIf="isCategoryDataAvailable">
+  <app-notification [nid]="id"></app-notification>
+  <div class="row form-group">
+    <div class="col-2">Exam</div>
+    <div class="col">
+      <select class="form-control" [(ngModel)]="selectedExam" (ngModelChange)="getStreams()">
+        <option *ngFor="let exams of categoryData.exams" value="{{exams.exam}}">
+          {{exams.exam}}
+        </option>
+      </select>
+    </div>
+    <div class="col">
+        <input type="text" placeholder="Enter exam" [(ngModel)]="category.exam" id="exam" class="form-control"/>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-2">Stream</div>
+    <div class="col">
+      <select class="form-control" [(ngModel)]="selectedStream" (ngModelChange)="getSubjects()">
+          <option *ngFor="let stream of streams" value="{{stream}}">
+            {{stream}}
+          </option>
+      </select>
+    </div>
+    <div class="col">
+        <input type="text" placeholder="Enter stream" [(ngModel)]="category.stream" id="stream" class="form-control" />
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-2">Subject</div>
+    <div class="col">
+      <select class="form-control" [(ngModel)]="selectedSubject" (ngModelChange)="getTopics()">
+        <option *ngFor="let subject of subjects" value="{{subject}}">
+          {{subject}}
+        </option>
+      </select>
+    </div>
+    <div class="col">
+        <input type="text" placeholder="Enter subject" [(ngModel)]="category.subject" id="subject" class="form-control" />
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-2">Topic</div>
+    <div class="col">
+      <select class="form-control" [(ngModel)]="selectedTopic" (ngModelChange)="getSubTopics()">
+        <option *ngFor="let topic of topics" value="{{topic}}">
+          {{topic}}
+        </option>
+      </select>
+    </div>
+    <div class="col">
+        <input type="text" placeholder="Enter topic" [(ngModel)]="category.topic" id="topic" class="form-control" />
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-2">Sub-Topic</div>
+    <div class="col">
+      <select class="form-control" [(ngModel)]="selectedSubTopic">
+        <option *ngFor="let subTopic of subTopics" value="{{subTopic}}">
+          {{subTopic}}
+        </option>
+      </select>
+    </div>
+    <div class="col">
+        <input type="text" placeholder="Enter sub-topic" [(ngModel)]="category.subtopic" id="exam" class="form-control" />
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col">
+      <input type="button" (click)="submitCategory()"
+              class="btn btn-success float-sm-right" value="Submit" />
+    </div>
+  </div>
+  <!-- <div class="row form-group">
+    <div class="col">Tags</div>
+    <div class="col-6">
+      <select multiple class="form-control" [(ngModel)]="questionModel.relatedTo.tags">
+        <option *ngFor="let tag of tags" value="{{tag}}">
+          {{tag}}
+        </option>			
+      </select>
+    </div>
+    <div class="col">
+    </div>
+  </div> -->
+</div>

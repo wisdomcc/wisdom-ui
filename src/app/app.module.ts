@@ -51,6 +51,7 @@ import { SubmittestseriesComponent } from './testseries/insert/submittestseries/
 import { TestseriesComponent } from './testseries/testseries/testseries/testseries.component';
 import { TestseriesresultComponent } from './testseries/result/testseriesresult/testseriesresult.component';
 import { EnrolltestseriesComponent } from './testseries/enrolltestseries/enrolltestseries.component';
+import { SubmitcategoryComponent } from './question/insert/submitcategory/submitcategory.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { EnrolltestseriesComponent } from './testseries/enrolltestseries/enrollt
     SubmittestseriesComponent,
     TestseriesComponent,
     TestseriesresultComponent,
-    EnrolltestseriesComponent
+    EnrolltestseriesComponent,
+    SubmitcategoryComponent
   ],
   imports: [
     BrowserModule,

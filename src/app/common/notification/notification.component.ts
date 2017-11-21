@@ -27,14 +27,14 @@ export class NotificationComponent implements OnInit {
       this.$('#' + id).removeClass('hide');
     });
     if (type === 'success') {
-      this.alertStatus = 'Success!';
-      this.alertColor = 'text-success';
+      this.alertStatus = 'Success! ';
+      this.alertColor = 'alert-success';
     } else if (type === 'error') {
-      this.alertStatus = 'Error!';
-      this.alertColor = 'text-danger';
+      this.alertStatus = 'Error! ';
+      this.alertColor = 'alert-danger';
     } else {
       this.alertStatus = '';
-      this.alertColor = 'text-success';
+      this.alertColor = 'alert-success';
     }
     this.alertMsg = message;
     this.hideAlert = false;

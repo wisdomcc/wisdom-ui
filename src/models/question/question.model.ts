@@ -95,3 +95,14 @@ class Paragraph {
         this.images = new Images();
     }
 }
+
+export class Category {
+    exam: string;
+	stream: string;
+	subject: string;
+	topic: string;
+    subtopic: string;
+    
+    constructor() {
+    }
+}

@@ -14,6 +14,7 @@ import { NotificationComponent } from '../../../common/notification/notification
 export class UpdatequestionComponent implements OnInit {
 
   id: string;
+  searchId: string;
   hideSubmitPreviewButton: boolean;
   qeProperty: QuestionElementProperty[];
   questionModels: QuestionModel[];
@@ -40,6 +41,7 @@ export class UpdatequestionComponent implements OnInit {
     this.rightImagePath = '../../assets/images/right.png';
     this.downImagePath = '../../assets/images/down.png';
     this.id = 'updatequestion';
+    this.searchId = 'updatequestionsearch';
     this.subjects = ['Select Subject'];
     this.topics = ['Select Topic'];
     this.fromYears = [];
@@ -137,14 +139,14 @@ export class UpdatequestionComponent implements OnInit {
             this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
           }
         } else {
-          this.showNotification('No result for your criteria.', 'status');
+          this.showSearchNotification('No result for your criteria.', 'status');
         }
       },
       error => {
         if (error.status === 401) {
           this.userService.logout();
         }
-        this.showNotification('Some technical issue. Please try after sometime.', 'error');
+        this.showSearchNotification('Some technical issue. Please try after sometime.', 'error');
       }
     );
   }
@@ -181,6 +183,10 @@ export class UpdatequestionComponent implements OnInit {
 
   showNotification(msg: string, type: string) {
     this.notification.showNotification(msg, type, this.id);
+  }
+
+  showSearchNotification(msg: string, type: string) {
+    this.notification.showNotification(msg, type, this.searchId);
   }
 
 }

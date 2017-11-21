@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
 import { QuestionModel } from '../../models/question/question.model';
+import { Category } from '../../models/question/question.model';
 import { SearchCriteria } from '../../models/question/searchcriteria.model';
 import { UserService } from '../user/user.service';
 import 'rxjs/add/operator/map';
@@ -13,6 +14,7 @@ export class QuestionService {
   categoryUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/viewAllExam';
   viewQuestionUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/fetch';
   insertQuestionUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/insert';
+  insertCategoryUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/insertcategory';
   updateQuestionUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/update';
   uploadImageUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/uploadImage';
   getImageUrl = window.location.protocol + '//' + window.location.hostname + ':8080';
@@ -38,6 +40,13 @@ export class QuestionService {
 
   getCategoryDetails() {
     return this.categoryData;
+  }
+
+  insertCategory(category: Category) {
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.post(this.insertCategoryUrl, category, options)
+      .map((res: Response) => res.text());
   }
 
   insertQuestionModels(questionModels: QuestionModel[]) {

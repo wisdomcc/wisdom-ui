@@ -65,11 +65,11 @@
             <app-question [questionModel]="questionModel" [categoryData]="categoryData" [isUpdateSearch]="true"></app-question>
           </div>
         </div>
+        <app-notification [nid]="id"></app-notification>
         <div class="row" [hidden]="hideSubmitPreviewButton" >
           <div class="btn-group col" >
             <button class="btn btn-success ml-auto " (click)="submitQuestions()" >Submit</button>
           </div>
         </div>
-        <app-notification [nid]="id"></app-notification>
   </div>
 </div>
