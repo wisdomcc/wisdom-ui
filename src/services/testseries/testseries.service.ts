@@ -13,7 +13,9 @@ export class TestSeriesService {
 
   categoryData: any;
   responseData: any;
-  viewTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/fetch';
+  viewTestSeriesQuestionsUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/fetchquestions';
+  viewTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/fetchall';
+  viewEnrolledTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/fetch';
   enrollTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/enroll';
   submitTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/submit';
   insertTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/insert';
@@ -21,6 +23,18 @@ export class TestSeriesService {
   insertTestSeriesQuestionMapUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/insertmap';
 
   constructor(private http: Http, private userService: UserService) {
+  }
+
+  fetchTestSeriesQuestions(testSeriesId) {
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.post(this.viewTestSeriesQuestionsUrl, testSeriesId, options)
+      .map((res: Response) => res.text());
+  }
+
+  fetchEnrolledTestSeriesModels() {
+    return this.http.get(this.viewEnrolledTestSeriesUrl, {withCredentials: true})
+      .map((res: Response) => res.text());
   }
 
   fetchTestSeriesModels() {

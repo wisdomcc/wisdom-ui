@@ -52,15 +52,15 @@ export class TestseriesComponent implements OnInit {
     this.id = "testseries";
     this.isTestStarted = false;
     this.searchCriteria = new SearchCriteria();
-    this.fetchTestSeriesDetails();
+    this.fetchEnrolledTestSeriesDetails();
   }
 
-  fetchTestSeriesDetails() {
-    this.testSeriesService.fetchTestSeriesModels()
+  fetchEnrolledTestSeriesDetails() {
+    this.testSeriesService.fetchEnrolledTestSeriesModels()
     .subscribe(tsdata => {
       this.testSeriesModels = JSON.parse(tsdata);
       if(this.testSeriesModels.length === 0) {
-        this.showNotification("No Test is Available to assign question", "status");
+        this.showNotification("Not enrolled. Please enroll to test series.", "status");
       }
     },
     error => {
@@ -73,7 +73,8 @@ export class TestseriesComponent implements OnInit {
 
   startTest(testSeriesId: any) {
     let totalQuestions = 0;
-    this.questionService.viewQuestion(this.searchCriteria)
+    //this.questionService.viewQuestion(this.searchCriteria)
+    this.testSeriesService.fetchTestSeriesQuestions(testSeriesId)
     .subscribe(data => {
       this.data = JSON.parse(data);
       if(this.data.length > 0) {

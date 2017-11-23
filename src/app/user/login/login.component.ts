@@ -33,19 +33,24 @@ export class LoginComponent implements OnInit {
         this.userService.loginUser(this.username, this.password)
         .subscribe(
             data => {
-                // console.log(data);
-                this.user = this.getWisdomUser(JSON.parse(data));
-                // console.log(this.user);
-                this.showNotification('Login successful', 'success');
-                localStorage.setItem('username', this.user.username);
-                localStorage.setItem('email', this.user.emailId);
-                localStorage.setItem('role', this.user.role);
-                localStorage.setItem('enabled', 'true');
-                this.userService.isLoggedIn(this.user);
-                this.questionService.fetchCategoryDetails();
-                this.router.navigateByUrl(this.redirectUrl);
+                if(JSON.parse(data).type === 'error') {
+                    this.showNotification(JSON.parse(data).message, 'error');
+                } else {
+                    // console.log(data);
+                    this.user = this.getWisdomUser(JSON.parse(data));
+                    // console.log(this.user);
+                    this.showNotification('Login successful', 'success');
+                    localStorage.setItem('username', this.user.username);
+                    localStorage.setItem('email', this.user.emailId);
+                    localStorage.setItem('role', this.user.role);
+                    localStorage.setItem('enabled', 'true');
+                    this.userService.isLoggedIn(this.user);
+                    this.questionService.fetchCategoryDetails();
+                    this.router.navigateByUrl(this.redirectUrl);
+                }
             },
             error => {
+                console.log(error);
                 this.showNotification('Technical issue. Please try after sometime.', 'error');
             }
         );

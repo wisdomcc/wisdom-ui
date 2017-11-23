@@ -142,6 +142,7 @@ export class QuestionassignmentComponent implements OnInit {
         this.searchCriteria.relatedTo.topic.pop();
       }
     }
+    this.searchCriteria.type = 'Test Series';
     this.questionService.viewQuestion(this.searchCriteria)
       .subscribe(data => {
         this.previewQuestion.data = JSON.parse(data);
@@ -215,6 +216,7 @@ export class QuestionassignmentComponent implements OnInit {
   }
 
   showSearchNotification(msg: string, type: string) {
+    debugger;
     this.notification.showNotification(msg, type, this.searchId);
   }
 
