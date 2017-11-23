@@ -15,6 +15,7 @@ export class EnrolltestseriesComponent implements OnInit {
 
   id: string;
   isEnrollmentSuccessful: boolean;
+  isAlreadyEnrolled: boolean;
   testSeriesModels: TestSeries[];
   testSeriesEnrollments: TestSeriesEnrollment[];
   @ViewChild(NotificationComponent) notification: NotificationComponent;
@@ -25,6 +26,8 @@ export class EnrolltestseriesComponent implements OnInit {
   ngOnInit() {
     this.id = 'enrolltestseries';
     this.isEnrollmentSuccessful = false;
+    this.isAlreadyEnrolled = false;
+    this.checkIsAlreadyEnrolledForTestSeries();
     this.fetchTestSeriesDetails();
   }
 
@@ -33,7 +36,24 @@ export class EnrolltestseriesComponent implements OnInit {
     .subscribe(tsdata => {
       this.testSeriesModels = JSON.parse(tsdata);
       if(this.testSeriesModels.length === 0) {
-        this.showNotification("No Test is Available to assign question", "status");
+        this.showNotification("No Test Series is Available for Enrollment.", "status");
+      }
+    },
+    error => {
+      if (error.status === 401) {
+        this.userService.logout();
+      }
+      this.showNotification('Some technical issue. Please try after sometime.', 'error');
+    });
+  }
+
+  checkIsAlreadyEnrolledForTestSeries() {
+    this.testSeriesService.fetchEnrolledTestSeriesModels()
+    .subscribe(tsdata => {
+      this.testSeriesModels = JSON.parse(tsdata);
+      if(this.testSeriesModels.length > 0) {
+        this.isAlreadyEnrolled = true;
+        this.showNotification("Already Enrolled in Test Series Mentioned Below.", "status");
       }
     },
     error => {

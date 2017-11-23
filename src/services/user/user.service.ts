@@ -65,7 +65,7 @@ export class UserService {
           console.log('logout failed');
         }
       );
-    localStorage.clear();
+    sessionStorage.clear();
     this.router.navigateByUrl('/login');
   }
 

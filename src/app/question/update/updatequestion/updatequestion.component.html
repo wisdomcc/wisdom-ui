@@ -46,7 +46,7 @@
 		<button class="btn btn-success btn-lg" (click)="viewQuestion()" >Search</button>
 	</div>
 </div>
-<app-notification [nid]="id"></app-notification>
+<app-notification [nid]="searchId"></app-notification>
 <div class="row" [hidden]="!isDataPresent">
   <div class="col">
       <div *ngFor="let questionModel of questionModels; let index=index">
@@ -62,7 +62,7 @@
               </div>
           </div>
           <div id="index" [hidden]="qeProperty[index].collapse">
-            <app-question [questionModel]="questionModel" [categoryData]="categoryData" [isUpdateSearch]="true"></app-question>
+            <app-question [questionModel]="questionModel" [isUpdateSearch]="true"></app-question>
           </div>
         </div>
         <app-notification [nid]="id"></app-notification>

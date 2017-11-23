@@ -17,15 +17,15 @@ export class NavigationComponent implements OnInit {
   }
 
   get enabled(): any {
-    return localStorage.getItem('enabled');
+    return sessionStorage.getItem('enabled');
   }
 
   get username(): any {
-    return localStorage.getItem('username');
+    return sessionStorage.getItem('username');
   }
 
   get role(): any {
-    return localStorage.getItem('role');
+    return sessionStorage.getItem('role');
   }
 
   logout() {

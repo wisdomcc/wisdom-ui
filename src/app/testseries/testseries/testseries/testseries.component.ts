@@ -50,9 +50,58 @@ export class TestseriesComponent implements OnInit {
    
   public ngOnInit(): void {
     this.id = "testseries";
-    this.isTestStarted = false;
+    this.getDataFromSessionStorage();
+    sessionStorage.setItem("page", this.id);
     this.searchCriteria = new SearchCriteria();
     this.fetchEnrolledTestSeriesDetails();
+  }
+
+  getDataFromSessionStorage() {
+    if(sessionStorage.getItem("page") && sessionStorage.getItem("page") === this.id) {
+      if(sessionStorage.getItem("data")) {
+        this.data = JSON.parse(sessionStorage.getItem("data"));
+      }
+      if(sessionStorage.getItem("answerModels")) {
+        this.answerModels = JSON.parse(sessionStorage.getItem("answerModels"));
+      }
+      if(sessionStorage.getItem("testSeriesStatus")) {
+        this.testSeriesStatus = JSON.parse(sessionStorage.getItem("testSeriesStatus"));
+      }
+      if(sessionStorage.getItem("isTestStarted")) {
+        if(sessionStorage.getItem("isTestStarted") === 'true') {
+          this.isTestStarted = true;
+        } else {
+          this.isTestStarted = false;
+        }
+      }
+      if(sessionStorage.getItem("pageNo")) {
+        this.page = parseInt(sessionStorage.getItem("pageNo"));
+      }
+      this.onChangeTable(this.config);
+      this.changePage({page: this.page, itemsPerPage: this.itemsPerPage}, this.data);
+    } else {
+      this.isTestStarted = false;
+    }
+  }
+
+  setDataIntoSessionStorage() {
+    sessionStorage.setItem("pageNo", '' + this.page);
+    sessionStorage.setItem("data", JSON.stringify(this.data));
+    sessionStorage.setItem("answerModels", JSON.stringify(this.answerModels));
+    sessionStorage.setItem("testSeriesStatus", JSON.stringify(this.testSeriesStatus));
+    if(this.isTestStarted) {
+      sessionStorage.setItem('isTestStarted', 'true');
+    } else {
+      sessionStorage.setItem('isTestStarted', 'false');
+    }
+  }
+
+  removeItemFromSessionStorage() {
+    sessionStorage.removeItem("data");
+    sessionStorage.removeItem("pageNo");
+    sessionStorage.removeItem("answerModels");
+    sessionStorage.removeItem("testSeriesStatus");
+    sessionStorage.removeItem("isTestStarted");
   }
 
   fetchEnrolledTestSeriesDetails() {
@@ -94,8 +143,9 @@ export class TestseriesComponent implements OnInit {
         }
       }
       this.testSeriesStatus = new TestSeriesStatus(this.questionStatus, totalQuestions);
-      console.log(this.answerModels);
-      console.log(this.testSeriesStatus);
+      this.setDataIntoSessionStorage();
+      // console.log(this.answerModels);
+      // console.log(this.testSeriesStatus);
       this.onChangeTable(this.config);
     },
     error => {
@@ -113,6 +163,7 @@ export class TestseriesComponent implements OnInit {
       .subscribe(
         data => {
         this.isTestStarted = false;
+        this.removeItemFromSessionStorage();
         this.showNotification('Answers submitted successfully. Please visit result link to view result analysis.', 'status');
         },
         error => {
@@ -138,6 +189,8 @@ export class TestseriesComponent implements OnInit {
   }
 
   public changePage(page: any, data: Array<any> = this.data): Array<any> {
+    this.page = page.page;
+    this.setDataIntoSessionStorage();
     if (data !== undefined && data.length > 0) {
       const start = (page.page - 1) * page.itemsPerPage;
       const end = page.itemsPerPage > -1 ? (start + page.itemsPerPage) : data.length;

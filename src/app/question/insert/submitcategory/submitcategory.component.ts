@@ -26,7 +26,6 @@ export class SubmitcategoryComponent implements OnInit {
   topics: string[];
   subTopics: string[];
   tags: string[];
-  isCategoryDataAvailable: boolean;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
   constructor(private questionService: QuestionService,
@@ -34,22 +33,17 @@ export class SubmitcategoryComponent implements OnInit {
 
   ngOnInit() {
     this.id = "submitcategory";
-    this.isCategoryDataAvailable = false;
     this.streams = [];
     this.subjects = [];
     this.topics = [];
     this.subTopics = [];
     this.tags = [ 'Language', 'Project', 'General' ];
     this.category = new Category();
+    this.categoryData = JSON.parse(sessionStorage.getItem("categoryData"));
   }
 
   showNotification(msg: string, type: string) {
     this.notification.showNotification(msg, type, this.id);
-  }
-
-  getCategoryData() {
-    this.categoryData = this.questionService.getCategoryDetails();
-    this.isCategoryDataAvailable = true;
   }
 
   submitCategory() {

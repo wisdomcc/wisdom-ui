@@ -10,7 +10,7 @@ import { QuestionModel } from '../../../../models/question/question.model';
 export class CategoryComponent implements OnInit {
 
   @Input() questionModel: QuestionModel;
-  @Input() categoryData: any;
+  categoryData: any;
   selectedExam: string;
   selectedStream: string;
   selectedSubject: string;
@@ -30,6 +30,7 @@ export class CategoryComponent implements OnInit {
     this.topics = [];
     this.subTopics = [];
     this.tags = [ 'Language', 'Project', 'General' ];
+    this.categoryData = JSON.parse(sessionStorage.getItem('categoryData'));
   }
 
   getStreams() {

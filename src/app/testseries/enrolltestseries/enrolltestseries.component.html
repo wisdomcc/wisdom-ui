@@ -4,12 +4,12 @@
         We are having 10 full Full syllabus this year for Free. 
       </p>
       <div class="btn-group col" >
-        <button class="btn btn-success ml-auto " (click)="enrollTestSeries()" [disabled]="isEnrollmentSuccessful" >Enroll To Test Series</button>
+        <button class="btn btn-success ml-auto " (click)="enrollTestSeries()" [disabled]="isEnrollmentSuccessful || isAlreadyEnrolled" >Enroll To Test Series</button>
       </div>
   </div>
 </div>
 <app-notification [nid]="id"></app-notification>
-<div *ngIf="isEnrollmentSuccessful">
+<div *ngIf="isEnrollmentSuccessful || isAlreadyEnrolled">
   <div class="row">
     <div class="col">Seriel No</div>
     <div class="col">Activation Date</div>

@@ -54,6 +54,7 @@ export class SubmitanswerComponent implements OnInit {
     for (let year = 1991; year < (new Date()).getFullYear(); year++) {
       this.fromYears.push(year);
     }
+    this.categoryData = JSON.parse(sessionStorage.getItem("categoryData"));
   }
 
   getToYears() {
@@ -65,8 +66,6 @@ export class SubmitanswerComponent implements OnInit {
   }
 
   getSubjects() {
-    if (this.categoryData === undefined) {
-      this.categoryData = this.questionService.getCategoryDetails();
       for (let i = 0; i < this.categoryData.exams.length; i++) {
         if ('Gate' === this.categoryData.exams[i].exam) {
           for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
@@ -79,7 +78,6 @@ export class SubmitanswerComponent implements OnInit {
           }
         }
       }
-    }
   }
 
   getTopics() {
@@ -114,9 +112,6 @@ export class SubmitanswerComponent implements OnInit {
   }
 
   viewQuestion() {
-    if (this.categoryData === undefined) {
-      this.categoryData = this.questionService.getCategoryDetails();
-    }
     if (this.selectedSubject !== undefined) {
       if (this.selectedSubject !== 'Select Subject') {
         this.searchCriteria.relatedTo.subject.pop();

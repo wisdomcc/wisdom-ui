@@ -20,26 +20,11 @@ export class QuestionService {
   getImageUrl = window.location.protocol + '//' + window.location.hostname + ':8080';
 
   constructor(private http: Http, private userService: UserService) {
-    this.fetchCategoryDetails();
   }
 
   fetchCategoryDetails() {
-    this.http.get(this.categoryUrl, {withCredentials: true})
-      .map((res: Response) => res)
-        .subscribe(
-          data => {
-            this.categoryData = JSON.parse(' { "exams" : ' + data.text() + '}');
-          },
-          error => {
-            if (error.status === 401) {
-              this.userService.logout();
-            }
-          }
-        );
-  }
-
-  getCategoryDetails() {
-    return this.categoryData;
+    return this.http.get(this.categoryUrl, {withCredentials: true})
+      .map((res: Response) => res.text());
   }
 
   insertCategory(category: Category) {

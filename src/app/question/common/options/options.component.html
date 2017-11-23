@@ -5,25 +5,25 @@
 	</div>
 	<div class="col form-check">
         <label class="form-check-label">
-        	<input type="radio" class="form-check-input" (click)="changeOptionState('NoOption')" name="textAndImageOption{{questionModel.id}}" value="NoOption" >
+        	<input type="radio" class="form-check-input" [(ngModel)]="questionModel.options.type" name="textAndImageOption{{questionModel.id}}" value="NoOption" >
         	No Option
         </label>
     </div>
 	<div class="col form-check">
         <label class="form-check-label">
-        	<input type="radio" class="form-check-input" (click)="changeOptionState('Text')" name="textAndImageOption{{questionModel.id}}" value="Text" checked>
+        	<input type="radio" class="form-check-input" [(ngModel)]="questionModel.options.type" name="textAndImageOption{{questionModel.id}}" value="Text" checked>
         	Text
         </label>
     </div>
     <div class="col form-check">
     	<label class="form-check-label">
-        	<input type="radio" class="form-check-input" (click)="changeOptionState('Image')" name="textAndImageOption{{questionModel.id}}" value="Image" >
+        	<input type="radio" class="form-check-input" [(ngModel)]="questionModel.options.type" name="textAndImageOption{{questionModel.id}}" value="Image" >
         	Image
         </label>
     </div>
     <div class="col form-check">
     	<label class="form-check-label">
-        	<input type="radio" class="form-check-input" (click)="changeOptionState('TextAndImage')" name="textAndImageOption{{questionModel.id}}" value="TextAndImage" >
+        	<input type="radio" class="form-check-input" [(ngModel)]="questionModel.options.type" name="textAndImageOption{{questionModel.id}}" value="TextAndImage" >
         	Text & Image
         </label>
     </div>

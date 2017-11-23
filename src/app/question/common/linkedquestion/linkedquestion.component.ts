@@ -18,7 +18,6 @@ export class LinkedquestionComponent implements OnInit {
   @Input() isUpdateSearch: boolean;
   qeProperty: QuestionElementProperty[];
   @Input() questionModel: QuestionModel;
-  @Input() categoryData: any;
   rightImagePath: string;
   downImagePath: string;
 
@@ -26,14 +25,14 @@ export class LinkedquestionComponent implements OnInit {
               private userService: UserService) {}
 
   ngOnInit() {
+    this.isLinkedQuestion = true;
     // console.log('update search : ' + this.isUpdateSearch);
-    this.qeProperty = [];
+    this.getDataFromSessionStorage();
     if (this.isUpdateSearch && this.questionModel.linkedQuestions !== undefined) {
       for (let i = 0; i < this.questionModel.linkedQuestions.length; i++) {
         this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
       }
     }
-    this.isLinkedQuestion = true;
     this.rightImagePath = '../../assets/images/right.png';
     this.downImagePath = '../../assets/images/down.png';
   }
@@ -47,11 +46,25 @@ export class LinkedquestionComponent implements OnInit {
   removeQuestion(index: number) {
     this.questionModel.linkedQuestions.splice(index, 1);
     this.qeProperty.splice(index, 1);
+    this.setDataIntoSessionStorage();
   }
 
   expandCollapse(index: number) {
     this.qeProperty[index].collapse = this.qeProperty[index].collapse === true ? false : true;
     this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
+    this.setDataIntoSessionStorage();
+  }
+
+  getDataFromSessionStorage() {
+    if(sessionStorage.getItem("linkedQeProperty")) {
+      this.qeProperty = JSON.parse(sessionStorage.getItem("linkedQeProperty"));
+    } else {
+      this.qeProperty = [];
+    }
+  }
+
+  setDataIntoSessionStorage() {
+    sessionStorage.setItem("linkedQeProperty", JSON.stringify(this.qeProperty));
   }
 
 }

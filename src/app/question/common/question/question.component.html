@@ -1,4 +1,3 @@
-
 <app-preview [questionModel]="questionModel" [isLinkedQuestion]="isLinkedQuestion" ></app-preview>
 <div *ngIf="!isLinkedQuestion">
     <app-paragraph [questionModel]="questionModel" ></app-paragraph>
@@ -6,9 +5,9 @@
 <app-questiontext [questionModel]="questionModel" ></app-questiontext>
 <app-options [questionModel]="questionModel" ></app-options>
 <div *ngIf="!isLinkedQuestion">
-    <app-category [questionModel]="questionModel" [categoryData]="categoryData"></app-category>
+    <app-category [questionModel]="questionModel" ></app-category>
 </div>
     <app-attribute [questionModel]="questionModel" [isLinkedQuestion]="isLinkedQuestion"></app-attribute>
 <div *ngIf="!isLinkedQuestion">
-    <app-linkedquestion [questionModel]="questionModel" [categoryData]="categoryData" [isUpdateSearch]="isUpdateSearch"></app-linkedquestion>
+    <app-linkedquestion [questionModel]="questionModel" [isUpdateSearch]="isUpdateSearch"></app-linkedquestion>
 </div>

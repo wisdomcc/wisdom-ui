@@ -19,7 +19,7 @@ export class SubmitquestionComponent implements OnInit {
   questionModels: QuestionModel[];
   rightImagePath: string;
   downImagePath: string;
-  category: any;
+  categoryData: any;
   isFirstTime = true;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
@@ -28,20 +28,15 @@ export class SubmitquestionComponent implements OnInit {
               private userService: UserService) {}
 
   ngOnInit() {
-    this.hideSubmitPreviewButton = true;
-    this.questionModels = [];
-    this.qeProperty = [];
+    this.id = 'submitquestion';
+    this.getDataFromSessionStorage();
+    sessionStorage.setItem("page", this.id);
+    this.categoryData = JSON.parse(sessionStorage.getItem('categoryData'));
     this.rightImagePath = '../../assets/images/right.png';
     this.downImagePath = '../../assets/images/down.png';
-    this.id = 'submitquestion';
   }
 
   addQuestion() {
-    if (this.isFirstTime) {
-      this.category = this.questionService.getCategoryDetails();
-      // console.log(this.category);
-      this.isFirstTime = false;
-    }
     this.hideSubmitPreviewButton = false;
     const question = new QuestionModel();
     this.questionModels.push(question);
@@ -54,11 +49,58 @@ export class SubmitquestionComponent implements OnInit {
     }
     this.questionModels.splice(index, 1);
     this.qeProperty.splice(index, 1);
+    this.setDataIntoSessionStorage();
   }
 
   expandCollapse(index: number) {
     this.qeProperty[index].collapse = this.qeProperty[index].collapse === true ? false : true;
     this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
+    this.setDataIntoSessionStorage();
+  }
+
+  getDataFromSessionStorage() {
+    if(sessionStorage.getItem("page") && sessionStorage.getItem("page") === this.id) {
+      if(sessionStorage.getItem("questionModels")) {
+        this.questionModels = JSON.parse(sessionStorage.getItem("questionModels"));
+      } else {
+        this.questionModels = [];
+      }
+      if(sessionStorage.getItem("qeProperty")) {
+        this.qeProperty = JSON.parse(sessionStorage.getItem("qeProperty"));
+      } else {
+        this.qeProperty = [];
+      }
+      this.hideSubmitPreviewButton = true;
+      if(sessionStorage.getItem("hideSubmitPreviewButton")) {
+        if(sessionStorage.getItem("hideSubmitPreviewButton") === 'true') {
+          this.hideSubmitPreviewButton = true;
+        } else {
+          this.hideSubmitPreviewButton = false;
+        }
+      }
+    } else {
+      this.questionModels = [];
+      this.qeProperty = [];
+      this.hideSubmitPreviewButton = true;
+    }
+  }
+
+  setDataIntoSessionStorage() {
+    sessionStorage.setItem("questionModels", JSON.stringify(this.questionModels));
+    sessionStorage.setItem("qeProperty", JSON.stringify(this.qeProperty));
+    if(this.hideSubmitPreviewButton) {
+      sessionStorage.setItem('hideSubmitPreviewButton', 'true');
+    } else {
+      sessionStorage.setItem('hideSubmitPreviewButton', 'false');
+    }
+  }
+
+  removeItemFromSessionStorage() {
+    sessionStorage.removeItem("questionModels");
+    sessionStorage.removeItem("qeProperty");
+    sessionStorage.removeItem("hideSubmitPreviewButton");
+    sessionStorage.removeItem("linkedQeProperty");
+    sessionStorage.removeItem("isDataPresent");
   }
 
   submitQuestions() {
@@ -69,6 +111,8 @@ export class SubmitquestionComponent implements OnInit {
           this.showNotification('Questions inserted successfully in database.', 'success');
           this.hideSubmitPreviewButton = true;
           this.questionModels = [];
+          this.qeProperty = [];
+          this.removeItemFromSessionStorage();
         },
         error => {
           if (error.status === 401) {

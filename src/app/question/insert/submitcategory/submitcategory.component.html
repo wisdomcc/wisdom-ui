@@ -1,10 +1,9 @@
 <div class="row form-group">
   <div class="col">
-    <input type="button" (click)="getCategoryData()"
-            class="btn btn-success float-sm-right" value="Submit New Category" />
+    <input type="button"
+            class="btn btn-success float-sm-right" value="Submit New Category" disabled />
   </div>
 </div>
-<div *ngIf="isCategoryDataAvailable">
   <app-notification [nid]="id"></app-notification>
   <div class="row form-group">
     <div class="col-2">Exam</div>
@@ -89,4 +88,3 @@
     <div class="col">
     </div>
   </div> -->
-</div>

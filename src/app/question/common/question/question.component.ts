@@ -13,7 +13,6 @@ export class QuestionComponent implements OnInit {
   @ViewChild(PreviewComponent) preview: PreviewComponent;
 
   @Input() questionModel: QuestionModel;
-  @Input() categoryData: any;
   @Input() isLinkedQuestion: boolean;
   @Input() isUpdateSearch: boolean;
 

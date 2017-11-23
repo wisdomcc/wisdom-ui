@@ -84,13 +84,8 @@ export class OptionsComponent implements OnInit {
       );
   }
 
-  changeOptionState(optionState: string) {
-    this.optionState = optionState;
-    this.questionModel.options.type = optionState;
-  }
-
   getStatus(option: string) {
-    if (option === this.optionState) {
+    if (option === this.questionModel.options.type) {
       return false;
     }
     return true;

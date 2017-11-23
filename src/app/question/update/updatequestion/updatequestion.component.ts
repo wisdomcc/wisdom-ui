@@ -35,12 +35,13 @@ export class UpdatequestionComponent implements OnInit {
               private userService: UserService) { }
 
   ngOnInit() {
-    this.hideSubmitPreviewButton = true;
+    this.id = 'updatequestion';
+    this.searchId = "updatequestionsearch"
+    this.getDataFromSessionStorage();
+    sessionStorage.setItem("page", this.id);
     this.searchCriteria = new SearchCriteria();
-    this.isDataPresent = false;
     this.rightImagePath = '../../assets/images/right.png';
     this.downImagePath = '../../assets/images/down.png';
-    this.id = 'updatequestion';
     this.searchId = 'updatequestionsearch';
     this.subjects = ['Select Subject'];
     this.topics = ['Select Topic'];
@@ -48,6 +49,66 @@ export class UpdatequestionComponent implements OnInit {
     for (let year = 1991; year < (new Date()).getFullYear(); year++) {
       this.fromYears.push(year);
     }
+    this.categoryData = JSON.parse(sessionStorage.getItem('categoryData'));
+  }
+
+  getDataFromSessionStorage() {
+    if(sessionStorage.getItem("page") && sessionStorage.getItem("page") === this.id) {
+      if(sessionStorage.getItem("questionModels")) {
+        this.questionModels = JSON.parse(sessionStorage.getItem("questionModels"));
+      } else {
+        this.questionModels = [];
+      }
+      if(sessionStorage.getItem("qeProperty")) {
+        this.qeProperty = JSON.parse(sessionStorage.getItem("qeProperty"));
+      } else {
+        this.qeProperty = [];
+      }
+      this.hideSubmitPreviewButton = true;
+      if(sessionStorage.getItem("hideSubmitPreviewButton")) {
+        if(sessionStorage.getItem("hideSubmitPreviewButton") === 'true') {
+          this.hideSubmitPreviewButton = true;
+        } else {
+          this.hideSubmitPreviewButton = false;
+        }
+      }
+      this.isDataPresent = false;
+      if(sessionStorage.getItem("isDataPresent")) {
+        if(sessionStorage.getItem("isDataPresent") === 'true') {
+          this.isDataPresent = true;
+        } else {
+          this.isDataPresent = false;
+        }
+      }
+    } else {
+      this.questionModels = [];
+      this.qeProperty = [];
+      this.hideSubmitPreviewButton = true;
+      this.isDataPresent = false;
+    }
+  }
+
+  setDataIntoSessionStorage() {
+    sessionStorage.setItem("questionModels", JSON.stringify(this.questionModels));
+    sessionStorage.setItem("qeProperty", JSON.stringify(this.qeProperty));
+    if(this.hideSubmitPreviewButton) {
+      sessionStorage.setItem('hideSubmitPreviewButton', 'true');
+    } else {
+      sessionStorage.setItem('hideSubmitPreviewButton', 'false');
+    }
+    if(this.isDataPresent) {
+      sessionStorage.setItem('isDataPresent', 'true');
+    } else {
+      sessionStorage.setItem('isDataPresent', 'false');
+    }
+  }
+
+  removeItemFromSessionStorage() {
+    sessionStorage.removeItem("questionModels");
+    sessionStorage.removeItem("qeProperty");
+    sessionStorage.removeItem("hideSubmitPreviewButton");
+    sessionStorage.removeItem("linkedQeProperty");
+    sessionStorage.removeItem("isDataPresent");
   }
 
   getToYears() {
@@ -59,17 +120,14 @@ export class UpdatequestionComponent implements OnInit {
   }
 
   getSubjects() {
-    if (this.categoryData === undefined) {
-      this.categoryData = this.questionService.getCategoryDetails();
-      for (let i = 0; i < this.categoryData.exams.length; i++) {
-        if ('Gate' === this.categoryData.exams[i].exam) {
-          for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
-            if ('CS' === this.categoryData.exams[i].streams[j].stream) {
-              for (let k = 0; k < this.categoryData.exams[i].streams[j].subjects.length; k++) {
-                this.subjects.push(this.categoryData.exams[i].streams[j].subjects[k].subject);
-              }
-              break;
+    for (let i = 0; i < this.categoryData.exams.length; i++) {
+      if ('Gate' === this.categoryData.exams[i].exam) {
+        for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
+          if ('CS' === this.categoryData.exams[i].streams[j].stream) {
+            for (let k = 0; k < this.categoryData.exams[i].streams[j].subjects.length; k++) {
+              this.subjects.push(this.categoryData.exams[i].streams[j].subjects[k].subject);
             }
+            break;
           }
         }
       }
@@ -108,9 +166,6 @@ export class UpdatequestionComponent implements OnInit {
   }
 
   viewQuestion() {
-    if (this.categoryData === undefined) {
-      this.categoryData = this.questionService.getCategoryDetails();
-    }
     if (this.selectedSubject !== undefined) {
       if (this.selectedSubject !== 'Select Subject') {
         this.searchCriteria.relatedTo.subject.pop();
@@ -138,6 +193,7 @@ export class UpdatequestionComponent implements OnInit {
           for (let i = 0; i < data.length; i++) {
             this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
           }
+          this.setDataIntoSessionStorage();
         } else {
           this.showSearchNotification('No result for your criteria.', 'status');
         }
@@ -154,6 +210,7 @@ export class UpdatequestionComponent implements OnInit {
   expandCollapse(index: number) {
     this.qeProperty[index].collapse = this.qeProperty[index].collapse === true ? false : true;
     this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
+    this.setDataIntoSessionStorage();
   }
 
   removeQuestion(index: number) {
@@ -162,6 +219,7 @@ export class UpdatequestionComponent implements OnInit {
     }
     this.questionModels.splice(index, 1);
     this.qeProperty.splice(index, 1);
+    this.setDataIntoSessionStorage();
   }
 
   submitQuestions() {
@@ -171,6 +229,9 @@ export class UpdatequestionComponent implements OnInit {
         this.showNotification('Questions inserted successfully in database.', 'success');
         this.hideSubmitPreviewButton = true;
         this.questionModels = [];
+        this.qeProperty = [];
+        this.isDataPresent = false;
+        this.removeItemFromSessionStorage();
       },
       error => {
         if (error.status === 401) {

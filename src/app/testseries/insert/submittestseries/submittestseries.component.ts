@@ -14,7 +14,6 @@ import { QuestionElementProperty } from '../../../../models/question/qeproperty.
 export class SubmittestseriesComponent implements OnInit {
 
   id: string;
-  isFirstTime: boolean;
   hideSubmitPreviewButton: boolean;
   qeProperty: QuestionElementProperty[];
   rightImagePath: string;
@@ -37,7 +36,7 @@ export class SubmittestseriesComponent implements OnInit {
               private userService: UserService) { }
 
   ngOnInit() {
-    this.isFirstTime = true;
+    this.id = 'submittestseries';
     this.streams = [];
     this.subjects = [];
     this.topics = [];
@@ -46,15 +45,10 @@ export class SubmittestseriesComponent implements OnInit {
     this.qeProperty = [];
     this.rightImagePath = '../../assets/images/right.png';
     this.downImagePath = '../../assets/images/down.png';
-    this.id = 'submittestseries';
+    this.categoryData = JSON.parse(sessionStorage.getItem("categoryData"));
   }
 
   addTestSeries() {
-    if (this.isFirstTime) {
-      this.categoryData = this.questionService.getCategoryDetails();
-      // console.log(this.category);
-      this.isFirstTime = false;
-    }
     this.hideSubmitPreviewButton = false;
     const question = new TestSeries();
     this.testSeriesModels.push(question);
