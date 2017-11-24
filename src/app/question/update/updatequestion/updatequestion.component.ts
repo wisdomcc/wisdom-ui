@@ -37,8 +37,8 @@ export class UpdatequestionComponent implements OnInit {
   ngOnInit() {
     this.id = 'updatequestion';
     this.searchId = "updatequestionsearch"
-    this.getDataFromSessionStorage();
-    sessionStorage.setItem("page", this.id);
+    this.getDataFromlocalStorage();
+    localStorage.setItem("page", this.id);
     this.searchCriteria = new SearchCriteria();
     this.rightImagePath = '../../assets/images/right.png';
     this.downImagePath = '../../assets/images/down.png';
@@ -49,32 +49,32 @@ export class UpdatequestionComponent implements OnInit {
     for (let year = 1991; year < (new Date()).getFullYear(); year++) {
       this.fromYears.push(year);
     }
-    this.categoryData = JSON.parse(sessionStorage.getItem('categoryData'));
+    this.categoryData = JSON.parse(localStorage.getItem('categoryData'));
   }
 
-  getDataFromSessionStorage() {
-    if(sessionStorage.getItem("page") && sessionStorage.getItem("page") === this.id) {
-      if(sessionStorage.getItem("questionModels")) {
-        this.questionModels = JSON.parse(sessionStorage.getItem("questionModels"));
+  getDataFromlocalStorage() {
+    if(localStorage.getItem("page") !== "undefined" && localStorage.getItem("page") === this.id) {
+      if(localStorage.getItem("questionModels") !== "undefined") {
+        this.questionModels = JSON.parse(localStorage.getItem("questionModels"));
       } else {
         this.questionModels = [];
       }
-      if(sessionStorage.getItem("qeProperty")) {
-        this.qeProperty = JSON.parse(sessionStorage.getItem("qeProperty"));
+      if(localStorage.getItem("qeProperty") !== "undefined") {
+        this.qeProperty = JSON.parse(localStorage.getItem("qeProperty"));
       } else {
         this.qeProperty = [];
       }
       this.hideSubmitPreviewButton = true;
-      if(sessionStorage.getItem("hideSubmitPreviewButton")) {
-        if(sessionStorage.getItem("hideSubmitPreviewButton") === 'true') {
+      if(localStorage.getItem("hideSubmitPreviewButton") !== "undefined") {
+        if(localStorage.getItem("hideSubmitPreviewButton") === 'true') {
           this.hideSubmitPreviewButton = true;
         } else {
           this.hideSubmitPreviewButton = false;
         }
       }
       this.isDataPresent = false;
-      if(sessionStorage.getItem("isDataPresent")) {
-        if(sessionStorage.getItem("isDataPresent") === 'true') {
+      if(localStorage.getItem("isDataPresent") !== "undefined") {
+        if(localStorage.getItem("isDataPresent") === 'true') {
           this.isDataPresent = true;
         } else {
           this.isDataPresent = false;
@@ -88,27 +88,27 @@ export class UpdatequestionComponent implements OnInit {
     }
   }
 
-  setDataIntoSessionStorage() {
-    sessionStorage.setItem("questionModels", JSON.stringify(this.questionModels));
-    sessionStorage.setItem("qeProperty", JSON.stringify(this.qeProperty));
+  setDataIntolocalStorage() {
+    localStorage.setItem("questionModels", JSON.stringify(this.questionModels));
+    localStorage.setItem("qeProperty", JSON.stringify(this.qeProperty));
     if(this.hideSubmitPreviewButton) {
-      sessionStorage.setItem('hideSubmitPreviewButton', 'true');
+      localStorage.setItem('hideSubmitPreviewButton', 'true');
     } else {
-      sessionStorage.setItem('hideSubmitPreviewButton', 'false');
+      localStorage.setItem('hideSubmitPreviewButton', 'false');
     }
     if(this.isDataPresent) {
-      sessionStorage.setItem('isDataPresent', 'true');
+      localStorage.setItem('isDataPresent', 'true');
     } else {
-      sessionStorage.setItem('isDataPresent', 'false');
+      localStorage.setItem('isDataPresent', 'false');
     }
   }
 
-  removeItemFromSessionStorage() {
-    sessionStorage.removeItem("questionModels");
-    sessionStorage.removeItem("qeProperty");
-    sessionStorage.removeItem("hideSubmitPreviewButton");
-    sessionStorage.removeItem("linkedQeProperty");
-    sessionStorage.removeItem("isDataPresent");
+  removeItemFromlocalStorage() {
+    localStorage.removeItem("questionModels");
+    localStorage.removeItem("qeProperty");
+    localStorage.removeItem("hideSubmitPreviewButton");
+    localStorage.removeItem("linkedQeProperty");
+    localStorage.removeItem("isDataPresent");
   }
 
   getToYears() {
@@ -193,7 +193,7 @@ export class UpdatequestionComponent implements OnInit {
           for (let i = 0; i < data.length; i++) {
             this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
           }
-          this.setDataIntoSessionStorage();
+          this.setDataIntolocalStorage();
         } else {
           this.showSearchNotification('No result for your criteria.', 'status');
         }
@@ -210,7 +210,7 @@ export class UpdatequestionComponent implements OnInit {
   expandCollapse(index: number) {
     this.qeProperty[index].collapse = this.qeProperty[index].collapse === true ? false : true;
     this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
-    this.setDataIntoSessionStorage();
+    this.setDataIntolocalStorage();
   }
 
   removeQuestion(index: number) {
@@ -219,7 +219,7 @@ export class UpdatequestionComponent implements OnInit {
     }
     this.questionModels.splice(index, 1);
     this.qeProperty.splice(index, 1);
-    this.setDataIntoSessionStorage();
+    this.setDataIntolocalStorage();
   }
 
   submitQuestions() {
@@ -231,7 +231,7 @@ export class UpdatequestionComponent implements OnInit {
         this.questionModels = [];
         this.qeProperty = [];
         this.isDataPresent = false;
-        this.removeItemFromSessionStorage();
+        this.removeItemFromlocalStorage();
       },
       error => {
         if (error.status === 401) {

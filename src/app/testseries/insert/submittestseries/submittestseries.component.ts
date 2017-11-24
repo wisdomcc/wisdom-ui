@@ -45,7 +45,7 @@ export class SubmittestseriesComponent implements OnInit {
     this.qeProperty = [];
     this.rightImagePath = '../../assets/images/right.png';
     this.downImagePath = '../../assets/images/down.png';
-    this.categoryData = JSON.parse(sessionStorage.getItem("categoryData"));
+    this.categoryData = JSON.parse(localStorage.getItem("categoryData"));
   }
 
   addTestSeries() {

@@ -1,5 +1,6 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { TestSeries } from '../../../models/testseries/testseries.model';
 import { TestSeriesEnrollment } from '../../../models/testseries/testseries.model';
 import { UserService } from '../../../services/user/user.service';
@@ -16,19 +17,26 @@ export class EnrolltestseriesComponent implements OnInit {
   id: string;
   isEnrollmentSuccessful: boolean;
   isAlreadyEnrolled: boolean;
+  startTestSeriesUrl: string;
   testSeriesModels: TestSeries[];
   testSeriesEnrollments: TestSeriesEnrollment[];
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
   constructor(private userService: UserService,
-              private testSeriesService: TestSeriesService) { }
+              private testSeriesService: TestSeriesService,
+              private router: Router) { }
 
   ngOnInit() {
     this.id = 'enrolltestseries';
     this.isEnrollmentSuccessful = false;
     this.isAlreadyEnrolled = false;
+    this.startTestSeriesUrl = '/testseries';
     this.checkIsAlreadyEnrolledForTestSeries();
     this.fetchTestSeriesDetails();
+  }
+
+  startTestSeries() {
+    this.router.navigateByUrl(this.startTestSeriesUrl);
   }
 
   fetchTestSeriesDetails() {

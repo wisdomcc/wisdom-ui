@@ -40,14 +40,14 @@ export class LoginComponent implements OnInit {
                     this.user = this.getWisdomUser(JSON.parse(data));
                     // console.log(this.user);
                     this.showNotification('Login successful', 'success');
-                    sessionStorage.setItem('username', this.user.username);
-                    sessionStorage.setItem('email', this.user.emailId);
-                    sessionStorage.setItem('role', this.user.role);
-                    sessionStorage.setItem('enabled', 'true');
+                    localStorage.setItem('username', this.user.username);
+                    localStorage.setItem('email', this.user.emailId);
+                    localStorage.setItem('role', this.user.role);
+                    localStorage.setItem('enabled', 'true');
                     this.questionService.fetchCategoryDetails()
                         .subscribe(
                             data => {
-                                sessionStorage.setItem('categoryData', ' { "exams" : ' + data + '}');
+                                localStorage.setItem('categoryData', ' { "exams" : ' + data + '}');
                             },
                             error => {
                                 if (error.status === 401) {

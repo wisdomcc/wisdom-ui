@@ -39,7 +39,7 @@ export class SubmitcategoryComponent implements OnInit {
     this.subTopics = [];
     this.tags = [ 'Language', 'Project', 'General' ];
     this.category = new Category();
-    this.categoryData = JSON.parse(sessionStorage.getItem("categoryData"));
+    this.categoryData = JSON.parse(localStorage.getItem("categoryData"));
   }
 
   showNotification(msg: string, type: string) {

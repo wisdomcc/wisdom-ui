@@ -7,7 +7,7 @@ export class UrlSecurityService implements CanActivate {
     constructor(private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (sessionStorage.getItem('username')) {
+        if (localStorage.getItem('username')) {
             return true;
         }
 

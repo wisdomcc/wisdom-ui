@@ -40,7 +40,7 @@ export class ViewquestionComponent implements OnInit {
     for (let year = 1991; year < (new Date()).getFullYear(); year++) {
       this.fromYears.push(year);
     }
-    this.categoryData = JSON.parse(sessionStorage.getItem("categoryData"));
+    this.categoryData = JSON.parse(localStorage.getItem("categoryData"));
   }
 
   getToYears() {

@@ -29,9 +29,9 @@ export class SubmitquestionComponent implements OnInit {
 
   ngOnInit() {
     this.id = 'submitquestion';
-    this.getDataFromSessionStorage();
-    sessionStorage.setItem("page", this.id);
-    this.categoryData = JSON.parse(sessionStorage.getItem('categoryData'));
+    this.getDataFromlocalStorage();
+    localStorage.setItem("page", this.id);
+    this.categoryData = JSON.parse(localStorage.getItem('categoryData'));
     this.rightImagePath = '../../assets/images/right.png';
     this.downImagePath = '../../assets/images/down.png';
   }
@@ -49,30 +49,30 @@ export class SubmitquestionComponent implements OnInit {
     }
     this.questionModels.splice(index, 1);
     this.qeProperty.splice(index, 1);
-    this.setDataIntoSessionStorage();
+    this.setDataIntolocalStorage();
   }
 
   expandCollapse(index: number) {
     this.qeProperty[index].collapse = this.qeProperty[index].collapse === true ? false : true;
     this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
-    this.setDataIntoSessionStorage();
+    this.setDataIntolocalStorage();
   }
 
-  getDataFromSessionStorage() {
-    if(sessionStorage.getItem("page") && sessionStorage.getItem("page") === this.id) {
-      if(sessionStorage.getItem("questionModels")) {
-        this.questionModels = JSON.parse(sessionStorage.getItem("questionModels"));
+  getDataFromlocalStorage() {
+    if(localStorage.getItem("page") !== "undefined" && localStorage.getItem("page") === this.id) {
+      if(localStorage.getItem("questionModels") !== "undefined") {
+        this.questionModels = JSON.parse(localStorage.getItem("questionModels"));
       } else {
         this.questionModels = [];
       }
-      if(sessionStorage.getItem("qeProperty")) {
-        this.qeProperty = JSON.parse(sessionStorage.getItem("qeProperty"));
+      if(localStorage.getItem("qeProperty") !== "undefined") {
+        this.qeProperty = JSON.parse(localStorage.getItem("qeProperty"));
       } else {
         this.qeProperty = [];
       }
       this.hideSubmitPreviewButton = true;
-      if(sessionStorage.getItem("hideSubmitPreviewButton")) {
-        if(sessionStorage.getItem("hideSubmitPreviewButton") === 'true') {
+      if(localStorage.getItem("hideSubmitPreviewButton") !== "undefined") {
+        if(localStorage.getItem("hideSubmitPreviewButton") === 'true') {
           this.hideSubmitPreviewButton = true;
         } else {
           this.hideSubmitPreviewButton = false;
@@ -85,22 +85,22 @@ export class SubmitquestionComponent implements OnInit {
     }
   }
 
-  setDataIntoSessionStorage() {
-    sessionStorage.setItem("questionModels", JSON.stringify(this.questionModels));
-    sessionStorage.setItem("qeProperty", JSON.stringify(this.qeProperty));
+  setDataIntolocalStorage() {
+    localStorage.setItem("questionModels", JSON.stringify(this.questionModels));
+    localStorage.setItem("qeProperty", JSON.stringify(this.qeProperty));
     if(this.hideSubmitPreviewButton) {
-      sessionStorage.setItem('hideSubmitPreviewButton', 'true');
+      localStorage.setItem('hideSubmitPreviewButton', 'true');
     } else {
-      sessionStorage.setItem('hideSubmitPreviewButton', 'false');
+      localStorage.setItem('hideSubmitPreviewButton', 'false');
     }
   }
 
-  removeItemFromSessionStorage() {
-    sessionStorage.removeItem("questionModels");
-    sessionStorage.removeItem("qeProperty");
-    sessionStorage.removeItem("hideSubmitPreviewButton");
-    sessionStorage.removeItem("linkedQeProperty");
-    sessionStorage.removeItem("isDataPresent");
+  removeItemFromlocalStorage() {
+    localStorage.removeItem("questionModels");
+    localStorage.removeItem("qeProperty");
+    localStorage.removeItem("hideSubmitPreviewButton");
+    localStorage.removeItem("linkedQeProperty");
+    localStorage.removeItem("isDataPresent");
   }
 
   submitQuestions() {
@@ -112,7 +112,7 @@ export class SubmitquestionComponent implements OnInit {
           this.hideSubmitPreviewButton = true;
           this.questionModels = [];
           this.qeProperty = [];
-          this.removeItemFromSessionStorage();
+          this.removeItemFromlocalStorage();
         },
         error => {
           if (error.status === 401) {

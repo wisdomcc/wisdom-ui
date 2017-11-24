@@ -50,32 +50,32 @@ export class TestseriesComponent implements OnInit {
    
   public ngOnInit(): void {
     this.id = "testseries";
-    this.getDataFromSessionStorage();
-    sessionStorage.setItem("page", this.id);
+    this.getDataFromlocalStorage();
+    localStorage.setItem("page", this.id);
     this.searchCriteria = new SearchCriteria();
     this.fetchEnrolledTestSeriesDetails();
   }
 
-  getDataFromSessionStorage() {
-    if(sessionStorage.getItem("page") && sessionStorage.getItem("page") === this.id) {
-      if(sessionStorage.getItem("data")) {
-        this.data = JSON.parse(sessionStorage.getItem("data"));
+  getDataFromlocalStorage() {
+    if(localStorage.getItem("page") !== "undefined" && localStorage.getItem("page") === this.id) {
+      if(localStorage.getItem("data") !== "undefined") {
+        this.data = JSON.parse(localStorage.getItem("data"));
       }
-      if(sessionStorage.getItem("answerModels")) {
-        this.answerModels = JSON.parse(sessionStorage.getItem("answerModels"));
+      if(localStorage.getItem("answerModels") !== "undefined") {
+        this.answerModels = JSON.parse(localStorage.getItem("answerModels"));
       }
-      if(sessionStorage.getItem("testSeriesStatus")) {
-        this.testSeriesStatus = JSON.parse(sessionStorage.getItem("testSeriesStatus"));
+      if(localStorage.getItem("testSeriesStatus") !== "undefined") {
+        this.testSeriesStatus = JSON.parse(localStorage.getItem("testSeriesStatus"));
       }
-      if(sessionStorage.getItem("isTestStarted")) {
-        if(sessionStorage.getItem("isTestStarted") === 'true') {
+      if(localStorage.getItem("isTestStarted")  !== "undefined") {
+        if(localStorage.getItem("isTestStarted") === 'true') {
           this.isTestStarted = true;
         } else {
           this.isTestStarted = false;
         }
       }
-      if(sessionStorage.getItem("pageNo")) {
-        this.page = parseInt(sessionStorage.getItem("pageNo"));
+      if(localStorage.getItem("pageNo") !== "undefined") {
+        this.page = parseInt(localStorage.getItem("pageNo"));
       }
       this.onChangeTable(this.config);
       this.changePage({page: this.page, itemsPerPage: this.itemsPerPage}, this.data);
@@ -84,24 +84,24 @@ export class TestseriesComponent implements OnInit {
     }
   }
 
-  setDataIntoSessionStorage() {
-    sessionStorage.setItem("pageNo", '' + this.page);
-    sessionStorage.setItem("data", JSON.stringify(this.data));
-    sessionStorage.setItem("answerModels", JSON.stringify(this.answerModels));
-    sessionStorage.setItem("testSeriesStatus", JSON.stringify(this.testSeriesStatus));
+  setDataIntolocalStorage() {
+    localStorage.setItem("pageNo", '' + this.page);
+    localStorage.setItem("data", JSON.stringify(this.data));
+    localStorage.setItem("answerModels", JSON.stringify(this.answerModels));
+    localStorage.setItem("testSeriesStatus", JSON.stringify(this.testSeriesStatus));
     if(this.isTestStarted) {
-      sessionStorage.setItem('isTestStarted', 'true');
+      localStorage.setItem('isTestStarted', 'true');
     } else {
-      sessionStorage.setItem('isTestStarted', 'false');
+      localStorage.setItem('isTestStarted', 'false');
     }
   }
 
-  removeItemFromSessionStorage() {
-    sessionStorage.removeItem("data");
-    sessionStorage.removeItem("pageNo");
-    sessionStorage.removeItem("answerModels");
-    sessionStorage.removeItem("testSeriesStatus");
-    sessionStorage.removeItem("isTestStarted");
+  removeItemFromlocalStorage() {
+    localStorage.removeItem("data");
+    localStorage.removeItem("pageNo");
+    localStorage.removeItem("answerModels");
+    localStorage.removeItem("testSeriesStatus");
+    localStorage.removeItem("isTestStarted");
   }
 
   fetchEnrolledTestSeriesDetails() {
@@ -143,7 +143,7 @@ export class TestseriesComponent implements OnInit {
         }
       }
       this.testSeriesStatus = new TestSeriesStatus(this.questionStatus, totalQuestions);
-      this.setDataIntoSessionStorage();
+      this.setDataIntolocalStorage();
       // console.log(this.answerModels);
       // console.log(this.testSeriesStatus);
       this.onChangeTable(this.config);
@@ -163,7 +163,7 @@ export class TestseriesComponent implements OnInit {
       .subscribe(
         data => {
         this.isTestStarted = false;
-        this.removeItemFromSessionStorage();
+        this.removeItemFromlocalStorage();
         this.showNotification('Answers submitted successfully. Please visit result link to view result analysis.', 'status');
         },
         error => {
@@ -190,7 +190,7 @@ export class TestseriesComponent implements OnInit {
 
   public changePage(page: any, data: Array<any> = this.data): Array<any> {
     this.page = page.page;
-    this.setDataIntoSessionStorage();
+    this.setDataIntolocalStorage();
     if (data !== undefined && data.length > 0) {
       const start = (page.page - 1) * page.itemsPerPage;
       const end = page.itemsPerPage > -1 ? (start + page.itemsPerPage) : data.length;

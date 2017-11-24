@@ -30,7 +30,7 @@ export class CategoryComponent implements OnInit {
     this.topics = [];
     this.subTopics = [];
     this.tags = [ 'Language', 'Project', 'General' ];
-    this.categoryData = JSON.parse(sessionStorage.getItem('categoryData'));
+    this.categoryData = JSON.parse(localStorage.getItem('categoryData'));
   }
 
   getStreams() {

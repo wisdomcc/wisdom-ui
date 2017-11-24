@@ -27,7 +27,7 @@ export class LinkedquestionComponent implements OnInit {
   ngOnInit() {
     this.isLinkedQuestion = true;
     // console.log('update search : ' + this.isUpdateSearch);
-    this.getDataFromSessionStorage();
+    this.getDataFromlocalStorage();
     if (this.isUpdateSearch && this.questionModel.linkedQuestions !== undefined) {
       for (let i = 0; i < this.questionModel.linkedQuestions.length; i++) {
         this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
@@ -46,25 +46,25 @@ export class LinkedquestionComponent implements OnInit {
   removeQuestion(index: number) {
     this.questionModel.linkedQuestions.splice(index, 1);
     this.qeProperty.splice(index, 1);
-    this.setDataIntoSessionStorage();
+    this.setDataIntolocalStorage();
   }
 
   expandCollapse(index: number) {
     this.qeProperty[index].collapse = this.qeProperty[index].collapse === true ? false : true;
     this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
-    this.setDataIntoSessionStorage();
+    this.setDataIntolocalStorage();
   }
 
-  getDataFromSessionStorage() {
-    if(sessionStorage.getItem("linkedQeProperty")) {
-      this.qeProperty = JSON.parse(sessionStorage.getItem("linkedQeProperty"));
+  getDataFromlocalStorage() {
+    if(localStorage.getItem("linkedQeProperty") !== "undefined") {
+      this.qeProperty = JSON.parse(localStorage.getItem("linkedQeProperty"));
     } else {
       this.qeProperty = [];
     }
   }
 
-  setDataIntoSessionStorage() {
-    sessionStorage.setItem("linkedQeProperty", JSON.stringify(this.qeProperty));
+  setDataIntolocalStorage() {
+    localStorage.setItem("linkedQeProperty", JSON.stringify(this.qeProperty));
   }
 
 }

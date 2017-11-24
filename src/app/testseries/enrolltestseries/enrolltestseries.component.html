@@ -1,8 +1,5 @@
-<div class="row">
+<div class="row" *ngIf="!isAlreadyEnrolled">
   <div class="col">
-      <p>Click on "Enroll To Test Series" to get enrolled for 10 Full Syllabus Test Series.
-        We are having 10 full Full syllabus this year for Free. 
-      </p>
       <div class="btn-group col" >
         <button class="btn btn-success ml-auto " (click)="enrollTestSeries()" [disabled]="isEnrollmentSuccessful || isAlreadyEnrolled" >Enroll To Test Series</button>
       </div>
@@ -25,5 +22,12 @@
     <div class="col">{{testSeries.type}}</div>
     <div class="col">{{testSeries.duration}}</div>
     <div class="col">{{testSeries.noOfQuestion}}</div>
+  </div>
+  <div class="row" >
+    <div class="col">
+      <div class="btn-group col" >
+        <button class="btn btn-success ml-auto " (click)="startTestSeries()" >Start Test Series</button>
+      </div>
+    </div>
   </div>
 </div>
