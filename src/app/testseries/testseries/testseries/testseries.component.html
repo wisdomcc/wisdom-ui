@@ -1,4 +1,14 @@
-<div *ngIf="!isTestStarted">
+<div *ngIf="!isEnrolledForTestSeries">
+    <div class="row" >
+      <div class="col">
+        <div class="btn-group col" >
+          <button class="btn btn-success ml-auto " (click)="enrollTestSeries()" >Enroll Test Series</button>
+        </div>
+      </div>
+    </div>
+    <app-notification [nid]="id"></app-notification>
+</div>
+<div *ngIf="isEnrolledForTestSeries">
   <div class="row" >
     <div class="col text-center">
       <div class="alert alert-success">

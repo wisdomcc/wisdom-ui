@@ -1,9 +1,9 @@
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TestSeries } from '../../../models/testseries/testseries.model';
 import { TestSeriesEnrollment } from '../../../models/testseries/testseries.model';
 import { UserService } from '../../../services/user/user.service';
+import { UtilityService } from '../../../services/utility/utility.service';
 import { TestSeriesService } from '../../../services/testseries/testseries.service';
 import { NotificationComponent } from '../../common/notification/notification.component';
 
@@ -24,28 +24,34 @@ export class EnrolltestseriesComponent implements OnInit {
 
   constructor(private userService: UserService,
               private testSeriesService: TestSeriesService,
-              private router: Router) { }
+              private router: Router,
+              private utilityService: UtilityService) { }
 
   ngOnInit() {
     this.id = 'enrolltestseries';
     this.isEnrollmentSuccessful = false;
     this.isAlreadyEnrolled = false;
     this.startTestSeriesUrl = '/testseries';
-    this.checkIsAlreadyEnrolledForTestSeries();
-    this.fetchTestSeriesDetails();
+    if(this.utilityService.getBooleanDataFromLocalStorage('isAlreadyEnrolled')) {
+      this.isAlreadyEnrolled = true;
+      this.testSeriesModels = this.utilityService.getJsonDataFromLocalStorage('testSeriesModels');
+    } else {
+      this.checkIsAlreadyEnrolledForTestSeries();
+    }
   }
 
-  startTestSeries() {
-    this.router.navigateByUrl(this.startTestSeriesUrl);
-  }
-
-  fetchTestSeriesDetails() {
-    this.testSeriesService.fetchTestSeriesModels()
+  checkIsAlreadyEnrolledForTestSeries() {
+    this.testSeriesService.fetchEnrolledTestSeriesModels()
     .subscribe(tsdata => {
       this.testSeriesModels = JSON.parse(tsdata);
-      if(this.testSeriesModels.length === 0) {
-        this.showNotification("No Test Series is Available for Enrollment.", "status");
+      if(this.testSeriesModels.length > 0) {
+        this.isAlreadyEnrolled = true;
+        this.utilityService.setBooleanDataToLocalStorage('isAlreadyEnrolled', this.isAlreadyEnrolled);
+        this.showNotification("Already Enrolled in Test Series Mentioned Below.", "status");
+      } else {
+        this.fetchTestSeriesDetails();
       }
+      this.utilityService.setJsonDataToLocalStorage('testSeriesModels', this.testSeriesModels);
     },
     error => {
       if (error.status === 401) {
@@ -55,13 +61,12 @@ export class EnrolltestseriesComponent implements OnInit {
     });
   }
 
-  checkIsAlreadyEnrolledForTestSeries() {
-    this.testSeriesService.fetchEnrolledTestSeriesModels()
+  fetchTestSeriesDetails() {
+    this.testSeriesService.fetchTestSeriesModels()
     .subscribe(tsdata => {
       this.testSeriesModels = JSON.parse(tsdata);
-      if(this.testSeriesModels.length > 0) {
-        this.isAlreadyEnrolled = true;
-        this.showNotification("Already Enrolled in Test Series Mentioned Below.", "status");
+      if(this.testSeriesModels.length === 0) {
+        this.showNotification("No Test Series is Available for Enrollment.", "status");
       }
     },
     error => {
@@ -95,10 +100,12 @@ export class EnrolltestseriesComponent implements OnInit {
       });
   }
 
+  startTestSeries() {
+    this.router.navigateByUrl(this.startTestSeriesUrl);
+  }
+
   showNotification(msg: string, type: string) {
     this.notification.showNotification(msg, type, this.id);
   }
 
 }
-
-

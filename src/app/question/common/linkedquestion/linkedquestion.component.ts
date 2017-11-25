@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { QuestionService } from '../../../../services/question/question.service';
 import { UserService } from '../../../../services/user/user.service';
+import { UtilityService } from '../../../../services/utility/utility.service';
 import { QuestionModel } from '../../../../models/question/question.model';
 import { LinkedQuestionModel } from '../../../../models/question/question.model';
 import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
@@ -22,12 +23,13 @@ export class LinkedquestionComponent implements OnInit {
   downImagePath: string;
 
   constructor(private questionService: QuestionService,
-              private userService: UserService) {}
+              private userService: UserService,
+              private utilityService: UtilityService) {}
 
   ngOnInit() {
     this.isLinkedQuestion = true;
     // console.log('update search : ' + this.isUpdateSearch);
-    this.getDataFromlocalStorage();
+    this.qeProperty = this.utilityService.getJsonDataFromLocalStorage('linkedQeProperty');
     if (this.isUpdateSearch && this.questionModel.linkedQuestions !== undefined) {
       for (let i = 0; i < this.questionModel.linkedQuestions.length; i++) {
         this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
@@ -46,25 +48,13 @@ export class LinkedquestionComponent implements OnInit {
   removeQuestion(index: number) {
     this.questionModel.linkedQuestions.splice(index, 1);
     this.qeProperty.splice(index, 1);
-    this.setDataIntolocalStorage();
+    this.utilityService.setJsonDataToLocalStorage('linkedQeProperty', this.qeProperty);
   }
 
   expandCollapse(index: number) {
     this.qeProperty[index].collapse = this.qeProperty[index].collapse === true ? false : true;
     this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
-    this.setDataIntolocalStorage();
-  }
-
-  getDataFromlocalStorage() {
-    if(localStorage.getItem("linkedQeProperty") !== "undefined") {
-      this.qeProperty = JSON.parse(localStorage.getItem("linkedQeProperty"));
-    } else {
-      this.qeProperty = [];
-    }
-  }
-
-  setDataIntolocalStorage() {
-    localStorage.setItem("linkedQeProperty", JSON.stringify(this.qeProperty));
+    this.utilityService.setJsonDataToLocalStorage('linkedQeProperty', this.qeProperty);
   }
 
 }

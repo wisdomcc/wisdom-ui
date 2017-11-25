@@ -3,6 +3,7 @@ import { TestSeries } from '../../../../models/testseries/testseries.model';
 import { QuestionService } from '../../../../services/question/question.service';
 import { TestSeriesService } from '../../../../services/testseries/testseries.service';
 import { UserService } from '../../../../services/user/user.service';
+import { UtilityService } from '../../../../services/utility/utility.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
 import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
 
@@ -33,7 +34,8 @@ export class SubmittestseriesComponent implements OnInit {
 
   constructor(private questionService: QuestionService, 
               private testSeriesService: TestSeriesService,
-              private userService: UserService) { }
+              private userService: UserService,
+              private utilityService: UtilityService) { }
 
   ngOnInit() {
     this.id = 'submittestseries';
@@ -45,7 +47,7 @@ export class SubmittestseriesComponent implements OnInit {
     this.qeProperty = [];
     this.rightImagePath = '../../assets/images/right.png';
     this.downImagePath = '../../assets/images/down.png';
-    this.categoryData = JSON.parse(localStorage.getItem("categoryData"));
+    this.categoryData = this.utilityService.getJsonDataFromLocalStorage('categoryData');
   }
 
   addTestSeries() {
@@ -129,7 +131,7 @@ export class SubmittestseriesComponent implements OnInit {
           if (error.status === 401) {
             this.userService.logout();
           }
-          this.showNotification('Some error oaccured while inserting questions in database. Please retry.', 'error');
+          this.showNotification('Some error occured while inserting questions in database. Please retry.', 'error');
         }
       );
     }

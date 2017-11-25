@@ -17,7 +17,6 @@ export class QuestionModel {
     constructor() {
         this.id = Math.random().toString().slice(2, 12);
         this.question = '';
-        this.paragraph = new Paragraph(this.id);
         this.images = new Images();
         this.options = new Options();
         this.relatedTo = new RelatedTo();
@@ -83,7 +82,7 @@ class Options {
     this.imagePath = [];
     }
 }
-class Paragraph {
+export class Paragraph {
     id: any;
     questionId: any;
     paragraph: string;

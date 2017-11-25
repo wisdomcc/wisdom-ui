@@ -4,6 +4,7 @@ import { SearchCriteria } from '../../../../models/question/searchcriteria.model
 import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
 import { QuestionService } from '../../../../services/question/question.service';
 import { UserService } from '../../../../services/user/user.service';
+import { UtilityService } from '../../../../services/utility/utility.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
 
 @Component({
@@ -32,13 +33,14 @@ export class UpdatequestionComponent implements OnInit {
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
   constructor(private questionService: QuestionService,
-              private userService: UserService) { }
+              private userService: UserService,
+              private utilityService: UtilityService) { }
 
   ngOnInit() {
     this.id = 'updatequestion';
-    this.searchId = "updatequestionsearch"
-    this.getDataFromlocalStorage();
-    localStorage.setItem("page", this.id);
+    this.searchId = 'updatequestionsearch';
+    this.getDataFromLocalStorage();
+    this.utilityService.setStringDataToLocalStorage('page', this.id);
     this.searchCriteria = new SearchCriteria();
     this.rightImagePath = '../../assets/images/right.png';
     this.downImagePath = '../../assets/images/down.png';
@@ -49,38 +51,17 @@ export class UpdatequestionComponent implements OnInit {
     for (let year = 1991; year < (new Date()).getFullYear(); year++) {
       this.fromYears.push(year);
     }
-    this.categoryData = JSON.parse(localStorage.getItem('categoryData'));
   }
 
-  getDataFromlocalStorage() {
-    if(localStorage.getItem("page") !== "undefined" && localStorage.getItem("page") === this.id) {
-      if(localStorage.getItem("questionModels") !== "undefined") {
-        this.questionModels = JSON.parse(localStorage.getItem("questionModels"));
-      } else {
-        this.questionModels = [];
-      }
-      if(localStorage.getItem("qeProperty") !== "undefined") {
-        this.qeProperty = JSON.parse(localStorage.getItem("qeProperty"));
-      } else {
-        this.qeProperty = [];
-      }
-      this.hideSubmitPreviewButton = true;
-      if(localStorage.getItem("hideSubmitPreviewButton") !== "undefined") {
-        if(localStorage.getItem("hideSubmitPreviewButton") === 'true') {
-          this.hideSubmitPreviewButton = true;
-        } else {
-          this.hideSubmitPreviewButton = false;
-        }
-      }
-      this.isDataPresent = false;
-      if(localStorage.getItem("isDataPresent") !== "undefined") {
-        if(localStorage.getItem("isDataPresent") === 'true') {
-          this.isDataPresent = true;
-        } else {
-          this.isDataPresent = false;
-        }
-      }
+  getDataFromLocalStorage() {
+    this.categoryData = this.utilityService.getJsonDataFromLocalStorage('categoryData');
+    if(this.utilityService.getStringDataFromLocalStorage('page') === this.id) {
+      this.questionModels = this.utilityService.getJsonDataFromLocalStorage('questionModels');
+      this.qeProperty = this.utilityService.getJsonDataFromLocalStorage('qeProperty');
+      this.hideSubmitPreviewButton = this.utilityService.getBooleanDataFromLocalStorage('hideSubmitPreviewButton');
+      this.isDataPresent = this.utilityService.getBooleanDataFromLocalStorage('isDataPresent');
     } else {
+      this.removeDataFromLocalStorage();
       this.questionModels = [];
       this.qeProperty = [];
       this.hideSubmitPreviewButton = true;
@@ -88,27 +69,14 @@ export class UpdatequestionComponent implements OnInit {
     }
   }
 
-  setDataIntolocalStorage() {
-    localStorage.setItem("questionModels", JSON.stringify(this.questionModels));
-    localStorage.setItem("qeProperty", JSON.stringify(this.qeProperty));
-    if(this.hideSubmitPreviewButton) {
-      localStorage.setItem('hideSubmitPreviewButton', 'true');
-    } else {
-      localStorage.setItem('hideSubmitPreviewButton', 'false');
-    }
-    if(this.isDataPresent) {
-      localStorage.setItem('isDataPresent', 'true');
-    } else {
-      localStorage.setItem('isDataPresent', 'false');
-    }
-  }
-
-  removeItemFromlocalStorage() {
-    localStorage.removeItem("questionModels");
-    localStorage.removeItem("qeProperty");
-    localStorage.removeItem("hideSubmitPreviewButton");
-    localStorage.removeItem("linkedQeProperty");
-    localStorage.removeItem("isDataPresent");
+  removeDataFromLocalStorage() {
+    let keys: string[] = [];
+    keys.push('questionModels');
+    keys.push('qeProperty');
+    keys.push('hideSubmitPreviewButton');
+    keys.push('linkedQeProperty');
+    keys.push('isDataPresent');
+    this.utilityService.removeMultipleDataFromLocalStorage(keys);
   }
 
   getToYears() {
@@ -193,7 +161,10 @@ export class UpdatequestionComponent implements OnInit {
           for (let i = 0; i < data.length; i++) {
             this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
           }
-          this.setDataIntolocalStorage();
+          this.utilityService.setJsonDataToLocalStorage('questionModels', this.questionModels);
+          this.utilityService.setJsonDataToLocalStorage('qeProperty', this.qeProperty);
+          this.utilityService.setBooleanDataToLocalStorage('isDataPresent', this.isDataPresent);
+          this.utilityService.setBooleanDataToLocalStorage('hideSubmitPreviewButton', this.hideSubmitPreviewButton);
         } else {
           this.showSearchNotification('No result for your criteria.', 'status');
         }
@@ -210,7 +181,8 @@ export class UpdatequestionComponent implements OnInit {
   expandCollapse(index: number) {
     this.qeProperty[index].collapse = this.qeProperty[index].collapse === true ? false : true;
     this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
-    this.setDataIntolocalStorage();
+    this.utilityService.setJsonDataToLocalStorage('questionModels', this.questionModels);
+    this.utilityService.setJsonDataToLocalStorage('qeProperty', this.qeProperty);
   }
 
   removeQuestion(index: number) {
@@ -219,10 +191,15 @@ export class UpdatequestionComponent implements OnInit {
     }
     this.questionModels.splice(index, 1);
     this.qeProperty.splice(index, 1);
-    this.setDataIntolocalStorage();
+    this.utilityService.setJsonDataToLocalStorage('questionModels', this.questionModels);
+    this.utilityService.setJsonDataToLocalStorage('qeProperty', this.qeProperty);
+    this.utilityService.setBooleanDataToLocalStorage('hideSubmitPreviewButton', this.hideSubmitPreviewButton);
   }
 
   submitQuestions() {
+    this.utilityService.setJsonDataToLocalStorage('questionModels', this.questionModels);
+    this.utilityService.setJsonDataToLocalStorage('qeProperty', this.qeProperty);
+    this.utilityService.setBooleanDataToLocalStorage('hideSubmitPreviewButton', this.hideSubmitPreviewButton);
     this.questionService.updateQuestionModels(this.questionModels)
     .subscribe(
       data => {
@@ -231,13 +208,13 @@ export class UpdatequestionComponent implements OnInit {
         this.questionModels = [];
         this.qeProperty = [];
         this.isDataPresent = false;
-        this.removeItemFromlocalStorage();
+        this.removeDataFromLocalStorage();
       },
       error => {
         if (error.status === 401) {
           this.userService.logout();
         }
-        this.showNotification('Some error oaccured while inserting questions in database. Please retry.', 'error');
+        this.showNotification('Some error occured while inserting questions in database. Please retry.', 'error');
       }
     );
   }

@@ -1,7 +1,7 @@
 <div class="row" *ngIf="!isAlreadyEnrolled">
   <div class="col">
       <div class="btn-group col" >
-        <button class="btn btn-success ml-auto " (click)="enrollTestSeries()" [disabled]="isEnrollmentSuccessful || isAlreadyEnrolled" >Enroll To Test Series</button>
+        <button class="btn btn-success ml-auto " (click)="enrollTestSeries()" [hidden]="isEnrollmentSuccessful || isAlreadyEnrolled" >Enroll To Test Series</button>
       </div>
   </div>
 </div>

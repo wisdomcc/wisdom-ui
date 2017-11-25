@@ -13,6 +13,7 @@ import { UrlSecurityService } from '../services/security/url.security.service';
 import { EmailService } from '../services/email/email.service';
 import { AnswerService } from '../services/answer/answer.service';
 import { TestSeriesService } from '../services/testseries/testseries.service';
+import { UtilityService } from '../services/utility/utility.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './user/login/login.component';
@@ -103,7 +104,15 @@ import { SubmitcategoryComponent } from './question/insert/submitcategory/submit
     routing,
     PaginationModule.forRoot()
   ],
-  providers: [QuestionService, TestSeriesService, UserService, UrlSecurityService, EmailService, AnswerService],
+  providers: [
+    QuestionService,
+    TestSeriesService,
+    UserService,
+    UrlSecurityService,
+    EmailService,
+    AnswerService,
+    UtilityService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

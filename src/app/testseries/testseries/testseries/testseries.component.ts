@@ -1,15 +1,17 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { QuestionModel } from '../../../../models/question/question.model';
 import { TestSeriesAnswer } from '../../../../models/testseries/testseries.model';
 import { TestSeriesLinkedAnswer } from '../../../../models/testseries/testseries.model';
 import { TestSeriesStatus } from '../../../../models/testseries/testseries.model';
 import { TestSeries } from '../../../../models/testseries/testseries.model';
 import { QuestionStatus } from '../../../../models/testseries/testseries.model';
-import { SearchCriteria } from '../../../../models/question/searchcriteria.model';
 import { UserService } from '../../../../services/user/user.service';
+import { UtilityService } from '../../../../services/utility/utility.service';
 import { QuestionService } from '../../../../services/question/question.service';
 import { TestSeriesService } from '../../../../services/testseries/testseries.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
+import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'app-testseries',
@@ -27,15 +29,17 @@ export class TestseriesComponent implements OnInit {
   public maxSize = 5;
   public numPages = 1;
   public length = 0;
+  public enrollTestSeriesUrl = '/enrolltestseries';
   public answerModels: TestSeriesAnswer[];
   public testSeriesStatus: TestSeriesStatus;
   public questionStatus: QuestionStatus[];
   public data: QuestionModel[];
-  public searchCriteria: SearchCriteria;
   public id: string;
   public isTestStarted: boolean;
+  public isEnrolledForTestSeries: boolean;
   public testSeriesModels: TestSeries[]; 
-  public config: any = {
+  public config:
+   any = {
     paging: true,
     sorting: {columns: this.columns},
     filtering: {filterString: ''},
@@ -46,62 +50,42 @@ export class TestseriesComponent implements OnInit {
 
   constructor(private questionService: QuestionService,
               private userService: UserService,
-              private testSeriesService: TestSeriesService) { }
+              private testSeriesService: TestSeriesService,
+              private utilityService: UtilityService,
+              private router: Router) { }
    
   public ngOnInit(): void {
     this.id = "testseries";
-    this.getDataFromlocalStorage();
-    localStorage.setItem("page", this.id);
-    this.searchCriteria = new SearchCriteria();
-    this.fetchEnrolledTestSeriesDetails();
-  }
-
-  getDataFromlocalStorage() {
-    if(localStorage.getItem("page") !== "undefined" && localStorage.getItem("page") === this.id) {
-      if(localStorage.getItem("data") !== "undefined") {
-        this.data = JSON.parse(localStorage.getItem("data"));
+    this.isTestStarted = false;
+    this.isEnrolledForTestSeries = true;
+    debugger;
+    if(this.utilityService.getBooleanDataFromLocalStorage('isEnrolledForTestSeries')) {
+      if(this.utilityService.getBooleanDataFromLocalStorage('isTestStarted')) {
+        this.isTestStarted = true;
+        this.page = this.utilityService.getIntDataFromLocalStorage('pageNo');
+        this.data = this.utilityService.getJsonDataFromLocalStorage('data');
+        this.answerModels = this.utilityService.getJsonDataFromLocalStorage('answerModels');
+        this.testSeriesStatus = this.utilityService.getJsonDataFromLocalStorage('testSeriesStatus');
+        this.onChangeTable(this.config);
+        this.changePage({page: this.page, itemsPerPage: this.itemsPerPage}, this.data);
+      } else {
+        this.testSeriesModels = this.utilityService.getJsonDataFromLocalStorage('testSeriesModels');
       }
-      if(localStorage.getItem("answerModels") !== "undefined") {
-        this.answerModels = JSON.parse(localStorage.getItem("answerModels"));
-      }
-      if(localStorage.getItem("testSeriesStatus") !== "undefined") {
-        this.testSeriesStatus = JSON.parse(localStorage.getItem("testSeriesStatus"));
-      }
-      if(localStorage.getItem("isTestStarted")  !== "undefined") {
-        if(localStorage.getItem("isTestStarted") === 'true') {
-          this.isTestStarted = true;
-        } else {
-          this.isTestStarted = false;
-        }
-      }
-      if(localStorage.getItem("pageNo") !== "undefined") {
-        this.page = parseInt(localStorage.getItem("pageNo"));
-      }
-      this.onChangeTable(this.config);
-      this.changePage({page: this.page, itemsPerPage: this.itemsPerPage}, this.data);
     } else {
-      this.isTestStarted = false;
+      this.fetchEnrolledTestSeriesDetails();
     }
   }
 
-  setDataIntolocalStorage() {
-    localStorage.setItem("pageNo", '' + this.page);
-    localStorage.setItem("data", JSON.stringify(this.data));
-    localStorage.setItem("answerModels", JSON.stringify(this.answerModels));
-    localStorage.setItem("testSeriesStatus", JSON.stringify(this.testSeriesStatus));
-    if(this.isTestStarted) {
-      localStorage.setItem('isTestStarted', 'true');
-    } else {
-      localStorage.setItem('isTestStarted', 'false');
-    }
-  }
-
-  removeItemFromlocalStorage() {
-    localStorage.removeItem("data");
-    localStorage.removeItem("pageNo");
-    localStorage.removeItem("answerModels");
-    localStorage.removeItem("testSeriesStatus");
-    localStorage.removeItem("isTestStarted");
+  removeDataFromLocalStorage() {
+    let keys: string[] = [];
+    keys.push('data');
+    keys.push('pageNo');
+    keys.push('answerModels');
+    keys.push('testSeriesModels');
+    keys.push('testSeriesStatus');
+    keys.push('isTestStarted');
+    keys.push('isEnrolledForTestSeries');
+    this.utilityService.removeMultipleDataFromLocalStorage(keys);
   }
 
   fetchEnrolledTestSeriesDetails() {
@@ -109,8 +93,11 @@ export class TestseriesComponent implements OnInit {
     .subscribe(tsdata => {
       this.testSeriesModels = JSON.parse(tsdata);
       if(this.testSeriesModels.length === 0) {
-        this.showNotification("Not enrolled. Please enroll to test series.", "status");
+        this.showNotification('Not enrolled. Please enroll to test series. Click <strong>"Enroll Test Series"</strong> to enroll.', 'status');
+        this.isEnrolledForTestSeries = false;
       }
+      this.utilityService.setJsonDataToLocalStorage('testSeriesModels', this.testSeriesModels);
+      this.utilityService.setBooleanDataToLocalStorage('isEnrolledForTestSeries', this.isEnrolledForTestSeries);
     },
     error => {
       if (error.status === 401) {
@@ -120,9 +107,12 @@ export class TestseriesComponent implements OnInit {
     });
   }
 
+  enrollTestSeries() {
+    this.router.navigateByUrl(this.enrollTestSeriesUrl);
+  }
+
   startTest(testSeriesId: any) {
     let totalQuestions = 0;
-    //this.questionService.viewQuestion(this.searchCriteria)
     this.testSeriesService.fetchTestSeriesQuestions(testSeriesId)
     .subscribe(data => {
       this.data = JSON.parse(data);
@@ -141,12 +131,15 @@ export class TestseriesComponent implements OnInit {
             }
           }
         }
+        this.testSeriesStatus = new TestSeriesStatus(this.questionStatus, totalQuestions);
+        this.isTestStarted = true;
+        this.utilityService.setBooleanDataToLocalStorage('isTestStarted', this.isTestStarted);
+        this.utilityService.setJsonDataToLocalStorage('data', this.data);
+        this.utilityService.setJsonDataToLocalStorage('answerModels', this.answerModels);
+        this.utilityService.setJsonDataToLocalStorage('testSeriesStatus', this.testSeriesStatus);
+      } else {
+        this.showNotification('Some technical issue. Please try after sometime.', 'error');  
       }
-      this.testSeriesStatus = new TestSeriesStatus(this.questionStatus, totalQuestions);
-      this.setDataIntolocalStorage();
-      // console.log(this.answerModels);
-      // console.log(this.testSeriesStatus);
-      this.onChangeTable(this.config);
     },
     error => {
       if (error.status === 401) {
@@ -155,7 +148,6 @@ export class TestseriesComponent implements OnInit {
       this.showNotification('Some technical issue. Please try after sometime.', 'error');
     });
     this.onChangeTable(this.config);
-    this.isTestStarted = true;
   }
 
   submitTestSeries() {
@@ -163,7 +155,7 @@ export class TestseriesComponent implements OnInit {
       .subscribe(
         data => {
         this.isTestStarted = false;
-        this.removeItemFromlocalStorage();
+        this.removeDataFromLocalStorage();
         this.showNotification('Answers submitted successfully. Please visit result link to view result analysis.', 'status');
         },
         error => {
@@ -189,9 +181,10 @@ export class TestseriesComponent implements OnInit {
   }
 
   public changePage(page: any, data: Array<any> = this.data): Array<any> {
-    this.page = page.page;
-    this.setDataIntolocalStorage();
-    if (data !== undefined && data.length > 0) {
+    this.utilityService.setIntDataToLocalStorage('pageNo', page.page);
+    this.utilityService.setJsonDataToLocalStorage('answerModels', this.answerModels);
+    this.utilityService.setJsonDataToLocalStorage('testSeriesStatus', this.testSeriesStatus);
+    if (data !== null && data !== undefined && data.length > 0) {
       const start = (page.page - 1) * page.itemsPerPage;
       const end = page.itemsPerPage > -1 ? (start + page.itemsPerPage) : data.length;
       return data.slice(start, end);
@@ -201,7 +194,7 @@ export class TestseriesComponent implements OnInit {
 
   public onChangeTable(config: any, page: any = {page: this.page, itemsPerPage: this.itemsPerPage}): any {
     const sortedData = this.data;
-    if (sortedData !== undefined && sortedData.length > 0) {
+    if (sortedData !== null && sortedData !== undefined && sortedData.length > 0) {
       for (let i = 0; i < sortedData.length; i++) {
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, sortedData[i].question]);
       }
@@ -219,4 +212,3 @@ export class TestseriesComponent implements OnInit {
   }
 
 }
-

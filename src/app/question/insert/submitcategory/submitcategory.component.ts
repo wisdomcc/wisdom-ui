@@ -56,7 +56,7 @@ export class SubmitcategoryComponent implements OnInit {
         if (error.status === 401) {
           this.userService.logout();
         }
-        this.showNotification('Some error oaccured while inserting questions in database. Please retry.', 'error');
+        this.showNotification('Some error occured while inserting questions in database. Please retry.', 'error');
       }
     );
   }

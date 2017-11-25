@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
     username: string;
     password: string;
     redirectUrl: string;
+    registerUserUrl: string;
     user: WisdomUser;
     @ViewChild(NotificationComponent) notification: NotificationComponent;
 
@@ -26,6 +27,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         this.id = 'login';
+        this.registerUserUrl = '/registration';
         this.redirectUrl = this.route.snapshot.queryParams['redirectUrl'] || '/';
       }
 
@@ -64,6 +66,14 @@ export class LoginComponent implements OnInit {
                 this.showNotification('Technical issue. Please try after sometime.', 'error');
             }
         );
+    }
+
+    registerUser() {
+        this.router.navigateByUrl(this.registerUserUrl);
+    }
+
+    forgotPassword() {
+        this.showNotification('Password sent to your email.', 'status');
     }
 
     getWisdomUser(data: any): WisdomUser {

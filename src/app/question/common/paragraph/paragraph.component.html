@@ -6,13 +6,13 @@
 	</div>
 	<div class="col form-check">
         <label class="form-check-label">
-        	<input type="radio" class="form-check-input" (click)="changeParagraphAvailibility('true')" name="paragraphOption" value="true" >
+        	<input type="radio" class="form-check-input" (click)="changeParagraphAvailibility('true')" name="paragraphOption{{questionModel.id}}" value="true" >
         	Yes
         </label>
     </div>
     <div class="col form-check">
     	<label class="form-check-label">
-        	<input type="radio" class="form-check-input" (click)="changeParagraphAvailibility('false')" name="paragraphOption" value="false" checked >
+        	<input type="radio" class="form-check-input" (click)="changeParagraphAvailibility('false')" name="paragraphOption{{questionModel.id}}" value="false" checked >
         	No
         </label>
     </div>

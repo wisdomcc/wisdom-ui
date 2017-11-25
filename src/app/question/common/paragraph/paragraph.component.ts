@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { QuestionModel } from '../../../../models/question/question.model';
+import { QuestionModel, Paragraph } from '../../../../models/question/question.model';
 import { QuestionService } from '../../../../services/question/question.service';
 import { UserService } from '../../../../services/user/user.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
@@ -19,7 +19,6 @@ export class ParagraphComponent implements OnInit {
   id: string;
 
   @Input() questionModel: QuestionModel;
-  @Input() index: number;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
   constructor(private questionService: QuestionService,
@@ -97,8 +96,12 @@ export class ParagraphComponent implements OnInit {
 
   changeParagraphAvailibility(isParagraphAvailable: string) {
     if (isParagraphAvailable === 'true') {
+      if(this.questionModel.paragraph === undefined) {
+        this.questionModel.paragraph = new Paragraph(this.questionModel.id);
+      }
       this.isParagraphAvailable = true;
     } else {
+      this.questionModel.paragraph = undefined;
       this.isParagraphAvailable = false;
     }
   }

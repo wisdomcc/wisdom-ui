@@ -2,9 +2,9 @@
 <div class="row">
     <div class="col-8"></div>
     <div class="col-4">
+        <app-notification [nid]="id"></app-notification>
         <!-- Form -->
         <div class="card">
-            <app-notification [nid]="id"></app-notification>
             <div class="card-header p-b-0">
                 <h5 class="card-title">
                     <i class="fa fa-sign-in" aria-hidden="true"></i> 
@@ -20,6 +20,13 @@
                         <input type="password" [(ngModel)]="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
                     </div>
                     <button type="submit" (click)="loginUser()" class="btn btn-primary">Log In</button>
+                    <div class="float-right">
+                        <div class="text-primary">
+                            New User?&nbsp;<button type="button" (click)="registerUser()" class="btn btn-success">Register</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <button type="button" (click)="forgotPassword()" class="btn btn-secondary">Forgot Password</button>
                 </form>
             </div>
         </div>
