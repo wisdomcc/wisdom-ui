@@ -39,7 +39,7 @@ export class RegistrationComponent implements OnInit {
     .subscribe(
         data => {
             const response = JSON.parse(data);
-            this.showNotification(response.message, response.type);
+            this.showNotification(response.message + ' <a href="#" routerLink="login">Click to Login</a>', response.type);
             this.username = '';
             this.emailid = '';
             this.password = '';

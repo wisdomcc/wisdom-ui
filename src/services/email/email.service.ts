@@ -7,7 +7,8 @@ import { WisdomUser } from '../../models/user/wisdomuser.model';
 @Injectable()
 export class EmailService {
 
-  emailUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/sendemail';
+  emailUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/email/send';
+  emailPasswordUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/email/sendpassword';
 
   constructor(private http: Http, private router: Router) {
   }
@@ -19,6 +20,13 @@ export class EmailService {
     formData.append('emailid', emailId);
     formData.append('message', message);
     return this.http.post(this.emailUrl, formData)
+            .map((res: Response) => res.text());
+  }
+
+  emailPasswordToRegisteredUser(username: string) {
+    const formData = new FormData();
+    formData.append('username', username);
+    return this.http.post(this.emailPasswordUrl, formData)
             .map((res: Response) => res.text());
   }
 

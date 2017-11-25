@@ -3,9 +3,6 @@
  
   <div class="navbar-toggleable-sm" id="navbar">
       <ul class="nav navbar-nav float-sm-right">
-           <li [hidden]="!enabled" class="nav-item">
-                <a class="nav-link" href="#" >Hi, <Strong>{{username}}</Strong></a>
-            </li>
           <li [hidden]="!enabled" class="nav-item">
               <a class="nav-link" href="#" routerLink="homepage" >Home</a>
           </li>
@@ -16,42 +13,65 @@
             <a class="nav-link" href="#" routerLink="registration">Registration</a>
           </li>
           <li [hidden]="enabled" class="nav-item">
-                <a class="nav-link" href="#" routerLink="login">Login</a>
+            <a class="nav-link" href="#" routerLink="login">Login</a>
           </li>
-          <li [hidden]="!enabled" class="nav-item dropdown">
+          <li [hidden]="!enabled || role == 'admin'" class="nav-item">
+            <a class="nav-link" href="#" routerLink="viewquestion">Previous Year Question</a>
+          </li>
+          <li [hidden]="!enabled && role != 'admin'" class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Services
               </a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                  <a [hidden]="role != 'admin'" class="dropdown-item" routerLink="submitquestion" href="#">Submit Question</a>
-                  <a [hidden]="role != 'admin'" class="dropdown-item" routerLink="updatequestion" href="#">Update Question</a>
-                  <a [hidden]="role != 'admin'" class="dropdown-item" routerLink="submitanswer" href="#">Submit Answer</a>
-                  <a [hidden]="role != 'admin'" class="dropdown-item" routerLink="updateanswer" href="#">Update Answer</a>
-                  <a [hidden]="role != 'admin'" class="dropdown-item" routerLink="submitcategory" href="#">Submit Category</a>
-                  <a class="dropdown-item" routerLink="viewquestion" href="#">View Question</a>
+                  <a class="dropdown-item" routerLink="submitquestion" href="#">Submit Question</a>
+                  <a class="dropdown-item" routerLink="updatequestion" href="#">Update Question</a>
+                  <a class="dropdown-item" routerLink="submitanswer" href="#">Submit Answer</a>
+                  <a class="dropdown-item" routerLink="updateanswer" href="#">Update Answer</a>
+                  <a class="dropdown-item" routerLink="submitcategory" href="#">Submit Category</a>
+                  <a class="dropdown-item" routerLink="viewquestion" href="#">Previous Year Question</a>
               </div>
           </li>
-          <li [hidden]="!enabled" class="nav-item dropdown">
+          <li [hidden]="!enabled || role == 'admin'" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Test Series
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a [hidden]="role != 'admin'" class="dropdown-item" routerLink="submittestseries" href="#">Submit Test Series</a>
-                <a [hidden]="role != 'admin'" class="dropdown-item" routerLink="questionassignment" href="#">Assign Question</a>
                 <a class="dropdown-item" routerLink="enrolltestseries" href="#">Enroll</a>
                 <a class="dropdown-item" routerLink="testseries" href="#">Take Exam</a>
                 <a class="dropdown-item" routerLink="testseriesresult" href="#">Result Analysis</a>
             </div>
           </li>
-          <li class="nav-item">
-                <a class="nav-link" href="#" routerLink="aboutus">About Us</a>
+          <li [hidden]="!enabled && role != 'admin'" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Test Series
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" routerLink="submittestseries" href="#">Submit Test Series</a>
+                <a class="dropdown-item" routerLink="questionassignment" href="#">Assign Question</a>
+                <a class="dropdown-item" routerLink="enrolltestseries" href="#">Enroll</a>
+                <a class="dropdown-item" routerLink="testseries" href="#">Take Exam</a>
+                <a class="dropdown-item" routerLink="testseriesresult" href="#">Result Analysis</a>
+            </div>
           </li>
-          <li class="nav-item">
-                <a class="nav-link" href="#" routerLink="contactus">Contact Us</a>
-          </li>
-          <li [hidden]="!enabled" class="nav-item">
-                <a class="nav-link" (click)="logout()" href="#" routerLink="logout">Logout</a>
-          </li>
+          <li [hidden]="!enabled" class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{username}}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="nav-link" (click)="logout()" href="#" routerLink="profile">
+                        <i class="fa fa-user" aria-hidden="true"></i>&nbsp;Profile 
+                    </a>
+                    <a class="nav-link" (click)="logout()" href="#" routerLink="logout">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Logout
+                    </a>
+                    <a class="nav-link" href="#" routerLink="aboutus">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;About Us
+                    </a>
+                    <a class="nav-link" href="#" routerLink="contactus">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;Contact Us
+                    </a>
+                </div>
+            </li>
       <!-- Search -->
      <!--  <li>
      <form class="form-inline float-sm-right">

@@ -11,9 +11,9 @@ export class UserService {
   loggedIn$ = this.loggedIn.asObservable();
   loginUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/login';
   logoutUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/logout';
-  registrationUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/registration';
-  isUsernameExistingUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/isusernamepresent';
-  isEmailExistingUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/isemailpresent';
+  registrationUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/user/registration';
+  isUsernameExistingUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/user/ispresent';
+  isEmailExistingUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/user/isemailpresent';
 
   constructor(private http: Http, private router: Router) {
   }

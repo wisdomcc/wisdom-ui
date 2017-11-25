@@ -4,7 +4,7 @@
     <div class="col-4">
         <app-notification [nid]="id"></app-notification>
         <!-- Form -->
-        <div class="card">
+        <div class="card" *ngIf="!isForgotPassword">
             <div class="card-header p-b-0">
                 <h5 class="card-title">
                     <i class="fa fa-sign-in" aria-hidden="true"></i> 
@@ -30,5 +30,23 @@
                 </form>
             </div>
         </div>
+        <!-- forgot password -->
+        <div class="card"  *ngIf="isForgotPassword" >
+            <div class="card-header p-b-0">
+                <h5 class="card-title">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> 
+                    Forgot Password
+                </h5>
+            </div>
+            <div class="card-block">
+                <form>
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="username" class="form-control" id="uid" name="uid" placeholder="Username">
+                    </div>
+                    <button type="submit" (click)="emailPassword()" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
+<app-footer></app-footer>

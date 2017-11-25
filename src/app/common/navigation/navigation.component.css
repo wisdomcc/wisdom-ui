@@ -1,0 +1,9 @@
+.dropdown-menu > a:hover,
+.dropdown-menu > a:focus {
+    color: #52ac1e;
+    text-decoration: none;
+    background-color: rgb(243, 248, 241);  /*change color of links in drop down here*/
+}
+.user {
+    color: #52ac1e;
+}

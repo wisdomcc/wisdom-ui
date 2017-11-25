@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { NotificationComponent } from '../../common/notification/notification.component';
 import { UserService } from '../../../services/user/user.service';
+import { EmailService } from '../../../services/email/email.service';
 import { QuestionService } from '../../../services/question/question.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WisdomUser } from '../../../models/user/wisdomuser.model';
@@ -17,16 +18,19 @@ export class LoginComponent implements OnInit {
     password: string;
     redirectUrl: string;
     registerUserUrl: string;
+    isForgotPassword: boolean;
     user: WisdomUser;
     @ViewChild(NotificationComponent) notification: NotificationComponent;
 
     constructor(private userService: UserService,
                 private router: Router,
                 private route: ActivatedRoute,
-                private questionService: QuestionService) { }
+                private questionService: QuestionService,
+                private emailService: EmailService) { }
 
     ngOnInit() {
         this.id = 'login';
+        this.isForgotPassword = false;
         this.registerUserUrl = '/registration';
         this.redirectUrl = this.route.snapshot.queryParams['redirectUrl'] || '/';
       }
@@ -73,7 +77,40 @@ export class LoginComponent implements OnInit {
     }
 
     forgotPassword() {
-        this.showNotification('Password sent to your email.', 'status');
+        this.isForgotPassword = true;
+        this.showNotification('Enter username to get password on registered email.', 'status');
+    }
+
+    emailPassword() {
+        this.userService.isUsernameExisting(this.username)
+        .subscribe(
+          data => {
+            const response = JSON.parse(data);
+            if (response.type === 'error') {
+                this.emailService.emailPasswordToRegisteredUser(this.username)
+                .subscribe(
+                  data => {
+                      if(data) {
+                        this.isForgotPassword = false;
+                        this.showNotification('Password sent on registered email.', 'success');
+                      } else {
+                        this.showNotification('Email sent failed. Please retry.', 'error');    
+                      }
+                  },
+                  error => {
+                    if (error.status === 401) {
+                      this.userService.logout();
+                    }
+                    this.showNotification('Email sent failed. Please retry.', 'error');
+                  }
+                );
+            } else {
+                this.showNotification('Username does not exist.', 'error');
+            }
+          },
+        error => {
+            this.showNotification('Technical issue. Please retry after sometime.', 'error');
+        });
     }
 
     getWisdomUser(data: any): WisdomUser {
