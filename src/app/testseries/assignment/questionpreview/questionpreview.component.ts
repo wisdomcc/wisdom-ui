@@ -37,8 +37,7 @@ export class QuestionpreviewComponent implements OnInit {
     this.onChangeTable(this.config);
   }
 
-  setTestSeriesQuestionMap(questionId: any) {
-    debugger;
+  setTestSeriesQuestionMap(questionId: any) {   
     if(this.testSeriesQuestionMaps === undefined) {
       this.testSeriesQuestionMaps = [];
     }

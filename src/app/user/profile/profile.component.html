@@ -1,0 +1,23 @@
+<br/>
+<div class="row">
+    <div class="col-4">
+      <!-- List-Group Panel -->
+      <div class="card">
+        <div class="card-header p-b-0">
+          <h5 class="card-title"><i class="fa fa-user" aria-hidden="true"></i> {{username}}</h5>
+        </div>
+        <div class="list-group list-group-flush">
+          <a href="#" routerLink="changepassword" class="list-group-item list-group-item-action">Change Password</a>
+          <a href="#" routerLink="enrolltestseries" class="list-group-item list-group-item-action">Enroll for Test Series</a>
+          <a href="#" routerLink="testseries" class="list-group-item list-group-item-action">Start Test Series</a>
+          <a href="#" routerLink="testseriesresult" class="list-group-item list-group-item-action">Result Analysis</a>
+          <a href="#" routerLink="viewquestion" class="list-group-item list-group-item-action">Previous Year Question</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="container-fluid" >
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+</div>

@@ -2,6 +2,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { UrlSecurityService } from '../services/security/url.security.service';
 import { LoginComponent } from './user/login/login.component';
+import { ProfileComponent } from './user/profile/profile.component';
+import { ChangepasswordComponent } from './user/changepassword/changepassword.component';
 import { LogoutComponent } from './user/logout/logout.component';
 import { SubmitquestionComponent } from './question/insert/submitquestion/submitquestion.component';
 import { ViewquestionComponent } from './question/search/viewquestion/viewquestion.component';
@@ -27,6 +29,15 @@ const appRoutes: Routes = [
     { path: 'updateanswer', component: UpdateanswerComponent, canActivate: [UrlSecurityService] },
     { path: 'submitcategory', component: SubmitcategoryComponent, canActivate: [UrlSecurityService] },
     { path: 'products', component: ProductsComponent, canActivate: [UrlSecurityService] },
+    { path: 'profile', component: ProfileComponent,
+        children: [
+            { path: '', redirectTo: 'profile', pathMatch: 'full'},
+            { path: 'changepassword', component: ChangepasswordComponent },
+            { path: 'testseries', component: TestseriesComponent },
+            { path: 'enrolltestseries', component: EnrolltestseriesComponent },
+            { path: 'viewquestion', component: ViewquestionComponent },
+            { path: 'testseriesresult', component: TestseriesresultComponent }
+        ], canActivate: [UrlSecurityService] },
     { path: 'registration', component: RegistrationComponent },
     { path: 'aboutus', component: AboutusComponent },
     { path: 'contactus', component: ContactusComponent },

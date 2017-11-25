@@ -10,6 +10,7 @@ export class UserService {
   private loggedIn = new Subject<WisdomUser>();
   loggedIn$ = this.loggedIn.asObservable();
   loginUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/login';
+  changePasswordUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/user/changepassword';
   logoutUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/logout';
   registrationUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/user/registration';
   isUsernameExistingUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/user/ispresent';
@@ -27,6 +28,14 @@ export class UserService {
     formData.append('username', username);
     formData.append('password', password);
     return this.http.post(this.loginUrl, formData, {withCredentials: true})
+      .map((res: Response) => res.text());
+  }
+
+  changePassword(oldpassword: string, newpassword: string) {
+    const formData = new FormData();
+    formData.append('oldpassword', oldpassword);
+    formData.append('newpassword', newpassword);
+    return this.http.post(this.changePasswordUrl, formData, {withCredentials: true})
       .map((res: Response) => res.text());
   }
 

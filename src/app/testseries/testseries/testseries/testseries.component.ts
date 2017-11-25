@@ -58,7 +58,6 @@ export class TestseriesComponent implements OnInit {
     this.id = "testseries";
     this.isTestStarted = false;
     this.isEnrolledForTestSeries = true;
-    debugger;
     if(this.utilityService.getBooleanDataFromLocalStorage('isEnrolledForTestSeries')) {
       if(this.utilityService.getBooleanDataFromLocalStorage('isTestStarted')) {
         this.isTestStarted = true;

@@ -214,7 +214,6 @@ export class QuestionassignmentComponent implements OnInit {
   }
 
   showSearchNotification(msg: string, type: string) {
-    debugger;
     this.notification.showNotification(msg, type, this.searchId);
   }
 

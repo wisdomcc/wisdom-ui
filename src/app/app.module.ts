@@ -53,6 +53,8 @@ import { TestseriesComponent } from './testseries/testseries/testseries/testseri
 import { TestseriesresultComponent } from './testseries/result/testseriesresult/testseriesresult.component';
 import { EnrolltestseriesComponent } from './testseries/enrolltestseries/enrolltestseries.component';
 import { SubmitcategoryComponent } from './question/insert/submitcategory/submitcategory.component';
+import { ProfileComponent } from './user/profile/profile.component';
+import { ChangepasswordComponent } from './user/changepassword/changepassword.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +95,9 @@ import { SubmitcategoryComponent } from './question/insert/submitcategory/submit
     TestseriesComponent,
     TestseriesresultComponent,
     EnrolltestseriesComponent,
-    SubmitcategoryComponent
+    SubmitcategoryComponent,
+    ProfileComponent,
+    ChangepasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -101,7 +101,11 @@ export class EnrolltestseriesComponent implements OnInit {
   }
 
   startTestSeries() {
-    this.router.navigateByUrl(this.startTestSeriesUrl);
+    if(window.location.href.indexOf('/profile') > 0) {
+      this.router.navigateByUrl('/profile' + this.startTestSeriesUrl);
+    } else {
+      this.router.navigateByUrl(this.startTestSeriesUrl);
+    }
   }
 
   showNotification(msg: string, type: string) {
