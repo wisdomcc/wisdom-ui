@@ -44,7 +44,6 @@ export class PreviewquestionComponent implements OnInit {
   }
 
   public changeSort(data: any, config: any): any {
-    if (data !== undefined && data.length > 0) {
       if (!config.sorting) {
         return data;
       }
@@ -73,12 +72,9 @@ export class PreviewquestionComponent implements OnInit {
         }
         return 0;
       });
-    }
-    return data;
   }
 
   public changeFilter(data: any, config: any): any {
-    if (data !== undefined && data.length > 0) {
       let filteredData: Array<any> = data;
       this.columns.forEach((column: any) => {
         if (column.filtering) {
@@ -112,31 +108,36 @@ export class PreviewquestionComponent implements OnInit {
       filteredData = tempArray;
 
       return filteredData;
-    }
-    return data;
   }
 
   public onChangeTable(config: any, page: any = {page: this.page, itemsPerPage: this.itemsPerPage}): any {
-    if (config.filtering) {
-      Object.assign(this.config.filtering, config.filtering);
-    }
+    if (this.data !== undefined) {
+      if(this.data.length > 0) {
+        if (config.filtering) {
+          Object.assign(this.config.filtering, config.filtering);
+        }
 
-    if (config.sorting) {
-      Object.assign(this.config.sorting, config.sorting);
-    }
-
-    const filteredData = this.changeFilter(this.data, this.config);
-    const sortedData = this.changeSort(filteredData, this.config);
-    if (sortedData !== undefined && sortedData.length > 0) {
-      for (let i = 0; i < sortedData.length; i++) {
-        MathJax.Hub.Queue(['Typeset', MathJax.Hub, sortedData[i].question]);
-      }
-      if (config.name) {
-        this.rows = page ? this.changePage(page, sortedData) : sortedData;
+        if (config.sorting) {
+          Object.assign(this.config.sorting, config.sorting);
+        }
+        const filteredData = this.changeFilter(this.data, this.config);
+        const sortedData = this.changeSort(filteredData, this.config);
+        if(sortedData.length > 0) {
+          for (let i = 0; i < sortedData.length; i++) {
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, sortedData[i].question]);
+          }
+          if (config.name) {
+            this.rows = page ? this.changePage(page, sortedData) : sortedData;
+          } else {
+            this.rows = page && config.paging ? this.changePage(page, sortedData) : sortedData;
+          }
+          this.length = sortedData.length;
+        } else {
+          this.rows = sortedData;
+        }
       } else {
-        this.rows = page && config.paging ? this.changePage(page, sortedData) : sortedData;
+        this.rows = this.data;
       }
-      this.length = sortedData.length;
     }
   }
 

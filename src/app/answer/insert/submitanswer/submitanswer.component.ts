@@ -9,6 +9,7 @@ import { QuestionService } from '../../../../services/question/question.service'
 import { UserService } from '../../../../services/user/user.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
 import { AnspreviewComponent } from '../anspreview/anspreview.component';
+import { SearchfilterComponent } from '../../../question/common/searchfilter/searchfilter.component';
 
 @Component({
   selector: 'app-submitanswer',
@@ -23,16 +24,9 @@ export class SubmitanswerComponent implements OnInit {
   questionModels: QuestionModel[];
   rightImagePath: string;
   downImagePath: string;
-  searchCriteria: SearchCriteria;
-  categoryData: any;
-  selectedSubject: string;
-  selectedTopic: string;
-  subjects: string[];
-  topics: string[];
-  fromYears: number[];
-  toYears: number[];
   isDataPresent: boolean;
   answerModels: AnswerModel[];
+  @ViewChild(SearchfilterComponent) searchFilter: SearchfilterComponent;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
   @ViewChildren(AnspreviewComponent) ansPreviews: QueryList<AnspreviewComponent>;
 
@@ -43,93 +37,14 @@ export class SubmitanswerComponent implements OnInit {
   ngOnInit() {
     this.answerModels = [];
     this.hideSubmitPreviewButton = true;
-    this.searchCriteria = new SearchCriteria();
     this.isDataPresent = false;
     this.rightImagePath = '../../../../assets/images/right.png';
     this.downImagePath = '../../../../assets/images/down.png';
     this.id = 'submitanswer';
-    this.subjects = ['Select Subject'];
-    this.topics = ['Select Topic'];
-    this.fromYears = [];
-    for (let year = 1991; year < (new Date()).getFullYear(); year++) {
-      this.fromYears.push(year);
-    }
-    this.categoryData = JSON.parse(localStorage.getItem("categoryData"));
   }
 
-  getToYears() {
-    this.toYears = [];
-    const startYear = +this.searchCriteria.fromYear + 1;
-    for (let year = startYear; year < (new Date()).getFullYear(); year++) {
-      this.toYears.push(year);
-    }
-  }
-
-  getSubjects() {
-      for (let i = 0; i < this.categoryData.exams.length; i++) {
-        if ('Gate' === this.categoryData.exams[i].exam) {
-          for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
-            if ('CS' === this.categoryData.exams[i].streams[j].stream) {
-              for (let k = 0; k < this.categoryData.exams[i].streams[j].subjects.length; k++) {
-                this.subjects.push(this.categoryData.exams[i].streams[j].subjects[k].subject);
-              }
-              break;
-            }
-          }
-        }
-      }
-  }
-
-  getTopics() {
-    this.clearTopics();
-    for (let i = 0; i < this.categoryData.exams.length; i++) {
-      if ('Gate' === this.categoryData.exams[i].exam) {
-        for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
-          if ('CS' === this.categoryData.exams[i].streams[j].stream) {
-            for (let k = 0; k < this.categoryData.exams[i].streams[j].subjects.length; k++) {
-              if (this.selectedSubject === this.categoryData.exams[i].streams[j].subjects[k].subject) {
-                for (let l = 0; l < this.categoryData.exams[i].streams[j].subjects[k].topics.length; l++) {
-                  this.topics.push(this.categoryData.exams[i].streams[j].subjects[k].topics[l].topic);
-                }
-                break;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  clearTopics() {
-    const length = this.topics.length;
-    this.selectedTopic = 'Select Topic';
-    if (this.topics.length > 0) {
-      for (let i = 0; i < length; i++) {
-        this.topics.pop();
-      }
-    }
-    this.topics.push('Select Topic');
-  }
-
-  viewQuestion() {
-    if (this.selectedSubject !== undefined) {
-      if (this.selectedSubject !== 'Select Subject') {
-        this.searchCriteria.relatedTo.subject.pop();
-        this.searchCriteria.relatedTo.subject.push(this.selectedSubject);
-      } else {
-        this.searchCriteria.relatedTo.subject.pop();
-      }
-    }
-    if (this.selectedTopic !== undefined) {
-      if (this.selectedTopic !== 'Select Topic') {
-        this.searchCriteria.relatedTo.topic.pop();
-        this.searchCriteria.relatedTo.topic.push(this.selectedTopic);
-      } else {
-        this.searchCriteria.relatedTo.topic.pop();
-      }
-    }
-    console.log('Search Criteria : ' + JSON.stringify(this.searchCriteria));
-    this.questionService.viewQuestion(this.searchCriteria)
+  searchQuestion() {
+    this.questionService.viewQuestion(this.searchFilter.searchCriteria)
     .subscribe(
       data => {
         this.questionModels = JSON.parse(data);
@@ -147,7 +62,9 @@ export class SubmitanswerComponent implements OnInit {
             this.answerModels.push(new AnswerModel(this.questionModels[i].id, laModels));
             this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
           }
+          this.notification.hideAlert = true;
         } else {
+          this.isDataPresent = false;
           this.showNotification('No result for your criteria.', 'status');
         }
       },

@@ -55,6 +55,7 @@ import { EnrolltestseriesComponent } from './testseries/enrolltestseries/enrollt
 import { SubmitcategoryComponent } from './question/insert/submitcategory/submitcategory.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { ChangepasswordComponent } from './user/changepassword/changepassword.component';
+import { SearchfilterComponent } from './question/common/searchfilter/searchfilter.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import { ChangepasswordComponent } from './user/changepassword/changepassword.co
     EnrolltestseriesComponent,
     SubmitcategoryComponent,
     ProfileComponent,
-    ChangepasswordComponent
+    ChangepasswordComponent,
+    SearchfilterComponent
   ],
   imports: [
     BrowserModule,

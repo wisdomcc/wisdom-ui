@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuestionModel } from '../../../../models/question/question.model';
+import { SearchfilterComponent } from '../../../question/common/searchfilter/searchfilter.component';
 import { SearchCriteria } from '../../../../models/question/searchcriteria.model';
 import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
 import { QuestionService } from '../../../../services/question/question.service';
@@ -15,22 +16,14 @@ import { NotificationComponent } from '../../../common/notification/notification
 export class UpdatequestionComponent implements OnInit {
 
   id: string;
-  searchId: string;
   hideSubmitPreviewButton: boolean;
   qeProperty: QuestionElementProperty[];
   questionModels: QuestionModel[];
   rightImagePath: string;
   downImagePath: string;
-  searchCriteria: SearchCriteria;
-  categoryData: any;
-  selectedSubject: string;
-  selectedTopic: string;
-  subjects: string[];
-  topics: string[];
-  fromYears: number[];
-  toYears: number[];
   isDataPresent: boolean;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
+  @ViewChild(SearchfilterComponent) searchFilter: SearchfilterComponent;
 
   constructor(private questionService: QuestionService,
               private userService: UserService,
@@ -38,23 +31,13 @@ export class UpdatequestionComponent implements OnInit {
 
   ngOnInit() {
     this.id = 'updatequestion';
-    this.searchId = 'updatequestionsearch';
     this.getDataFromLocalStorage();
     this.utilityService.setStringDataToLocalStorage('page', this.id);
-    this.searchCriteria = new SearchCriteria();
     this.rightImagePath = '../../assets/images/right.png';
     this.downImagePath = '../../assets/images/down.png';
-    this.searchId = 'updatequestionsearch';
-    this.subjects = ['Select Subject'];
-    this.topics = ['Select Topic'];
-    this.fromYears = [];
-    for (let year = 1991; year < (new Date()).getFullYear(); year++) {
-      this.fromYears.push(year);
-    }
   }
 
   getDataFromLocalStorage() {
-    this.categoryData = this.utilityService.getJsonDataFromLocalStorage('categoryData');
     if(this.utilityService.getStringDataFromLocalStorage('page') === this.id) {
       this.questionModels = this.utilityService.getJsonDataFromLocalStorage('questionModels');
       this.qeProperty = this.utilityService.getJsonDataFromLocalStorage('qeProperty');
@@ -79,78 +62,8 @@ export class UpdatequestionComponent implements OnInit {
     this.utilityService.removeMultipleDataFromLocalStorage(keys);
   }
 
-  getToYears() {
-    this.toYears = [];
-    const startYear = +this.searchCriteria.fromYear + 1;
-    for (let year = startYear; year < (new Date()).getFullYear(); year++) {
-      this.toYears.push(year);
-    }
-  }
-
-  getSubjects() {
-    for (let i = 0; i < this.categoryData.exams.length; i++) {
-      if ('Gate' === this.categoryData.exams[i].exam) {
-        for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
-          if ('CS' === this.categoryData.exams[i].streams[j].stream) {
-            for (let k = 0; k < this.categoryData.exams[i].streams[j].subjects.length; k++) {
-              this.subjects.push(this.categoryData.exams[i].streams[j].subjects[k].subject);
-            }
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  getTopics() {
-    this.clearTopics();
-    for (let i = 0; i < this.categoryData.exams.length; i++) {
-      if ('Gate' === this.categoryData.exams[i].exam) {
-        for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
-          if ('CS' === this.categoryData.exams[i].streams[j].stream) {
-            for (let k = 0; k < this.categoryData.exams[i].streams[j].subjects.length; k++) {
-              if (this.selectedSubject === this.categoryData.exams[i].streams[j].subjects[k].subject) {
-                for (let l = 0; l < this.categoryData.exams[i].streams[j].subjects[k].topics.length; l++) {
-                  this.topics.push(this.categoryData.exams[i].streams[j].subjects[k].topics[l].topic);
-                }
-                break;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  clearTopics() {
-    const length = this.topics.length;
-    this.selectedTopic = 'Select Topic';
-    if (this.topics.length > 0) {
-      for (let i = 0; i < length; i++) {
-        this.topics.pop();
-      }
-    }
-    this.topics.push('Select Topic');
-  }
-
-  viewQuestion() {
-    if (this.selectedSubject !== undefined) {
-      if (this.selectedSubject !== 'Select Subject') {
-        this.searchCriteria.relatedTo.subject.pop();
-        this.searchCriteria.relatedTo.subject.push(this.selectedSubject);
-      } else {
-        this.searchCriteria.relatedTo.subject.pop();
-      }
-    }
-    if (this.selectedTopic !== undefined) {
-      if (this.selectedTopic !== 'Select Topic') {
-        this.searchCriteria.relatedTo.topic.pop();
-        this.searchCriteria.relatedTo.topic.push(this.selectedTopic);
-      } else {
-        this.searchCriteria.relatedTo.topic.pop();
-      }
-    }
-    this.questionService.viewQuestion(this.searchCriteria)
+  searchQuestion() {
+    this.questionService.viewQuestion(this.searchFilter.searchCriteria)
     .subscribe(
       data => {
         this.questionModels = JSON.parse(data);
@@ -165,15 +78,17 @@ export class UpdatequestionComponent implements OnInit {
           this.utilityService.setJsonDataToLocalStorage('qeProperty', this.qeProperty);
           this.utilityService.setBooleanDataToLocalStorage('isDataPresent', this.isDataPresent);
           this.utilityService.setBooleanDataToLocalStorage('hideSubmitPreviewButton', this.hideSubmitPreviewButton);
+          this.notification.hideAlert = true;
         } else {
-          this.showSearchNotification('No result for your criteria.', 'status');
+          this.isDataPresent = false;
+          this.showNotification('No result for your criteria.', 'status');
         }
       },
       error => {
         if (error.status === 401) {
           this.userService.logout();
         }
-        this.showSearchNotification('Some technical issue. Please try after sometime.', 'error');
+        this.showNotification('Some technical issue. Please try after sometime.', 'error');
       }
     );
   }
@@ -221,10 +136,6 @@ export class UpdatequestionComponent implements OnInit {
 
   showNotification(msg: string, type: string) {
     this.notification.showNotification(msg, type, this.id);
-  }
-
-  showSearchNotification(msg: string, type: string) {
-    this.notification.showNotification(msg, type, this.searchId);
   }
 
 }

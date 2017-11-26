@@ -1,0 +1,67 @@
+<br/>
+<div class="input-group" id="boot-search-box">
+    <input type="text" [(ngModel)]="searchText" (ngModelChange)="showTypeAheadOption()" class="form-control" [value]="searchText" placeholder="Enter subject or year to search previous year question" />
+    <div class="input-group-btn">
+        <div class="btn-group" role="group">
+            <div class="dropdown dropdown-lg">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <form class="form-horizontal" role="form">
+                      <div class="form-group">
+                        <label for="filter">Select Subject</label>
+                        <select name="subject" class="form-control" [(ngModel)]="selectedSubject" (ngModelChange)="getTopics()" >
+                            <option *ngFor="let subject of subjects" value="{{subject}}">
+                              {{subject}}
+                            </option>
+                        </select>
+                      </div>
+                      <div class="form-group" [hidden]="selectedSubject == undefined || selectedSubject == 'Select Subject'" >
+                        <label for="contain">Select Topic</label>
+                        <select name="topic" class="form-control" [(ngModel)]="selectedTopic">
+                            <option *ngFor="let topic of topics" value="{{topic}}">
+                              {{topic}}
+                            </option>
+                        </select>
+                      </div>
+                      <div class="row form-group">
+                        <div class="col"><label for="year">Year</label></div>
+                        <div class="col">
+                          <select name="year" class="form-control" [(ngModel)]="year" (ngModelChange)="clearYearRange()">
+                            <option value="0">Select Year</option>
+                            <option *ngFor="let fromYear of fromYears" value="{{fromYear}}">
+                              {{fromYear}}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="col"></div>
+                      </div>
+                      <div class="row form-group">
+                        <div class="col text-center">OR</div>
+                      </div>
+                      <div class="row form-group">
+                        <div class="col"><label for="year-range" class="control-label">Year Range</label></div>
+                        <div class="col">
+                            <select name="fromyear" class="form-control" [(ngModel)]="searchCriteria.fromYear" (ngModelChange)="getToYears()">
+                                <option value="0">From Year</option>
+                                <option *ngFor="let fromYear of fromYears" value="{{fromYear}}">
+                                  {{fromYear}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col" >
+                            <select class="form-control" name="toyear" [(ngModel)]="searchCriteria.toYear">
+                                <option value="0">To Year</option>
+                                <option *ngFor="let toYear of toYears" value="{{toYear}}">
+                                  {{toYear}}
+                                </option>
+                            </select>
+                        </div>
+                      </div>
+                    </form>
+                    <button type="submit" (click)="validateAndSearch()" class="btn btn-primary btn-block">Search Previous Year Question</button>
+                </div>
+            </div>
+            <button type="button" (click)="validateTextAndSearch()" class="btn btn-success "><i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+    </div>
+</div>

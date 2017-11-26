@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 export class NotificationComponent implements OnInit {
 
+  id: string;
   alertColor: string;
   alertMsg: string;
   hideAlert: boolean;
@@ -22,10 +23,6 @@ export class NotificationComponent implements OnInit {
 
   showNotification(message: string, type: string, id: string) {
     // console.log('Notification for : ' + id);
-    setTimeout(function() {
-      this.hideAlert = true;
-      this.$('#' + id).removeClass('hide');
-    });
     if (type === 'success') {
       this.alertStatus = 'Success! ';
       this.alertColor = 'alert-success';
@@ -38,12 +35,6 @@ export class NotificationComponent implements OnInit {
     }
     this.alertMsg = message;
     this.hideAlert = false;
-    /*if (type === 'success' || type === 'error') {
-      setTimeout(function() {
-        this.hideAlert = true;
-        this.$('#' + id).addClass('hide');
-      }, 2000);
-    }*/
   }
 
 }
