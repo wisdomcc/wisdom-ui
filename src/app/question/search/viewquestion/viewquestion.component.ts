@@ -30,7 +30,7 @@ export class ViewquestionComponent implements OnInit {
     this.categoryData = JSON.parse(localStorage.getItem("categoryData"));
   }
 
-  searchQuestion() {
+  searchQuestion(event) {
     this.questionService.viewQuestion(this.searchFilter.searchCriteria)
       .subscribe(data => {
         this.previewQuestion.data = JSON.parse(data);

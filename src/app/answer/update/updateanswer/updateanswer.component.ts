@@ -43,7 +43,7 @@ export class UpdateanswerComponent implements OnInit {
     this.id = 'updateanswer';
   }
 
-  searchQuestion() {
+  searchQuestion(event) {
     this.questionService.viewQuestion(this.searchFilter.searchCriteria)
     .subscribe(
       data => {

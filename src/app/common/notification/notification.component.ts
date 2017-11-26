@@ -8,7 +8,6 @@ import { Component, OnInit, Input } from '@angular/core';
 
 export class NotificationComponent implements OnInit {
 
-  id: string;
   alertColor: string;
   alertMsg: string;
   hideAlert: boolean;

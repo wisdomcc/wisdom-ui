@@ -62,7 +62,7 @@ export class UpdatequestionComponent implements OnInit {
     this.utilityService.removeMultipleDataFromLocalStorage(keys);
   }
 
-  searchQuestion() {
+  searchQuestion(event) {
     this.questionService.viewQuestion(this.searchFilter.searchCriteria)
     .subscribe(
       data => {
