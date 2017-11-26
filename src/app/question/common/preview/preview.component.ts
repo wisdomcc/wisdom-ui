@@ -10,6 +10,7 @@ export class PreviewComponent implements OnInit {
 
   @Input() questionModel: QuestionModel;
   @Input() isLinkedQuestion: boolean;
+  @Input() imageBaseUrl: string;
   qpreview: any;
   qoptions: any[];
 

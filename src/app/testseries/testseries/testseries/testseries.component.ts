@@ -35,6 +35,7 @@ export class TestseriesComponent implements OnInit {
   public questionStatus: QuestionStatus[];
   public data: QuestionModel[];
   public id: string;
+  public imageBaseUrl: string;
   public isTestStarted: boolean;
   public isEnrolledForTestSeries: boolean;
   public testSeriesModels: TestSeries[]; 
@@ -56,6 +57,7 @@ export class TestseriesComponent implements OnInit {
    
   public ngOnInit(): void {
     this.id = "testseries";
+    this.imageBaseUrl = this.questionService.getImageUrl;
     this.isTestStarted = false;
     this.isEnrolledForTestSeries = true;
     if(this.utilityService.getBooleanDataFromLocalStorage('isEnrolledForTestSeries')) {

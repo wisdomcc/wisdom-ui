@@ -7,6 +7,8 @@ import { QuestionModel } from '../../../../models/question/question.model';
   styleUrls: ['./previewquestion.component.css']
 })
 export class PreviewquestionComponent implements OnInit {
+
+  @Input() imageBaseUrl: string;
   public rows: Array<QuestionModel> = [];
   public columns: Array<any> = [
     {title: 'Question', width: 10, name: 'question', filtering: {filterString: '', placeholder: 'Filter by question'}},

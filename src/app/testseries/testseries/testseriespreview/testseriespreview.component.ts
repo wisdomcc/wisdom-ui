@@ -14,6 +14,7 @@ export class TestseriespreviewComponent implements OnInit {
   @Input() answerModel: TestSeriesAnswer;
   @Input() testSeriesStatus: TestSeriesStatus;
   @Input() qIndex: number;
+  @Input() imageBaseUrl: string;
 
   constructor() { }
 

@@ -8,7 +8,7 @@
 	<div class="row" [hidden]="!isParaImageAvailable()" *ngIf="!isLinkedQuestion && questionModel.paragraph != undefined" >
 		<div class="col">
 			<div *ngFor="let path of questionModel.paragraph.images.paths">
-				<img height="100px" width="120px" alt="" [src]="path">
+				<img alt="" [src]="imageBaseUrl+path">
 			</div>
 		</div>
 	</div>
@@ -20,7 +20,7 @@
 	<div class="row" [hidden]="!isImageAvailable()" >
 		<div class="col">
 			<div *ngFor="let path of questionModel.images.paths">
-				<img height="100px" width="120px" alt="" [src]="path">
+				<img alt="" [src]="imageBaseUrl+path">
 			</div>
 		</div>
 	</div>
@@ -31,13 +31,13 @@
 	</div>
 	<div *ngIf="questionModel.options.type == 'Image'">
 		<div *ngFor="let path of questionModel.options.imagePath; let index=index">
-			{{index+1}})&nbsp;<img height="100px" width="120px" alt="" [src]="path"><br/>
+			{{index+1}})&nbsp;<img alt="" [src]="imageBaseUrl+path"><br/>
 		</div>
 	</div>
 	<div *ngIf="questionModel.options.type == 'TextAndImage'">
 		<div *ngFor="let option of questionModel.options.option; let index=index">
 		{{index+1}})&nbsp;{{option}}<br/>
-		<img height="100px" width="120px" alt="" [src]="questionModel.options.imagePath[index]"><br/>
+		<img alt="" [src]="imageBaseUrl+questionModel.options.imagePath[index]"><br/>
 		</div>
 	</div>
 	<div class="row" *ngIf="!isLinkedQuestion">

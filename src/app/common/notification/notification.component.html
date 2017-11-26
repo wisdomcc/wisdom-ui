@@ -1,7 +1,9 @@
 <div class="row" [hidden]="hideAlert" id="{{nid}}">
   <div class="col text-center">
-    <div class="alert {{alertColor}}">
-      <strong [innerHtml]="alertStatus">Alert Status!</strong><span [innerHtml]="alertMsg">Alert Message.</span>
+    <div class="alert {{alertColor}}" >
+        <button [hidden]="isErrorAvailable" type="button" class="close" (click)="setHideAlert()">
+        <span aria-hidden="true">&times;</span></button>
+        <strong [innerHtml]="alertStatus"></strong><span [innerHtml]="alertMsg"></span>
     </div>
   </div>
 </div>

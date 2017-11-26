@@ -19,6 +19,7 @@ import { SearchfilterComponent } from '../../../question/common/searchfilter/sea
 export class SubmitanswerComponent implements OnInit {
 
   id: string;
+  imageBaseUrl: string;
   hideSubmitPreviewButton: boolean;
   qeProperty: QuestionElementProperty[];
   questionModels: QuestionModel[];
@@ -35,6 +36,7 @@ export class SubmitanswerComponent implements OnInit {
               private userService: UserService) { }
 
   ngOnInit() {
+    this.imageBaseUrl = this.questionService.getImageUrl;
     this.answerModels = [];
     this.hideSubmitPreviewButton = true;
     this.isDataPresent = false;

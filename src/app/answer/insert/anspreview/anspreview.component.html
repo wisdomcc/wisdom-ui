@@ -9,7 +9,7 @@
 	<div class="row" [hidden]="!isParaImageAvailable()" *ngIf="questionModel.paragraph != undefined" >
 		<div class="col">
 			<div *ngFor="let path of questionModel.paragraph.images.paths">
-				<img height="100px" width="120px" alt="" [src]="path">
+				<img alt="" [src]="imageBaseUrl+path">
 			</div>
 		</div>
 	</div>
@@ -21,7 +21,7 @@
 	<div class="row" [hidden]="!isImageAvailable()" >
 		<div class="col">
 			<div *ngFor="let path of questionModel.images.paths">
-				<img height="100px" width="120px" alt="" [src]="path">
+				<img alt="" [src]="imageBaseUrl+path">
 			</div>
 		</div>
 	</div>
@@ -43,7 +43,7 @@
 	  <div *ngFor="let path of questionModel.options.imagePath; let index=index">
 			<label class="form-check-label">
 				<input type="radio" class="form-check-input" [checked]="getCheckedStatus(index+1)" (click)="markAnswer(index+1)" name="answerPreviewImageOption{{answerModel.id}}" value="true" >
-				<img height="100px" width="120px" alt="" [src]="path"><br/>
+				<img alt="" [src]="imageBaseUrl+path"><br/>
 			</label>
 	  </div>
 	</div>
@@ -52,7 +52,7 @@
 			<label class="form-check-label">
 				<input type="radio" class="form-check-input" [checked]="getCheckedStatus(index+1)" (click)="markAnswer(index+1)" name="answerPreviewImageOption{{answerModel.id}}" value="true" >
 				{{option}}<br/>
-				<img height="100px" width="120px" alt="" [src]="questionModel.options.imagePath[index]"><br/>
+				<img alt="" [src]="imageBaseUrl+questionModel.options.imagePath[index]"><br/>
 			</label>
 	  </div>
 	</div>
@@ -60,7 +60,7 @@
 	<div *ngFor="let linkedQuestion of questionModel.linkedQuestions; let pindex=index">
 		<br/><div [innerHtml]="linkedQuestion.question"></div>
 		<div *ngFor="let path of linkedQuestion.images.paths">
-			<img height="100px" width="120px" alt="" [src]="path"><br/>
+			<img alt="" [src]="imageBaseUrl+path"><br/>
 		</div>
 		<div class="float-right">[{{linkedQuestion.marks}} Marks]</div>
 		<div *ngIf="linkedQuestion.options.type == 'NoOption'">
@@ -80,7 +80,7 @@
 			<div *ngFor="let path of linkedQuestion.options.imagePath; let index=index">
 				<label class="form-check-label">
 					<input type="radio" class="form-check-input" [checked]="getLinkedCheckedStatus(pindex, index+1)" (click)="markLinkedAnswer(index+1, pindex)" name="answerPreviewImageOption{{linkedQuestion.id}}" value="true" >
-					<img height="100px" width="120px" alt="" [src]="path"><br/>
+					<img alt="" [src]="imageBaseUrl+path"><br/>
 				</label>
 			</div>
 		</div>
@@ -89,7 +89,7 @@
 				<label class="form-check-label">
 					<input type="radio" class="form-check-input" [checked]="getLinkedCheckedStatus(pindex, index+1)" (click)="markLinkedAnswer(index+1, pindex)" name="answerPreviewImageOption{{linkedQuestion.id}}" value="true" >
 					{{option}}<br/>
-					<img height="100px" width="120px" alt="" [src]="linkedQuestion.options.imagePath[index]"><br/>
+					<img alt="" [src]="imageBaseUrl+linkedQuestion.options.imagePath[index]"><br/>
 				</label>
 			</div>
 		</div>

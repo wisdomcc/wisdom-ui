@@ -18,6 +18,7 @@ import { SearchResult } from '../../../../models/question/searchresult.model';
 export class QuestionassignmentComponent implements OnInit {
 
   id: string;
+  imageBaseUrl: string;
   isDataPresent: boolean;
   selectedQuestions: boolean[];
   testSeriesModels: TestSeries[];
@@ -33,6 +34,7 @@ export class QuestionassignmentComponent implements OnInit {
   ngOnInit() {
     this.selectedTestSeriesId = '';
     this.isDataPresent = false;
+    this.imageBaseUrl = this.questionService.getImageUrl;
     this.id = 'questionassignment';
     this.fetchTestSeriesDetails();
   }

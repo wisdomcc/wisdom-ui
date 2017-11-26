@@ -23,12 +23,12 @@
             <div *ngIf="row.paragraph != undefined">
               <div [innerHtml]="row.paragraph.paragraph"></div><br/>
               <div *ngFor="let path of row.paragraph.images.paths">
-                <img height="100px" width="120px" alt="" [src]="path"><br/>
+                <img alt="" [src]="imageBaseUrl+path"><br/>
               </div>
             </div>
             <div [innerHtml]="row.question"></div>
             <div *ngFor="let path of row.images.paths">
-                <img height="100px" width="120px" alt="" [src]="path"><br/>
+                <img alt="" [src]="imageBaseUrl+path"><br/>
             </div>
             <div *ngIf="row.options.type == 'Text'">
                 <div *ngFor="let option of row.options.option; let index=index">
@@ -37,20 +37,20 @@
             </div>
             <div *ngIf="row.options.type == 'Image'">
               <div *ngFor="let path of row.options.imagePath; let index=index">
-                  {{index+1}})&nbsp;<img height="100px" width="120px" alt="" [src]="path"><br/>
+                  {{index+1}})&nbsp;<img alt="" [src]="imageBaseUrl+path"><br/>
               </div>
             </div>
             <div *ngIf="row.options.type == 'TextAndImage'">
               <div *ngFor="let option of row.options.option; let index=index">
                   {{index+1}})&nbsp;{{option}}<br/>
-                  <img height="100px" width="120px" alt="" [src]="row.options.imagePath[index]"><br/>
+                  <img alt="" [src]="imageBaseUrl+row.options.imagePath[index]"><br/>
               </div>
             </div>
             <div class="float-right">[{{row.marks}} Marks]</div>
             <div *ngFor="let linkedQuestion of row.linkedQuestions">
                 <br/><div [innerHtml]="linkedQuestion.question"></div>
                 <div *ngFor="let path of linkedQuestion.images.paths">
-                    <img height="100px" width="120px" alt="" [src]="path"><br/>
+                    <img alt="" [src]="imageBaseUrl+path"><br/>
                 </div>
                 <div *ngIf="linkedQuestion.options.type == 'Text'">
                     <div *ngFor="let option of linkedQuestion.options.option; let index=index">
@@ -59,13 +59,13 @@
                 </div>
                 <div *ngIf="linkedQuestion.options.type == 'Image'">
                   <div *ngFor="let path of linkedQuestion.options.imagePath; let index=index">
-                      {{index+1}})&nbsp;<img height="100px" width="120px" alt="" [src]="path"><br/>
+                      {{index+1}})&nbsp;<img alt="" [src]="imageBaseUrl+path"><br/>
                   </div>
                 </div>
                 <div *ngIf="linkedQuestion.options.type == 'TextAndImage'">
                   <div *ngFor="let option of linkedQuestion.options.option; let index=index">
                       {{index+1}})&nbsp;{{option}}<br/>
-                      <img height="100px" width="120px" alt="" [src]="linkedQuestion.options.imagePath[index]"><br/>
+                      <img alt="" [src]="imageBaseUrl+linkedQuestion.options.imagePath[index]"><br/>
                   </div>
                 </div>
                 <div class="float-right">[{{linkedQuestion.marks}} Marks]</div>

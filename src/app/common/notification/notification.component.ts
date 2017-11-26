@@ -12,6 +12,7 @@ export class NotificationComponent implements OnInit {
   alertMsg: string;
   hideAlert: boolean;
   alertStatus: string;
+  isErrorAvailable: boolean;
   @Input() nid: string;
 
   constructor() { }
@@ -22,10 +23,12 @@ export class NotificationComponent implements OnInit {
 
   showNotification(message: string, type: string, id: string) {
     // console.log('Notification for : ' + id);
+    this.isErrorAvailable = false;
     if (type === 'success') {
       this.alertStatus = 'Success! ';
       this.alertColor = 'alert-success';
     } else if (type === 'error') {
+      this.isErrorAvailable = true;
       this.alertStatus = 'Error! ';
       this.alertColor = 'alert-danger';
     } else {
@@ -34,6 +37,10 @@ export class NotificationComponent implements OnInit {
     }
     this.alertMsg = message;
     this.hideAlert = false;
+  }
+
+  setHideAlert() {
+    this.hideAlert = true;
   }
 
 }

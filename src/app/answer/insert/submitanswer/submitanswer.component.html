@@ -15,7 +15,7 @@
           </div>
       </div>
       <div id="index" [hidden]="qeProperty[index].collapse">
-        <app-anspreview [questionModel]="questionModel" [answerModel]="answerModels[index]"></app-anspreview>
+        <app-anspreview [questionModel]="questionModel" [answerModel]="answerModels[index]" [imageBaseUrl]="imageBaseUrl" ></app-anspreview>
       </div>
     </div>
     <app-notification [nid]="id"></app-notification>

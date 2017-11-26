@@ -11,6 +11,7 @@ export class AnspreviewComponent implements OnInit {
 
   @Input() questionModel: QuestionModel;
   @Input() answerModel: AnswerModel;
+  @Input() imageBaseUrl: string;
 
   constructor() { }
 

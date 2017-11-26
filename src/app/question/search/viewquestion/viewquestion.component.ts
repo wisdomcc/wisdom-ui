@@ -17,6 +17,7 @@ export class ViewquestionComponent implements OnInit {
   id: string;
   categoryData: any;
   isDataPresent: boolean;
+  imageBaseUrl: string;
   @ViewChild(SearchfilterComponent) searchFilter: SearchfilterComponent;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
   @ViewChild(PreviewquestionComponent) previewQuestion: PreviewquestionComponent;
@@ -27,6 +28,7 @@ export class ViewquestionComponent implements OnInit {
   ngOnInit() {
     this.isDataPresent = false;
     this.id = 'viewquestion';
+    this.imageBaseUrl = this.questionService.getImageUrl;
     this.categoryData = JSON.parse(localStorage.getItem("categoryData"));
   }
 

@@ -29,6 +29,7 @@ export class QuestionpreviewComponent implements OnInit {
   data: QuestionModel[];
   testSeriesQuestionMaps: TestSeriesQuestionMap[];
   @Input() selectedQuestions: boolean[];
+  @Input() imageBaseUrl: string; 
 
   public constructor() {
   }
