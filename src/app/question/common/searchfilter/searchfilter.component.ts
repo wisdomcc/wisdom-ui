@@ -4,7 +4,6 @@ import { SearchCriteria } from '../../../../models/question/searchcriteria.model
 import { UserService } from '../../../../services/user/user.service';
 import { QuestionService } from '../../../../services/question/question.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
-import { SearchResult } from '../../../../models/question/searchresult.model';
 
 @Component({
   selector: 'app-searchfilter',
@@ -143,46 +142,50 @@ export class SearchfilterComponent implements OnInit {
 
   validateTextAndSearch() {
     var isMatch = false;
-    let search = this.searchText.split(':');
-    for(let i = 0; i < this.subjects.length; i++) {
-      if(search[0].trim().match(this.subjects[i])) {
-        isMatch = true;
-        break;
+    if(this.searchText && this.searchText.trim() !== '') {
+      let search = this.searchText.split(':');
+      for(let i = 0; i < this.subjects.length; i++) {
+        if(search[0].trim().match(this.subjects[i])) {
+          isMatch = true;
+          break;
+        }
       }
-    }
-    if(isMatch) {
-      /*if(search[1] && search[1].trim() !== '') {
-        let year = search[1].trim().split('to');
-        if(year[1] && year[1] !== '') {
-          let to = parseInt(year[1]);
-          if(to > 1990 && to < 2018) {
-            this.searchCriteria.toYear = to;
-          } else {
-            this.showNotification('Enter year between 1990 and current year', 'warning', 10000);
+      if(isMatch) {
+        /*if(search[1] && search[1].trim() !== '') {
+          let year = search[1].trim().split('to');
+          if(year[1] && year[1] !== '') {
+            let to = parseInt(year[1]);
+            if(to > 1990 && to < 2018) {
+              this.searchCriteria.toYear = to;
+            } else {
+              this.showNotification('Enter year between 1990 and current year', 'warning', 10000);
+            }
           }
-        }
-        if(year[0] && year[0] !== '') {
-          let from = parseInt(year[0]);
-          if(from > 1990 && from < 2018) {
-            this.searchCriteria.fromYear = from;
-          } else {
-            this.showNotification('Enter year between 1990 and current year', 'warning', 10000);
+          if(year[0] && year[0] !== '') {
+            let from = parseInt(year[0]);
+            if(from > 1990 && from < 2018) {
+              this.searchCriteria.fromYear = from;
+            } else {
+              this.showNotification('Enter year between 1990 and current year', 'warning', 10000);
+            }
           }
-        }
-      }*/
-      this.selectedSubject = search[0].trim();
-      this.getTopics();
-      this.searchCriteria.relatedTo.subject.pop();
-      this.searchCriteria.relatedTo.topic.pop();
-      this.searchCriteria.relatedTo.subject.push(search[0].trim());
-      this.search();
-      /*if(!search[1] || (search[1] && search[1].trim() === '')) {
-        this.searchText = this.searchText + " : ";
-        this.showNotification('Enter year or year range after : . For Example -> 2015, 2012 to 2017', 'warning', 10000);
+        }*/
+        this.selectedSubject = search[0].trim();
+        this.getTopics();
+        this.searchCriteria.relatedTo.subject.pop();
+        this.searchCriteria.relatedTo.topic.pop();
+        this.searchCriteria.relatedTo.subject.push(search[0].trim());
+        this.search();
+        /*if(!search[1] || (search[1] && search[1].trim() === '')) {
+          this.searchText = this.searchText + " : ";
+          this.showNotification('Enter year or year range after : . For Example -> 2015, 2012 to 2017', 'warning', 10000);
+        } else {
+        }*/
       } else {
-      }*/
+        this.showNotification('Search Text do not match any subject.', 'danger', 5000);
+      }
     } else {
-      this.showNotification('Search Text do not match any subject.', 'danger', 5000);
+      this.showNotification('Please enter any subject in text box.', 'danger', 5000);
     }
   }
 
