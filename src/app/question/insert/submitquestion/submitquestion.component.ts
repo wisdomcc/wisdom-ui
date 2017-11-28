@@ -3,7 +3,6 @@ import { QuestionService } from '../../../../services/question/question.service'
 import { UserService } from '../../../../services/user/user.service';
 import { UtilityService } from '../../../../services/utility/utility.service';
 import { QuestionModel } from '../../../../models/question/question.model';
-import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
 import { NotificationComponent } from '../../../common/notification/notification.component';
 
 @Component({
@@ -16,10 +15,7 @@ export class SubmitquestionComponent implements OnInit {
 
   id: string;
   hideSubmitPreviewButton: boolean;
-  qeProperty: QuestionElementProperty[];
   questionModels: QuestionModel[];
-  rightImagePath: string;
-  downImagePath: string;
   categoryData: any;
   isFirstTime = true;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
@@ -33,20 +29,16 @@ export class SubmitquestionComponent implements OnInit {
     this.id = 'submitquestion';
     this.getDataFromLocalStorage();
     this.utilityService.setStringDataToLocalStorage('page', this.id);
-    this.rightImagePath = '../../assets/images/right.png';
-    this.downImagePath = '../../assets/images/down.png';
   }
 
   getDataFromLocalStorage() {
     this.categoryData = this.utilityService.getJsonDataFromLocalStorage('categoryData');
     if(this.utilityService.getStringDataFromLocalStorage('page') === this.id) {
       this.questionModels = this.utilityService.getJsonDataFromLocalStorage('questionModels');
-      this.qeProperty = this.utilityService.getJsonDataFromLocalStorage('qeProperty');
       this.hideSubmitPreviewButton = this.utilityService.getBooleanDataFromLocalStorage('hideSubmitPreviewButton');
     } else {
       this.removeDataFromLocalStorage();
       this.questionModels = [];
-      this.qeProperty = [];
       this.hideSubmitPreviewButton = true;
       this.utilityService.setBooleanDataToLocalStorage('hideSubmitPreviewButton', this.hideSubmitPreviewButton);
     }
@@ -56,16 +48,13 @@ export class SubmitquestionComponent implements OnInit {
     this.hideSubmitPreviewButton = false;
     const question = new QuestionModel();
     this.questionModels.push(question);
-    this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
     this.utilityService.setBooleanDataToLocalStorage('hideSubmitPreviewButton', this.hideSubmitPreviewButton);
   }
 
   removeDataFromLocalStorage() {
     let keys: string[] = [];
     keys.push('questionModels');
-    keys.push('qeProperty');
     keys.push('hideSubmitPreviewButton');
-    keys.push('linkedQeProperty');
     this.utilityService.removeMultipleDataFromLocalStorage(keys);
   }
 
@@ -75,43 +64,33 @@ export class SubmitquestionComponent implements OnInit {
       this.utilityService.setBooleanDataToLocalStorage('hideSubmitPreviewButton', this.hideSubmitPreviewButton);
     }
     this.questionModels.splice(index, 1);
-    this.qeProperty.splice(index, 1);
     this.utilityService.setJsonDataToLocalStorage('questionModels', this.questionModels);
-    this.utilityService.setJsonDataToLocalStorage('qeProperty', this.qeProperty);
-  }
-
-  expandCollapse(index: number) {
-    this.qeProperty[index].collapse = this.qeProperty[index].collapse === true ? false : true;
-    this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
-    this.utilityService.setJsonDataToLocalStorage('questionModels', this.questionModels);
-    this.utilityService.setJsonDataToLocalStorage('qeProperty', this.qeProperty);
   }
 
   submitQuestions() {
     this.utilityService.setJsonDataToLocalStorage('questionModels', this.questionModels);
-    this.utilityService.setJsonDataToLocalStorage('qeProperty', this.qeProperty);
     this.utilityService.setBooleanDataToLocalStorage('hideSubmitPreviewButton', this.hideSubmitPreviewButton);
     if (this.validateQuestionModels()) {
       this.questionService.insertQuestionModels(this.questionModels)
       .subscribe(
         data => {
-          this.showNotification('Questions inserted successfully in database.', 'success');
+          this.showNotification('Questions inserted successfully in database.', 'success', 2000);
           this.hideSubmitPreviewButton = true;
           this.questionModels = [];
-          this.qeProperty = [];
           this.removeDataFromLocalStorage();
         },
         error => {
           if (error.status === 401) {
             this.userService.logout();
           }
-          this.showNotification('Some error occured while inserting questions in database. Please retry.', 'error');
+          this.showNotification('Some error occured while inserting questions in database. Please retry.', 'danger', 5000);
         }
       );
     }
   }
 
   validateQuestionModels(): boolean {
+    debugger;
     let errorMsg = '';
     this.questionModels.forEach(function(question) {
       if (question.question.trim() === '') {
@@ -162,15 +141,15 @@ export class SubmitquestionComponent implements OnInit {
       });
     });
     if (errorMsg !== '') {
-      this.notification.showNotification(errorMsg, 'error', this.id);
+      this.notification.showNotification(errorMsg, 'danger', 5000);
       errorMsg = '';
       return false;
     }
     return true;
   }
 
-  showNotification(msg: string, type: string) {
-    this.notification.showNotification(msg, type, this.id);
+  showNotification(msg: string, type: string, timeout: number) {
+    this.notification.showNotification(msg, type, timeout);
   }
 
 }

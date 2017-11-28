@@ -40,12 +40,12 @@ export class LoginComponent implements OnInit {
         .subscribe(
             data => {
                 if(JSON.parse(data).type === 'error') {
-                    this.showNotification(JSON.parse(data).message, 'error');
+                    this.showNotification(JSON.parse(data).message, 'danger', 5000);
                 } else {
                     // console.log(data);
                     this.user = this.getWisdomUser(JSON.parse(data));
                     // console.log(this.user);
-                    this.showNotification('Login successful', 'success');
+                    this.showNotification('Login successful', 'success', 2000);
                     localStorage.setItem('username', this.user.username);
                     localStorage.setItem('email', this.user.emailId);
                     localStorage.setItem('role', this.user.role);
@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
             },
             error => {
                 console.log(error);
-                this.showNotification('Technical issue. Please try after sometime.', 'error');
+                this.showNotification('Technical issue. Please try after sometime.', 'danger', 5000);
             }
         );
     }
@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
 
     forgotPassword() {
         this.isForgotPassword = true;
-        this.showNotification('Enter username to get password on registered email.', 'status');
+        this.showNotification('Enter username to get password on registered email.', 'warning', 10000);
     }
 
     emailPassword() {
@@ -92,24 +92,24 @@ export class LoginComponent implements OnInit {
                   data => {
                       if(data) {
                         this.isForgotPassword = false;
-                        this.showNotification('Password sent on registered email.', 'success');
+                        this.showNotification('Password sent on registered email.', 'success', 2000);
                       } else {
-                        this.showNotification('Email sent failed. Please retry.', 'error');    
+                        this.showNotification('Email sent failed. Please retry.', 'danger', 5000);    
                       }
                   },
                   error => {
                     if (error.status === 401) {
                       this.userService.logout();
                     }
-                    this.showNotification('Email sent failed. Please retry.', 'error');
+                    this.showNotification('Email sent failed. Please retry.', 'danger', 5000);
                   }
                 );
             } else {
-                this.showNotification('Username does not exist.', 'error');
+                this.showNotification('Username does not exist.', 'danger', 5000);
             }
           },
         error => {
-            this.showNotification('Technical issue. Please retry after sometime.', 'error');
+            this.showNotification('Technical issue. Please retry after sometime.', 'danger', 5000);
         });
     }
 
@@ -126,8 +126,8 @@ export class LoginComponent implements OnInit {
             emailId, enabled, maxConcurrentSessions, username);
     }
 
-    showNotification(msg: string, type: string) {
-        this.notification.showNotification(msg, type, this.id);
+    showNotification(msg: string, type: string, timeout: number) {
+        this.notification.showNotification(msg, type, timeout);
     }
 
 }

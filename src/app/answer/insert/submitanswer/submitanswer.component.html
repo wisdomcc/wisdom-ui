@@ -1,24 +1,23 @@
 <app-searchfilter (searchEvent)="searchQuestion($event)" ></app-searchfilter>
-<app-notification [nid]="id"></app-notification>
+<app-notification></app-notification>
 <div class="row" [hidden]="!isDataPresent">
   <div class="col">
-    <div *ngFor="let questionModel of questionModels; let index=index">
-      <div class="row">
-          <div class="col">
-            <input type="submit" class="btn btn-primary addnew float-sm-left"
-            value="Question Id : {{questionModel.id}}" disabled="disabled">
-            <input type="button" class="btn btn-danger remove float-sm-right"
-            (click)="removeAnswer(index)" value="-" />
-            <button class="btn btn-info float-sm-right" type="button" (click)="expandCollapse(index)">
-            <img [src]="qeProperty[index].image" height="8px" width="10px">
-            </button>
+    <accordion closeOthers="true">
+      <div *ngFor="let questionModel of questionModels; let index=index">
+        <accordion-group>
+          <div accordion-heading>
+            <div class="question-id">
+              Linked Question Id : {{questionModel.id}}
+              <button class="btn btn-sm btn-danger btn remove float-sm-right" (click)="removeAnswer(index)" >
+                <i class="fa fa-minus" aria-hidden="true"></i>
+              </button>
+            </div>
           </div>
+          <app-anspreview [questionModel]="questionModel" [answerModel]="answerModels[index]" [imageBaseUrl]="imageBaseUrl" ></app-anspreview>
+        </accordion-group>
       </div>
-      <div id="index" [hidden]="qeProperty[index].collapse">
-        <app-anspreview [questionModel]="questionModel" [answerModel]="answerModels[index]" [imageBaseUrl]="imageBaseUrl" ></app-anspreview>
-      </div>
-    </div>
-    <app-notification [nid]="id"></app-notification>
+    </accordion>
+    <app-notification></app-notification>
     <div class="row" [hidden]="hideSubmitPreviewButton" >
       <div class="btn-group col" >
         <button class="btn btn-success ml-auto " (click)="submitAnswers()" >Submit</button>

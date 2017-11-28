@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, Output, EventEmitter } from '@angular/core';
 import { QuestionModel } from '../../../../models/question/question.model';
 import { SearchCriteria } from '../../../../models/question/searchcriteria.model';
 import { UserService } from '../../../../services/user/user.service';
@@ -13,8 +13,10 @@ import { SearchResult } from '../../../../models/question/searchresult.model';
 })
 export class SearchfilterComponent implements OnInit {
 
+  
   id: string;
   year: number;
+  subject: string;
   searchText: string;
   searchCriteria: SearchCriteria;
   categoryData: any;
@@ -24,8 +26,10 @@ export class SearchfilterComponent implements OnInit {
   topics: string[];
   fromYears: number[];
   toYears: number[];
+  isTypeAheadHidden: boolean;
   @Output() searchEvent = new EventEmitter<string>();
   @ViewChild(NotificationComponent) notification: NotificationComponent;
+  @ViewChildren('filterResult') filterResult;
 
   constructor(private questionService: QuestionService,
               private userService: UserService) { }
@@ -33,16 +37,45 @@ export class SearchfilterComponent implements OnInit {
   ngOnInit() {
     this.searchCriteria = new SearchCriteria();
     this.id = 'searchfilter';
-    this.subjects = ['Select Subject'];
-    this.topics = ['Select Topic'];
+    this.isTypeAheadHidden = true;
+    this.subjects = [];
+    this.topics = [];
     this.fromYears = [];
     this.year = 0;
+    this.selectedSubject = 'default';
     for (let year = 1991; year < (new Date()).getFullYear(); year++) {
       this.fromYears.push(year);
     }
     this.categoryData = JSON.parse(localStorage.getItem("categoryData"));
     this.getSubjects();
   }
+
+  /*showTypeAheadOption() {
+    if(this.searchText === undefined || this.searchText === '') {
+      this.isTypeAheadHidden = true;
+    } else {
+      this.isTypeAheadHidden = false;
+    }
+    console.log(this.filterResult);
+    if(this.filterResult.length === 0) {
+      this.isTypeAheadHidden = true;
+    }
+    if(this.searchText.length > 2) {
+      let search = this.searchText.split(':');
+      for(let i = 0; i < search.length; i++) {
+        console.log(search[i].trim());
+      }
+    }
+}
+
+  setHidden() {
+    this.isTypeAheadHidden = true;
+  }
+
+  setSearchText(subject: string) {
+    this.searchText = subject;
+    this.isTypeAheadHidden = true;
+  }*/
 
   getToYears() {
     this.year = 0;
@@ -100,29 +133,63 @@ export class SearchfilterComponent implements OnInit {
 
   clearTopics() {
     const length = this.topics.length;
-    this.selectedTopic = 'Select Topic';
+    this.selectedTopic = 'default';
     if (this.topics.length > 0) {
       for (let i = 0; i < length; i++) {
         this.topics.pop();
       }
     }
-    this.topics.push('Select Topic');
-  }
-
-  showTypeAheadOption() {
-    if(this.searchText.length > 2) {
-      return true;
-    }
   }
 
   validateTextAndSearch() {
-    return true;
+    var isMatch = false;
+    let search = this.searchText.split(':');
+    for(let i = 0; i < this.subjects.length; i++) {
+      if(search[0].trim().match(this.subjects[i])) {
+        isMatch = true;
+        break;
+      }
+    }
+    if(isMatch) {
+      /*if(search[1] && search[1].trim() !== '') {
+        let year = search[1].trim().split('to');
+        if(year[1] && year[1] !== '') {
+          let to = parseInt(year[1]);
+          if(to > 1990 && to < 2018) {
+            this.searchCriteria.toYear = to;
+          } else {
+            this.showNotification('Enter year between 1990 and current year', 'warning', 10000);
+          }
+        }
+        if(year[0] && year[0] !== '') {
+          let from = parseInt(year[0]);
+          if(from > 1990 && from < 2018) {
+            this.searchCriteria.fromYear = from;
+          } else {
+            this.showNotification('Enter year between 1990 and current year', 'warning', 10000);
+          }
+        }
+      }*/
+      this.selectedSubject = search[0].trim();
+      this.getTopics();
+      this.searchCriteria.relatedTo.subject.pop();
+      this.searchCriteria.relatedTo.topic.pop();
+      this.searchCriteria.relatedTo.subject.push(search[0].trim());
+      this.search();
+      /*if(!search[1] || (search[1] && search[1].trim() === '')) {
+        this.searchText = this.searchText + " : ";
+        this.showNotification('Enter year or year range after : . For Example -> 2015, 2012 to 2017', 'warning', 10000);
+      } else {
+      }*/
+    } else {
+      this.showNotification('Search Text do not match any subject.', 'danger', 5000);
+    }
   }
 
   validateAndSearch() {
     this.searchText = '';
     if (this.selectedSubject !== undefined) {
-      if (this.selectedSubject !== 'Select Subject') {
+      if (this.selectedSubject !== 'default') {
         this.searchCriteria.relatedTo.subject.pop();
         this.searchCriteria.relatedTo.subject.push(this.selectedSubject);
         this.searchText = this.searchText + this.selectedSubject + ' : ';
@@ -131,7 +198,7 @@ export class SearchfilterComponent implements OnInit {
       }
     }
     if (this.selectedTopic !== undefined) {
-      if (this.selectedTopic !== 'Select Topic') {
+      if (this.selectedTopic !== 'default') {
         this.searchCriteria.relatedTo.topic.pop();
         this.searchCriteria.relatedTo.topic.push(this.selectedTopic);
         this.searchText = this.searchText + this.selectedTopic + ' : ';
@@ -160,8 +227,8 @@ export class SearchfilterComponent implements OnInit {
     this.searchEvent.next('search');
   }
 
-  showNotification(msg: string, type: string) {
-    this.notification.showNotification(msg, type, this.id);
+  showNotification(msg: string, type: string, timeout: number) {
+    this.notification.showNotification(msg, type, timeout);
   }
 
 }

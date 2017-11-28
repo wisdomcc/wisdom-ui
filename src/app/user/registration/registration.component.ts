@@ -32,27 +32,27 @@ export class RegistrationComponent implements OnInit {
   registerUser() {
 
     if (this.usernameError !== '' || this.emailError !== '' || this.passwordError !== '') {
-      this.showNotification('There is some error in registration form.', 'error');
+      this.showNotification('There is some error in registration form.', 'danger', 5000);
       return;
     }
     this.userService.registerUser(this.username, this.password, this.emailid)
     .subscribe(
         data => {
             const response = JSON.parse(data);
-            this.showNotification(response.message + ' <a href="#" routerLink="login">Click to Login</a>', response.type);
+            this.showNotification(response.message + ' <a href="#" routerLink="login">Click to Login</a>', response.type, 20000);
             this.username = '';
             this.emailid = '';
             this.password = '';
             this.confirmpassword = '';
         },
         error => {
-            this.showNotification('Technical issue. Please try after sometime.', 'error');
+            this.showNotification('Technical issue. Please try after sometime.', 'danger', 5000);
         }
     );
   }
 
-  showNotification(msg: string, type: string) {
-      this.notification.showNotification(msg, type, this.id);
+  showNotification(msg: string, type: string, timeout: number) {
+      this.notification.showNotification(msg, type, timeout);
   }
 
   validateUsername() {

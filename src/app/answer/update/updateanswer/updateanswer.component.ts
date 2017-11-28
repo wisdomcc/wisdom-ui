@@ -3,7 +3,6 @@ import { QuestionModel } from '../../../../models/question/question.model';
 import { AnswerModel } from '../../../../models/answer/answer.model';
 import { LinkedAnswerModel } from '../../../../models/answer/answer.model';
 import { SearchCriteria } from '../../../../models/question/searchcriteria.model';
-import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
 import { AnswerService } from '../../../../services/answer/answer.service';
 import { QuestionService } from '../../../../services/question/question.service';
 import { UserService } from '../../../../services/user/user.service';
@@ -20,12 +19,10 @@ export class UpdateanswerComponent implements OnInit {
 
   id: string;
   hideSubmitPreviewButton: boolean;
-  qeProperty: QuestionElementProperty[];
   questionModels: QuestionModel[];
-  rightImagePath: string;
-  downImagePath: string;
   isDataPresent: boolean;
   answerModels: AnswerModel[];
+  imageBaseUrl: string;
   @ViewChild(SearchfilterComponent) searchFilter: SearchfilterComponent;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
   @ViewChildren(AnspreviewComponent) ansPreviews: QueryList<AnspreviewComponent>;
@@ -35,11 +32,10 @@ export class UpdateanswerComponent implements OnInit {
               private userService: UserService) { }
 
   ngOnInit() {
+    this.imageBaseUrl = this.questionService.getImageUrl;
     this.answerModels = [];
     this.hideSubmitPreviewButton = true;
     this.isDataPresent = false;
-    this.rightImagePath = '../../../../assets/images/right.png';
-    this.downImagePath = '../../../../assets/images/down.png';
     this.id = 'updateanswer';
   }
 
@@ -50,7 +46,6 @@ export class UpdateanswerComponent implements OnInit {
         this.questionModels = JSON.parse(data);
         if (this.questionModels.length > 0) {
           this.isDataPresent = true;
-          this.qeProperty = [];
           this.hideSubmitPreviewButton = false;
           for (let i = 0; i < this.questionModels.length; i++) {
             if (this.questionModels[i].answer !== undefined) {
@@ -75,26 +70,19 @@ export class UpdateanswerComponent implements OnInit {
               }
               this.answerModels.push(new AnswerModel(this.questionModels[i].id, laModels));
             }
-            this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
           }
-          this.notification.hideAlert = true;
         } else {
           this.isDataPresent = false;
-          this.showNotification('No result for your criteria.', 'status');
+          this.showNotification('No result for your criteria.', 'warning', 10000);
         }
       },
       error => {
         if (error.status === 401) {
           this.userService.logout();
         }
-        this.showNotification('Some technical issue. Please try after sometime.', 'error');
+        this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
       }
     );
-  }
-
-  expandCollapse(index: number) {
-    this.qeProperty[index].collapse = this.qeProperty[index].collapse === true ? false : true;
-    this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
   }
 
   removeAnswer(index: number) {
@@ -104,7 +92,6 @@ export class UpdateanswerComponent implements OnInit {
     console.log('qid:' + this.questionModels[index].id + '#aqid:' + this.answerModels[index].questionId);
     this.questionModels.splice(index, 1);
     this.answerModels.splice(index, 1);
-    this.qeProperty.splice(index, 1);
   }
 
   submitAnswers() {
@@ -113,17 +100,16 @@ export class UpdateanswerComponent implements OnInit {
       this.answerService.insertAnswerModels(this.answerModels)
       .subscribe(
         data => {
-          this.showNotification('Answers inserted successfully in database.', 'success');
+          this.showNotification('Answers inserted successfully in database.', 'success', 2000);
           this.hideSubmitPreviewButton = true;
           this.questionModels = [];
           this.answerModels = [];
-          this.qeProperty = [];
         },
         error => {
           if (error.status === 401) {
             this.userService.logout();
           }
-          this.showNotification('Some error occured while inserting answers in database. Please retry.', 'error');
+          this.showNotification('Some error occured while inserting answers in database. Please retry.', 'danger', 5000);
         }
       );
     }
@@ -153,15 +139,15 @@ export class UpdateanswerComponent implements OnInit {
       });
     });
     if (errorMsg !== '') {
-      this.notification.showNotification(errorMsg, 'error', this.id);
+      this.notification.showNotification(errorMsg, 'danger', 5000);
       errorMsg = '';
       return false;
     }
     return true;
   }
 
-  showNotification(msg: string, type: string) {
-    this.notification.showNotification(msg, type, this.id);
+  showNotification(msg: string, type: string, timeout: number) {
+    this.notification.showNotification(msg, type, timeout);
   }
 
 }

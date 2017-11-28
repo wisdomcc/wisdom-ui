@@ -6,19 +6,18 @@
         (click)="addQuestion()" value="+" /> 
   </div>
 </div>
-<div *ngFor="let questionModel of questionModel.linkedQuestions; let index=index">
-  <div class="row">
-      <div class="col">
-        <input type="submit" class="btn btn-primary addnew float-sm-left"
-        value="Linked Question Id : {{questionModel.id}} # Parent Question Id : {{questionModel.parentQuestionId}}" disabled="disabled">
-        <input type="button" class="btn btn-danger remove float-sm-right"
-        (click)="removeQuestion(index)" value="-" />
-        <button class="btn btn-info float-sm-right" type="button" (click)="expandCollapse(index)">
-        <img [src]="qeProperty[index].image" height="8px" width="10px">
-        </button>
-      </div>
+<accordion closeOthers="true">
+  <div *ngFor="let questionModel of questionModel.linkedQuestions; let index=index">
+      <accordion-group>
+        <div accordion-heading>
+          <div class="question-id">
+            Linked Question Id : {{questionModel.id}} # Parent Question Id : {{questionModel.parentQuestionId}}
+            <button class="btn btn-sm btn-danger btn remove float-sm-right" (click)="removeQuestion(index)" >
+              <i class="fa fa-minus" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <app-question [questionModel]="questionModel" [isLinkedQuestion]="true" ></app-question>
+      </accordion-group>
   </div>
-  <div id="index" [hidden]="qeProperty[index].collapse">
-    <app-question [questionModel]="questionModel" [isLinkedQuestion]="isLinkedQuestion" ></app-question>
-  </div>
-</div>
+</accordion>

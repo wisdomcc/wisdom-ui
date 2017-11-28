@@ -4,7 +4,6 @@ import { UserService } from '../../../../services/user/user.service';
 import { UtilityService } from '../../../../services/utility/utility.service';
 import { QuestionModel } from '../../../../models/question/question.model';
 import { LinkedQuestionModel } from '../../../../models/question/question.model';
-import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
 import { NotificationComponent } from '../../../common/notification/notification.component';
 
 @Component({
@@ -15,46 +14,20 @@ import { NotificationComponent } from '../../../common/notification/notification
 
 export class LinkedquestionComponent implements OnInit {
 
-  isLinkedQuestion: boolean;
   @Input() isUpdateSearch: boolean;
-  qeProperty: QuestionElementProperty[];
   @Input() questionModel: QuestionModel;
-  rightImagePath: string;
-  downImagePath: string;
 
-  constructor(private questionService: QuestionService,
-              private userService: UserService,
-              private utilityService: UtilityService) {}
+  constructor() {}
 
-  ngOnInit() {
-    this.isLinkedQuestion = true;
-    // console.log('update search : ' + this.isUpdateSearch);
-    this.qeProperty = this.utilityService.getJsonDataFromLocalStorage('linkedQeProperty');
-    if (this.isUpdateSearch && this.questionModel.linkedQuestions !== undefined) {
-      for (let i = 0; i < this.questionModel.linkedQuestions.length; i++) {
-        this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
-      }
-    }
-    this.rightImagePath = '../../assets/images/right.png';
-    this.downImagePath = '../../assets/images/down.png';
-  }
+  ngOnInit() {}
 
   addQuestion() {
     const question = new LinkedQuestionModel(this.questionModel.id);
     this.questionModel.linkedQuestions.push(question);
-    this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
   }
 
   removeQuestion(index: number) {
     this.questionModel.linkedQuestions.splice(index, 1);
-    this.qeProperty.splice(index, 1);
-    this.utilityService.setJsonDataToLocalStorage('linkedQeProperty', this.qeProperty);
-  }
-
-  expandCollapse(index: number) {
-    this.qeProperty[index].collapse = this.qeProperty[index].collapse === true ? false : true;
-    this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
-    this.utilityService.setJsonDataToLocalStorage('linkedQeProperty', this.qeProperty);
   }
 
 }

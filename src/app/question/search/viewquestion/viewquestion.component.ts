@@ -40,17 +40,16 @@ export class ViewquestionComponent implements OnInit {
         this.previewQuestion.onChangeTable(this.previewQuestion.config);
         if (this.previewQuestion.data.length > 0) {
           this.isDataPresent = true;
-          this.notification.hideAlert = true;
         } else {
           this.isDataPresent = false;
-          this.showNotification('No result for your criteria.', 'status');
+          this.showNotification('No result for your criteria.', 'warning', 10000);
         }
       },
       error => {
         if (error.status === 401) {
           this.userService.logout();
         }
-        this.showNotification('Some technical issue. Please try after sometime.', 'error');
+        this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
       });
   }
 
@@ -82,8 +81,8 @@ export class ViewquestionComponent implements OnInit {
     return result;
   }*/
 
-  showNotification(msg: string, type: string) {
-    this.notification.showNotification(msg, type, this.id);
+  showNotification(msg: string, type: string, timeout: number) {
+    this.notification.showNotification(msg, type, timeout);
   }
 
 }

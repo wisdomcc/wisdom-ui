@@ -94,7 +94,7 @@ export class TestseriesComponent implements OnInit {
     .subscribe(tsdata => {
       this.testSeriesModels = JSON.parse(tsdata);
       if(this.testSeriesModels.length === 0) {
-        this.showNotification('Not enrolled. Please enroll to test series. Click <strong>"Enroll Test Series"</strong> to enroll.', 'status');
+        this.showNotification('Not enrolled. Please enroll to test series. Click <strong>"Enroll Test Series"</strong> to enroll.', 'warning', 10000);
         this.isEnrolledForTestSeries = false;
       }
       this.utilityService.setJsonDataToLocalStorage('testSeriesModels', this.testSeriesModels);
@@ -104,7 +104,7 @@ export class TestseriesComponent implements OnInit {
       if (error.status === 401) {
         this.userService.logout();
       }
-      this.showNotification('Some technical issue. Please try after sometime.', 'error');
+      this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
     });
   }
 
@@ -139,14 +139,14 @@ export class TestseriesComponent implements OnInit {
         this.utilityService.setJsonDataToLocalStorage('answerModels', this.answerModels);
         this.utilityService.setJsonDataToLocalStorage('testSeriesStatus', this.testSeriesStatus);
       } else {
-        this.showNotification('Some technical issue. Please try after sometime.', 'error');  
+        this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);  
       }
     },
     error => {
       if (error.status === 401) {
         this.userService.logout();
       }
-      this.showNotification('Some technical issue. Please try after sometime.', 'error');
+      this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
     });
     this.onChangeTable(this.config);
   }
@@ -157,19 +157,19 @@ export class TestseriesComponent implements OnInit {
         data => {
         this.isTestStarted = false;
         this.removeDataFromLocalStorage();
-        this.showNotification('Answers submitted successfully. Please visit result link to view result analysis.', 'status');
+        this.showNotification('Answers submitted successfully. Please visit result link to view result analysis.', 'warning', 10000);
         },
         error => {
           if (error.status === 401) {
             this.userService.logout();
           }
-          this.showNotification('Some technical issue. Please try after sometime.', 'error');
+          this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
         }
       );
   }
 
-  showNotification(msg: string, type: string) {
-    this.notification.showNotification(msg, type, this.id);
+  showNotification(msg: string, type: string, timeout: number) {
+    this.notification.showNotification(msg, type, timeout);
   }
 
   checkActivationDate(activationDate: string) {

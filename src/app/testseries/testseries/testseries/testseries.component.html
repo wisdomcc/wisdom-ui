@@ -6,7 +6,7 @@
         </div>
       </div>
     </div>
-    <app-notification [nid]="id"></app-notification>
+    <app-notification></app-notification>
 </div>
 <div *ngIf="isEnrolledForTestSeries">
   <div class="row" >
@@ -33,7 +33,7 @@
     <div class="col"><button class="btn btn-success ml-auto " [disabled]="checkActivationDate(testSeries.activateDate)" (click)="startTest(testSeries.id)" >Start Test</button></div>
   </div>
 </div>
-<app-notification [nid]="id"></app-notification>
+<app-notification></app-notification>
 <div *ngIf="isTestStarted">
   <div class="row">
     <div class="col">

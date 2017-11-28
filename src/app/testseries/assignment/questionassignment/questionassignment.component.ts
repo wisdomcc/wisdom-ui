@@ -44,14 +44,14 @@ export class QuestionassignmentComponent implements OnInit {
     .subscribe(tsdata => {
       this.testSeriesModels = JSON.parse(tsdata);
       if(this.testSeriesModels.length === 0) {
-        this.showNotification("No Test is Available to assign question", "status");
+        this.showNotification('No Test is Available to assign question', 'warning', 10000);
       }
     },
     error => {
       if (error.status === 401) {
         this.userService.logout();
       }
-      this.showNotification('Some technical issue. Please try after sometime.', 'error');
+      this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
     });
   }
 
@@ -68,17 +68,16 @@ export class QuestionassignmentComponent implements OnInit {
             this.selectedQuestions.push(false);
           }
           this.isDataPresent = true;
-          this.notification.hideAlert = true;
         } else {
           this.isDataPresent = false;
-          this.showNotification('No result for your criteria.', 'status');
+          this.showNotification('No result for your criteria.', 'warning', 10000);
         }
       },
       error => {
         if (error.status === 401) {
           this.userService.logout();
         }
-        this.showNotification('Some technical issue. Please try after sometime.', 'error');
+        this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
       });
   }
 
@@ -117,18 +116,18 @@ export class QuestionassignmentComponent implements OnInit {
     this.testSeriesService.insertTestSeriesQuestionMapModels(this.previewQuestion.testSeriesQuestionMaps)
     .subscribe(data => {
       this.previewQuestion.testSeriesQuestionMaps = [];
-      this.showNotification('Question Assigned to Test Series Successfully.', 'success');
+      this.showNotification('Question Assigned to Test Series Successfully.', 'success', 2000);
     },
     error => {
       if (error.status === 401) {
         this.userService.logout();
       }
-      this.showNotification('Some technical issue. Please try after sometime.', 'error');
+      this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
     });
   }
 
-  showNotification(msg: string, type: string) {
-    this.notification.showNotification(msg, type, this.id);
+  showNotification(msg: string, type: string, timeout: number) {
+    this.notification.showNotification(msg, type, timeout);
   }
 
 }

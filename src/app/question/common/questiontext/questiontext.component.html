@@ -24,7 +24,7 @@
     </div>
     <div class="col-6"></div>
 </div>
-<app-notification [nid]="id"></app-notification>
+<app-notification></app-notification>
 <div class="row" [hidden]="!isImageAvailable">
    	<div class="col-10">
 		  <input type="file" #file (change)="getFile(file.files, $event)">

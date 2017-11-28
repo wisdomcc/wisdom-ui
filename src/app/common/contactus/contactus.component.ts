@@ -28,7 +28,7 @@ export class ContactusComponent implements OnInit {
     this.emailService.sendEmail(this.name, this.subject, this.email, this.message)
       .subscribe(
         data => {
-          this.showNotification('Your request has been mailed successfully.', 'success');
+          this.showNotification('Your request has been mailed successfully.', 'success', 2000);
           this.name = '';
           this.subject = '';
           this.email = '';
@@ -38,13 +38,13 @@ export class ContactusComponent implements OnInit {
           if (error.status === 401) {
             this.userService.logout();
           }
-          this.showNotification('Your request failed. Please retry.', 'error');
+          this.showNotification('Your request failed. Please retry.', 'danger', 5000);
         }
       );
   }
 
-  showNotification(msg: string, type: string) {
-    this.notification.showNotification(msg, type, this.id);
+  showNotification(msg: string, type: string, timeout: number) {
+    this.notification.showNotification(msg, type, timeout);
   }
 
 }

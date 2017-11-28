@@ -8,39 +8,22 @@ import { Component, OnInit, Input } from '@angular/core';
 
 export class NotificationComponent implements OnInit {
 
-  alertColor: string;
+  alertVisible: boolean;
+  alertType: string;
   alertMsg: string;
-  hideAlert: boolean;
-  alertStatus: string;
-  isErrorAvailable: boolean;
   @Input() nid: string;
 
   constructor() { }
 
   ngOnInit() {
-    this.hideAlert = true;
+    this.alertVisible = false;
   }
 
-  showNotification(message: string, type: string, id: string) {
-    // console.log('Notification for : ' + id);
-    this.isErrorAvailable = false;
-    if (type === 'success') {
-      this.alertStatus = 'Success! ';
-      this.alertColor = 'alert-success';
-    } else if (type === 'error') {
-      this.isErrorAvailable = true;
-      this.alertStatus = 'Error! ';
-      this.alertColor = 'alert-danger';
-    } else {
-      this.alertStatus = '';
-      this.alertColor = 'alert-success';
-    }
+  showNotification(message: string, type: string, timeout: number) {
+    this.alertVisible = true;
+    this.alertType = type;
     this.alertMsg = message;
-    this.hideAlert = false;
-  }
-
-  setHideAlert() {
-    this.hideAlert = true;
+    setTimeout(() => this.alertVisible = false, timeout);
   }
 
 }

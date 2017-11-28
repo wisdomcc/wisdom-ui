@@ -5,7 +5,6 @@ import { TestSeriesService } from '../../../../services/testseries/testseries.se
 import { UserService } from '../../../../services/user/user.service';
 import { UtilityService } from '../../../../services/utility/utility.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
-import { QuestionElementProperty } from '../../../../models/question/qeproperty.model';
 
 @Component({
   selector: 'app-submittestseries',
@@ -15,10 +14,8 @@ import { QuestionElementProperty } from '../../../../models/question/qeproperty.
 export class SubmittestseriesComponent implements OnInit {
 
   id: string;
+  minDate: Date;
   hideSubmitPreviewButton: boolean;
-  qeProperty: QuestionElementProperty[];
-  rightImagePath: string;
-  downImagePath: string;
   testSeriesModels: TestSeries[];
   types = ['Subject Wise', 'Topic Wise', 'Syllabus Wise'];
   selectedExam: string;
@@ -39,14 +36,13 @@ export class SubmittestseriesComponent implements OnInit {
 
   ngOnInit() {
     this.id = 'submittestseries';
+    this.minDate = new Date();
+    this.minDate.setDate(this.minDate.getDate() - 1);
     this.streams = [];
     this.subjects = [];
     this.topics = [];
     this.testSeriesModels = [];
     this.hideSubmitPreviewButton = true;
-    this.qeProperty = [];
-    this.rightImagePath = '../../assets/images/right.png';
-    this.downImagePath = '../../assets/images/down.png';
     this.categoryData = this.utilityService.getJsonDataFromLocalStorage('categoryData');
   }
 
@@ -54,7 +50,6 @@ export class SubmittestseriesComponent implements OnInit {
     this.hideSubmitPreviewButton = false;
     const question = new TestSeries();
     this.testSeriesModels.push(question);
-    this.qeProperty.push(new QuestionElementProperty(this.rightImagePath));
   }
 
   removeTestSeries(index: number) {
@@ -62,12 +57,6 @@ export class SubmittestseriesComponent implements OnInit {
       this.hideSubmitPreviewButton = true;
     }
     this.testSeriesModels.splice(index, 1);
-    this.qeProperty.splice(index, 1);
-  }
-
-  expandCollapse(index: number) {
-    this.qeProperty[index].collapse = this.qeProperty[index].collapse === true ? false : true;
-    this.qeProperty[index].image = this.qeProperty[index].image === this.rightImagePath ? this.downImagePath : this.rightImagePath;
   }
 
   getStreams(index: number) {
@@ -123,7 +112,7 @@ export class SubmittestseriesComponent implements OnInit {
       this.testSeriesService.insertTestSeriesModels(this.testSeriesModels)
       .subscribe(
         data => {
-          this.showNotification('Test Series inserted successfully in database.', 'success');
+          this.showNotification('Test Series inserted successfully in database.', 'success', 2000);
           this.hideSubmitPreviewButton = true;
           this.testSeriesModels = [];
         },
@@ -131,7 +120,7 @@ export class SubmittestseriesComponent implements OnInit {
           if (error.status === 401) {
             this.userService.logout();
           }
-          this.showNotification('Some error occured while inserting questions in database. Please retry.', 'error');
+          this.showNotification('Some error occured while inserting questions in database. Please retry.', 'danger', 5000);
         }
       );
     }
@@ -170,15 +159,15 @@ export class SubmittestseriesComponent implements OnInit {
       }
     });
     if (errorMsg !== '') {
-      this.notification.showNotification(errorMsg, 'error', this.id);
+      this.notification.showNotification(errorMsg, 'danger', 5000);
       errorMsg = '';
       return false;
     }
     return true;
   }
 
-  showNotification(msg: string, type: string) {
-    this.notification.showNotification(msg, type, this.id);
+  showNotification(msg: string, type: string, timeout: number) {
+    this.notification.showNotification(msg, type, timeout);
   }
 
 }

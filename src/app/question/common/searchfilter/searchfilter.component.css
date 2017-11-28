@@ -37,3 +37,29 @@ body {
         min-width: 550px;
     }
 }
+
+.wisdom-typeahead {
+    cursor: pointer;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: block;
+    width: 455px;
+    height: auto;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: center;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+}
+
+.fake-link {
+    color: blue;
+    cursor: pointer;
+}

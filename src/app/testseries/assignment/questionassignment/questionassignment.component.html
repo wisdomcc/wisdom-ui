@@ -13,11 +13,11 @@
   </div>
 </div>
 <div *ngIf="selectedTestSeriesId === ''">
-  <app-notification [nid]="id"></app-notification>
+  <app-notification></app-notification>
 </div>
 <div *ngIf="selectedTestSeriesId !== ''">
   <app-searchfilter (searchEvent)="searchQuestion($event)" ></app-searchfilter>
-  <app-notification [nid]="id"></app-notification>
+  <app-notification></app-notification>
 </div>
 <div [hidden]="!isDataPresent || selectedTestSeriesId === ''">  
   <div class="row">
@@ -30,5 +30,5 @@
       <button class="btn btn-success ml-auto " (click)="assignQuestions()" >Assign Questions To Test Series</button>
     </div>
   </div>
-  <app-notification [nid]="id"></app-notification>
+  <app-notification></app-notification>
 </div>

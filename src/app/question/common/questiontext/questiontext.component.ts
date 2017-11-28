@@ -50,7 +50,7 @@ export class QuestiontextComponent implements OnInit {
       data => {
         setTimeout(() => {
           this.questionModel.images.paths.push(JSON.parse(data).path);
-          this.showNotification('Image uploaded successfully.', 'success');
+          this.showNotification('Image uploaded successfully.', 'success', 2000);
         }, 2000);
         // this.getUploadedImage(JSON.parse(data).path);
       },
@@ -58,7 +58,7 @@ export class QuestiontextComponent implements OnInit {
         if (error.status === 401) {
           this.userService.logout();
         }
-        this.showNotification('Image not uploaded.', 'error');
+        this.showNotification('Image not uploaded.', 'danger', 5000);
       }
     );
   }
@@ -68,7 +68,7 @@ export class QuestiontextComponent implements OnInit {
       .subscribe(
         data => {
           this.questionModel.images.paths.push(path);
-          this.showNotification('Image uploaded successfully.', 'success');
+          this.showNotification('Image uploaded successfully.', 'success', 2000);
         },
         error => {
           if (error.status === 401) {
@@ -81,8 +81,8 @@ export class QuestiontextComponent implements OnInit {
       );
   }
 
-  showNotification(msg: string, type: string) {
-    this.notification.showNotification(msg, type, this.id);
+  showNotification(msg: string, type: string, timeout: number) {
+    this.notification.showNotification(msg, type, timeout);
   }
 
   changeImageAvailibility(isImageAvailable: string) {

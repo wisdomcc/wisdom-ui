@@ -47,7 +47,7 @@ export class EnrolltestseriesComponent implements OnInit {
       if(this.testSeriesModels.length > 0) {
         this.isAlreadyEnrolled = true;
         this.utilityService.setBooleanDataToLocalStorage('isAlreadyEnrolled', this.isAlreadyEnrolled);
-        this.showNotification("Already Enrolled in Test Series Mentioned Below.", "status");
+        this.showNotification('Already Enrolled in Test Series Mentioned Below.', 'warning', 10000);
       } else {
         this.fetchTestSeriesDetails();
       }
@@ -57,7 +57,7 @@ export class EnrolltestseriesComponent implements OnInit {
       if (error.status === 401) {
         this.userService.logout();
       }
-      this.showNotification('Some technical issue. Please try after sometime.', 'error');
+      this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
     });
   }
 
@@ -66,14 +66,14 @@ export class EnrolltestseriesComponent implements OnInit {
     .subscribe(tsdata => {
       this.testSeriesModels = JSON.parse(tsdata);
       if(this.testSeriesModels.length === 0) {
-        this.showNotification("No Test Series is Available for Enrollment.", "status");
+        this.showNotification('No Test Series is Available for Enrollment.', 'warning', 10000);
       }
     },
     error => {
       if (error.status === 401) {
         this.userService.logout();
       }
-      this.showNotification('Some technical issue. Please try after sometime.', 'error');
+      this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
     });
   }
 
@@ -85,10 +85,10 @@ export class EnrolltestseriesComponent implements OnInit {
     this.testSeriesService.enrollTestSeries(this.testSeriesEnrollments)
       .subscribe(tsdata => {
           if(tsdata) {
-            this.showNotification("Successfully Enrolled to below mentioned test.", "status");
+            this.showNotification('Successfully Enrolled to below mentioned test.', 'warning', 10000);
             this.isEnrollmentSuccessful = true;
           } else {
-            this.showNotification("Already enrolled for Test Series.", "status");
+            this.showNotification('Already enrolled for Test Series.', 'warning', 10000);
           }
           
       },
@@ -96,7 +96,7 @@ export class EnrolltestseriesComponent implements OnInit {
         if (error.status === 401) {
           this.userService.logout();
         }
-        this.showNotification('Some technical issue. Please try after sometime.', 'error');
+        this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
       });
   }
 
@@ -108,8 +108,8 @@ export class EnrolltestseriesComponent implements OnInit {
     }
   }
 
-  showNotification(msg: string, type: string) {
-    this.notification.showNotification(msg, type, this.id);
+  showNotification(msg: string, type: string, timeout: number) {
+    this.notification.showNotification(msg, type, timeout);
   }
 
 }

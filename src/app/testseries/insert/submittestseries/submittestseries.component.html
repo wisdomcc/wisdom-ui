@@ -6,39 +6,24 @@
 			(click)="addTestSeries()" value="+" /> 
 	</div>
 </div>
-<div *ngFor="let testSeriesModel of testSeriesModels; let index=index">
-	<div class="row">
-		<div class="col">
-			<input type="submit" class="btn btn-primary addnew float-sm-left"
-			value="Test Series Id : {{testSeriesModel.id}}" disabled="disabled">
-			<input type="button" class="btn btn-danger remove float-sm-right"
-			(click)="removeTestSeries(index)" value="-" />
-			<button class="btn btn-info float-sm-right" type="button" (click)="expandCollapse(index)">
-			<img [src]="qeProperty[index].image" height="8px" width="10px">
-			</button>
-		</div>
-	</div>
-	<div id="index" [hidden]="qeProperty[index].collapse">
+<accordion closeOthers="true">
+	<div *ngFor="let testSeriesModel of testSeriesModels; let index=index">
+		<accordion-group>
+			<div accordion-heading>
+			  	<div class="question-id">Test Series Id : {{testSeriesModel.id}}
+				<button class="btn btn-sm btn-danger btn remove float-sm-right" (click)="removeTestSeries(index)" >
+				<i class="fa fa-minus" aria-hidden="true"></i>
+				</button>
+				</div>
+			</div>
 		<div class="row form-group">
 			<div class="col"><label for="activateDate" class="col-form-label">Activate Date</label></div>
 			<div class="col">
-				<datepicker
-				[(ngModel)]="testSeriesModel.activateDate"
-				[showWeeks]="true"
-				[minDate]="minDate"
-				[dateDisabled]="disabledDate"
-				[onlyCurrentMonth]=true
-				></datepicker>
+				<datepicker [(ngModel)]="testSeriesModel.activateDate" [minDate]="minDate"></datepicker>
 			</div>
 			<div class="col"><label for="deactivateDate" class="col-form-label">De-Activate Date</label></div>
 			<div class="col">
-				<datepicker
-				[(ngModel)]="testSeriesModel.deactivateDate"
-				[showWeeks]="true"
-				[minDate]="minDate"
-				[dateDisabled]="disabledDate"
-				[onlyCurrentMonth]=true
-				></datepicker>
+				<datepicker [(ngModel)]="testSeriesModel.deactivateDate" [minDate]="minDate"></datepicker>
 			</div>
 		</div>
 		<div class="row form-group">
@@ -93,9 +78,10 @@
 				</select>
 			</div>
 		</div>
+		</accordion-group>
 	</div>
-</div>
-<app-notification [nid]="id"></app-notification>
+</accordion>
+<app-notification></app-notification>
 <div class="row" [hidden]="hideSubmitPreviewButton" >
   <div class="btn-group col" >
     <button class="btn btn-success ml-auto " (click)="submitTestSeries()" >Submit Test Series</button>

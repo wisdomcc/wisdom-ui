@@ -3,9 +3,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { routing } from './app.routing';
-import { Ng2TableModule, NG_TABLE_DIRECTIVES, NgTablePagingDirective } from 'ng2-table/ng2-table';
-import { PaginationModule } from 'ng2-bootstrap';
-import { DatepickerModule } from 'ng2-bootstrap';
+import { Ng2TableModule, NG_TABLE_DIRECTIVES, NgTablePagingDirective } from 'ng2-table';
+import { PaginationModule, TypeaheadModule, TypeaheadDirective, DatepickerModule } from 'ngx-bootstrap';
+import { PositioningService } from 'ngx-bootstrap';
+import { AccordionModule } from 'ngx-bootstrap';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 import { QuestionService } from '../services/question/question.service';
 import { UserService } from '../services/user/user.service';
@@ -56,9 +58,11 @@ import { SubmitcategoryComponent } from './question/insert/submitcategory/submit
 import { ProfileComponent } from './user/profile/profile.component';
 import { ChangepasswordComponent } from './user/changepassword/changepassword.component';
 import { SearchfilterComponent } from './question/common/searchfilter/searchfilter.component';
+import { CustomFilterPipe } from './question/common/searchfilter/customfilter/CustomFilterPipe'
 
 @NgModule({
   declarations: [
+    CustomFilterPipe,
     AppComponent,
     LoginComponent,
     NavigationComponent,
@@ -102,8 +106,11 @@ import { SearchfilterComponent } from './question/common/searchfilter/searchfilt
     SearchfilterComponent
   ],
   imports: [
-    BrowserModule,
+    AlertModule.forRoot(),
     DatepickerModule.forRoot(),
+    AccordionModule.forRoot(),
+    TypeaheadModule.forRoot(),
+    BrowserModule,
     FormsModule,
     HttpModule,
     Ng2TableModule,
@@ -111,6 +118,7 @@ import { SearchfilterComponent } from './question/common/searchfilter/searchfilt
     PaginationModule.forRoot()
   ],
   providers: [
+    PositioningService,
     QuestionService,
     TestSeriesService,
     UserService,

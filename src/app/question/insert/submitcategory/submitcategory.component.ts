@@ -42,21 +42,21 @@ export class SubmitcategoryComponent implements OnInit {
     this.categoryData = JSON.parse(localStorage.getItem("categoryData"));
   }
 
-  showNotification(msg: string, type: string) {
-    this.notification.showNotification(msg, type, this.id);
+  showNotification(msg: string, type: string, timeout: number) {
+    this.notification.showNotification(msg, type, timeout);
   }
 
   submitCategory() {
     this.questionService.insertCategory(this.category)
     .subscribe(
       data => {
-        this.showNotification('Category inserted successfully in database.', 'success');
+        this.showNotification('Category inserted successfully in database.', 'success', 2000);
       },
       error => {
         if (error.status === 401) {
           this.userService.logout();
         }
-        this.showNotification('Some error occured while inserting questions in database. Please retry.', 'error');
+        this.showNotification('Some error occured while inserting questions in database. Please retry.', 'danger', 5000);
       }
     );
   }
