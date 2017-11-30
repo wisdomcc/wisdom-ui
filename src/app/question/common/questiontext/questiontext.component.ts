@@ -93,4 +93,8 @@ export class QuestiontextComponent implements OnInit {
     }
   }
 
+  previewQuestion() {
+    this.questionService.previewQuestion(this.questionModel);
+  }
+
 }

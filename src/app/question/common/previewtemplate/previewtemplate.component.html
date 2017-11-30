@@ -1,0 +1,56 @@
+<div *ngIf="questionModel.paragraph != undefined">
+    <div [innerHtml]="questionModel.paragraph.paragraph"></div><br/>
+    <div *ngFor="let path of questionModel.paragraph.images.paths">
+      <img alt="" [src]="imageBaseUrl+path"><br/>
+    </div>
+  </div>
+  <div [innerHtml]="questionModel.question"></div>
+  <div *ngFor="let path of questionModel.images.paths">
+      <img alt="" [src]="imageBaseUrl+path"><br/>
+  </div>
+  <div *ngIf="questionModel.options.type == 'Text'">
+      <div *ngFor="let option of questionModel.options.option; let index=index">
+          {{index+1}})&nbsp;{{option}}<br/>
+      </div>
+  </div>
+  <div *ngIf="questionModel.options.type == 'Image'">
+    <div *ngFor="let path of questionModel.options.imagePath; let index=index">
+        {{index+1}})&nbsp;<img alt="" [src]="imageBaseUrl+path"><br/>
+    </div>
+  </div>
+  <div *ngIf="questionModel.options.type == 'TextAndImage'">
+    <div *ngFor="let option of questionModel.options.option; let index=index">
+        {{index+1}})&nbsp;{{option}}<br/>
+        <img alt="" [src]="imageBaseUrl+questionModel.options.imagePath[index]"><br/>
+    </div>
+  </div>
+  <div class="float-right" *ngIf="!isSubmitPreview">
+    [{{questionModel.marks}} Marks]
+  </div>
+  <div class="float-right" *ngIf="isSubmitPreview">
+      [Gate {{questionModel.year}}]&nbsp;[{{questionModel.marks}} Marks]
+      &nbsp;[{{questionModel.type}}]
+  </div>
+  <div *ngFor="let linkedQuestion of questionModel.linkedQuestions">
+      <br/><div [innerHtml]="linkedQuestion.question"></div>
+      <div *ngFor="let path of linkedQuestion.images.paths">
+          <img alt="" [src]="imageBaseUrl+path"><br/>
+      </div>
+      <div *ngIf="linkedQuestion.options.type == 'Text'">
+          <div *ngFor="let option of linkedQuestion.options.option; let index=index">
+              {{index+1}})&nbsp;{{option}}<br/>
+          </div>
+      </div>
+      <div *ngIf="linkedQuestion.options.type == 'Image'">
+        <div *ngFor="let path of linkedQuestion.options.imagePath; let index=index">
+            {{index+1}})&nbsp;<img alt="" [src]="imageBaseUrl+path"><br/>
+        </div>
+      </div>
+      <div *ngIf="linkedQuestion.options.type == 'TextAndImage'">
+        <div *ngFor="let option of linkedQuestion.options.option; let index=index">
+            {{index+1}})&nbsp;{{option}}<br/>
+            <img alt="" [src]="imageBaseUrl+linkedQuestion.options.imagePath[index]"><br/>
+        </div>
+      </div>
+      <div class="float-right">[{{linkedQuestion.marks}} Marks]</div>
+  </div>

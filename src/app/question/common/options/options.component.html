@@ -45,8 +45,9 @@
 		(click)="uploadOptionsImage()" value="Upload" />
 	</div>
 	<div class="col">
-		<input type="button" (click)="addOption()"
-			class="btn btn-primary addnew float-sm-right" value="+" />
+		<button class="btn btn-sm btn-primary addnew float-sm-right" (click)="addOption()" >
+			<i class="fa fa-plus" aria-hidden="true"></i>
+		</button>
 	</div>
 </div>
 <div class="row form-group" [hidden]="getStatus('Text')">
@@ -54,8 +55,9 @@
 		<textarea rows="2" class="form-control" [(ngModel)]="newOptionVal" placeholder="Enter your option here"></textarea>
 	</div>
 	<div class="col">
-		<input type="button" (click)="addOption()"
-			class="btn btn-primary addnew float-sm-right" value="+" />
+		<button class="btn btn-sm btn-primary addnew float-sm-right" (click)="addOption()" >
+			<i class="fa fa-plus" aria-hidden="true"></i>
+		</button>
 	</div>
 </div>
 <div class="row form-group" [hidden]="getStatus('Image')">

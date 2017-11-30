@@ -8,7 +8,7 @@
     </div>
     <app-notification></app-notification>
 </div>
-<div *ngIf="isEnrolledForTestSeries">
+<div *ngIf="isEnrolledForTestSeries && !isTestStarted">
   <div class="row" >
     <div class="col text-center">
       <div class="alert alert-success">
@@ -37,6 +37,7 @@
 <div *ngIf="isTestStarted">
   <div class="row">
     <div class="col">
+      <button class="btn btn-primary" (click)="goToTestList(page)" >Go Back to Test List</button>
       <button class="btn btn-success float-right" (click)="submitTestSeries()" >Submit Test Series</button>
     </div>
   </div>

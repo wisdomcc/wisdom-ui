@@ -15,7 +15,14 @@ export class AnspreviewComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {  }
+  ngOnInit() {
+    MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.questionModel.question ]);
+    if (this.questionModel.options.type !== 'NoOption') {
+      for (let i = 0; i < this.questionModel.options.option.length; i++) {
+        MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.questionModel.options.option[i] ]);
+      }
+    }
+  }
 
   markAnswer(option: string) {
     this.answerModel.answer = 'option' + option;
@@ -51,16 +58,6 @@ export class AnspreviewComponent implements OnInit {
       return true;
     }
     return false;
-  }
-
-  previewQuestion() {
-    MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.questionModel.question ]);
-    MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.answerModel.explanation.description ]);
-    if (this.questionModel.options.type !== 'NoOption') {
-      for (let i = 0; i < this.questionModel.options.option.length; i++) {
-        MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.questionModel.options.option[i] ]);
-      }
-    }
   }
 
 }

@@ -8,6 +8,7 @@ import { PaginationModule, TypeaheadModule, TypeaheadDirective, DatepickerModule
 import { PositioningService } from 'ngx-bootstrap';
 import { AccordionModule } from 'ngx-bootstrap';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { ModalModule } from 'ngx-bootstrap';
 
 import { QuestionService } from '../services/question/question.service';
 import { UserService } from '../services/user/user.service';
@@ -58,7 +59,8 @@ import { SubmitcategoryComponent } from './question/insert/submitcategory/submit
 import { ProfileComponent } from './user/profile/profile.component';
 import { ChangepasswordComponent } from './user/changepassword/changepassword.component';
 import { SearchfilterComponent } from './question/common/searchfilter/searchfilter.component';
-import { CustomFilterPipe } from './question/common/searchfilter/customfilter/CustomFilterPipe'
+import { CustomFilterPipe } from './question/common/searchfilter/customfilter/CustomFilterPipe';
+import { PreviewtemplateComponent } from './question/common/previewtemplate/previewtemplate.component'
 
 @NgModule({
   declarations: [
@@ -103,13 +105,15 @@ import { CustomFilterPipe } from './question/common/searchfilter/customfilter/Cu
     SubmitcategoryComponent,
     ProfileComponent,
     ChangepasswordComponent,
-    SearchfilterComponent
+    SearchfilterComponent,
+    PreviewtemplateComponent
   ],
   imports: [
     AlertModule.forRoot(),
     DatepickerModule.forRoot(),
     AccordionModule.forRoot(),
     TypeaheadModule.forRoot(),
+    ModalModule.forRoot(),
     BrowserModule,
     FormsModule,
     HttpModule,

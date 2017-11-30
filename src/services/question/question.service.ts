@@ -22,6 +22,20 @@ export class QuestionService {
   constructor(private http: Http, private userService: UserService) {
   }
 
+  previewQuestion(questionModel: QuestionModel) {
+    if(questionModel.question !== undefined && questionModel.question !== null
+      && questionModel.question !== '') {
+        MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, questionModel.question ]);
+    }
+    if (questionModel.options.type !== 'NoOption') {
+      if(questionModel.options !== undefined && questionModel.options !== null
+        && questionModel.options.option !== undefined && questionModel.options.option !== null)
+      for (let i = 0; i < questionModel.options.option.length; i++) {
+        MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, questionModel.options.option[i] ]);
+      }
+    }
+  }
+
   fetchCategoryDetails() {
     return this.http.get(this.categoryUrl, {withCredentials: true})
       .map((res: Response) => res.text());

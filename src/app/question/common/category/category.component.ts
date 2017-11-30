@@ -25,6 +25,7 @@ export class CategoryComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.selectedExam = 'default';
     this.streams = [];
     this.subjects = [];
     this.topics = [];
@@ -34,8 +35,22 @@ export class CategoryComponent implements OnInit {
   }
 
   getStreams() {
+    this.selectedStream = 'default';
+    if(this.selectedExam === 'default') {
+      this.selectedStream = '';
+      this.selectedSubject = '';
+      this.selectedTopic = '';
+      this.selectedSubTopic = '';
+      this.streams = [];
+      this.subjects = [];
+      this.topics = [];
+      this.subTopics = [];
+    }
     for (let i = 0; i < this.categoryData.exams.length; i++) {
       if (this.selectedExam === this.categoryData.exams[i].exam) {
+        for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
+          this.streams.pop();
+        }
         for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
           this.streams.push(this.categoryData.exams[i].streams[j].stream);
         }
@@ -45,10 +60,22 @@ export class CategoryComponent implements OnInit {
   }
 
   getSubjects() {
+    this.selectedSubject = 'default';
+    if(this.selectedStream === 'default') {
+      this.selectedSubject = '';
+      this.selectedTopic = '';
+      this.selectedSubTopic = '';
+      this.subjects = [];
+      this.topics = [];
+      this.subTopics = [];
+    }
     for (let i = 0; i < this.categoryData.exams.length; i++) {
       if (this.selectedExam === this.categoryData.exams[i].exam) {
         for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
           if (this.selectedStream === this.categoryData.exams[i].streams[j].stream) {
+            for (let k = 0; k < this.categoryData.exams[i].streams[j].subjects.length; k++) {
+              this.subjects.pop();
+            }
             for (let k = 0; k < this.categoryData.exams[i].streams[j].subjects.length; k++) {
               this.subjects.push(this.categoryData.exams[i].streams[j].subjects[k].subject);
             }
@@ -60,12 +87,22 @@ export class CategoryComponent implements OnInit {
   }
 
   getTopics() {
+    this.selectedTopic = 'default';
+    if(this.selectedSubject === 'default') {
+      this.selectedTopic = '';
+      this.selectedSubTopic = '';
+      this.topics = [];
+      this.subTopics = [];
+    }
     for (let i = 0; i < this.categoryData.exams.length; i++) {
       if (this.selectedExam === this.categoryData.exams[i].exam) {
         for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
           if (this.selectedStream === this.categoryData.exams[i].streams[j].stream) {
             for (let k = 0; k < this.categoryData.exams[i].streams[j].subjects.length; k++) {
               if (this.selectedSubject === this.categoryData.exams[i].streams[j].subjects[k].subject) {
+                for (let l = 0; l < this.categoryData.exams[i].streams[j].subjects[k].topics.length; l++) {
+                  this.topics.pop();
+                }
                 for (let l = 0; l < this.categoryData.exams[i].streams[j].subjects[k].topics.length; l++) {
                   this.topics.push(this.categoryData.exams[i].streams[j].subjects[k].topics[l].topic);
                 }
@@ -79,6 +116,11 @@ export class CategoryComponent implements OnInit {
   }
 
   getSubTopics() {
+    this.selectedSubTopic = 'default';
+    if(this.selectedTopic === 'default') {
+      this.selectedSubTopic = '';
+      this.subTopics = [];
+    }
     for (let i = 0; i < this.categoryData.exams.length; i++) {
       if (this.selectedExam === this.categoryData.exams[i].exam) {
         for (let j = 0; j < this.categoryData.exams[i].streams.length; j++) {
@@ -87,6 +129,9 @@ export class CategoryComponent implements OnInit {
               if (this.selectedSubject === this.categoryData.exams[i].streams[j].subjects[k].subject) {
                 for (let l = 0; l < this.categoryData.exams[i].streams[j].subjects[k].topics.length; l++) {
                   if (this.selectedTopic === this.categoryData.exams[i].streams[j].subjects[k].topics[l].topic) {
+                    for (let m = 0; m < this.categoryData.exams[i].streams[j].subjects[k].topics[l].subTopics.length; m++) {
+                      this.subTopics.pop();
+                    }
                     for (let m = 0; m < this.categoryData.exams[i].streams[j].subjects[k].topics[l].subTopics.length; m++) {
                       this.subTopics.push(this.categoryData.exams[i].streams[j].subjects[k].topics[l].subTopics[m].subTopic);
                     }
@@ -102,11 +147,11 @@ export class CategoryComponent implements OnInit {
   }
 
   addRelatedField() {
-    this.questionModel.relatedTo.exam.push((this.selectedExam) ? this.selectedExam : 'BLANK');
-    this.questionModel.relatedTo.stream.push((this.selectedStream) ? this.selectedStream : 'BLANK');
-    this.questionModel.relatedTo.subject.push((this.selectedSubject) ? this.selectedSubject : 'BLANK');
-    this.questionModel.relatedTo.topic.push((this.selectedTopic) ? this.selectedTopic : 'BLANK');
-    this.questionModel.relatedTo.subTopic.push((this.selectedSubTopic) ? this.selectedSubTopic : 'BLANK');
+    this.questionModel.relatedTo.exam.push((this.selectedExam !== 'default') ? this.selectedExam : 'BLANK');
+    this.questionModel.relatedTo.stream.push((this.selectedStream !== 'default') ? this.selectedStream : 'BLANK');
+    this.questionModel.relatedTo.subject.push((this.selectedSubject !== 'default') ? this.selectedSubject : 'BLANK');
+    this.questionModel.relatedTo.topic.push((this.selectedTopic !== 'default') ? this.selectedTopic : 'BLANK');
+    this.questionModel.relatedTo.subTopic.push((this.selectedSubTopic !== 'default') ? this.selectedSubTopic : 'BLANK');
     // console.log(this.questionModel.relatedTo);
   }
 

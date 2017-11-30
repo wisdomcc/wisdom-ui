@@ -151,7 +151,15 @@ export class SearchfilterComponent implements OnInit {
         }
       }
       if(isMatch) {
-        /*if(search[1] && search[1].trim() !== '') {
+        this.selectedSubject = search[0].trim();
+        this.getTopics();
+        this.searchCriteria.relatedTo.subject.pop();
+        this.searchCriteria.relatedTo.topic.pop();
+        this.searchCriteria.relatedTo.subject.push(search[0].trim());
+        this.search();
+      }
+      /*if(isMatch) {
+        if(search[1] && search[1].trim() !== '') {
           let year = search[1].trim().split('to');
           if(year[1] && year[1] !== '') {
             let to = parseInt(year[1]);
@@ -169,23 +177,22 @@ export class SearchfilterComponent implements OnInit {
               this.showNotification('Enter year between 1990 and current year', 'warning', 10000);
             }
           }
-        }*/
+        }
         this.selectedSubject = search[0].trim();
         this.getTopics();
         this.searchCriteria.relatedTo.subject.pop();
         this.searchCriteria.relatedTo.topic.pop();
         this.searchCriteria.relatedTo.subject.push(search[0].trim());
         this.search();
-        /*if(!search[1] || (search[1] && search[1].trim() === '')) {
+        if(!search[1] || (search[1] && search[1].trim() === '')) {
           this.searchText = this.searchText + " : ";
           this.showNotification('Enter year or year range after : . For Example -> 2015, 2012 to 2017', 'warning', 10000);
         } else {
-        }*/
+        }
       } else {
         this.showNotification('Search Text do not match any subject.', 'danger', 5000);
       }
-    } else {
-      this.showNotification('Please enter any subject in text box.', 'danger', 5000);
+      }*/
     }
   }
 

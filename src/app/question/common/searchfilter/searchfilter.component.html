@@ -1,7 +1,7 @@
 <br/>
 <app-notification></app-notification>
 <div class="input-group" id="boot-search-box">
-    <input type="text" [typeahead]="subjects" [(ngModel)]="searchText" class="form-control" [value]="searchText" placeholder="Enter subject to search previous year question" />
+    <input type="text" (keyup.enter)="validateTextAndSearch()" [typeahead]="subjects" [(ngModel)]="searchText" class="form-control" [value]="searchText" placeholder="Enter subject to search previous year question" />
     <!--<div class="wisdom-typeahead" [hidden]="isTypeAheadHidden" (blur)="setHidden()" >
       <div *ngFor="let subj of subjects | filter: searchText" #filterResult>  
         <span class="fake-link" (click)="setSearchText(subj)" >{{subj}}</span><br/>

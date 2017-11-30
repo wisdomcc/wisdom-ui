@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { QuestionService } from '../../../../services/question/question.service';
 import { UserService } from '../../../../services/user/user.service';
 import { UtilityService } from '../../../../services/utility/utility.service';
@@ -17,18 +19,38 @@ export class SubmitquestionComponent implements OnInit {
   hideSubmitPreviewButton: boolean;
   questionModels: QuestionModel[];
   categoryData: any;
-  isFirstTime = true;
-  @ViewChild(NotificationComponent) notification: NotificationComponent;
 
+  modalRef: BsModalRef;
+
+  @ViewChild(NotificationComponent) notification: NotificationComponent;
 
   constructor(private questionService: QuestionService,
               private userService: UserService,
-              private utilityService: UtilityService) {}
+              private utilityService: UtilityService,
+              private modalService: BsModalService) {}
 
   ngOnInit() {
     this.id = 'submitquestion';
     this.getDataFromLocalStorage();
     this.utilityService.setStringDataToLocalStorage('page', this.id);
+  }
+
+  validateAndOpenModal(template: TemplateRef<any>) {
+    this.utilityService.setJsonDataToLocalStorage('questionModels', this.questionModels);
+    this.utilityService.setBooleanDataToLocalStorage('hideSubmitPreviewButton', this.hideSubmitPreviewButton);
+    if (this.validateQuestionModels()) {
+      MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+      this.modalRef = this.modalService.show(template);
+    }
+  }
+ 
+  confirm(): void {
+    this.submitQuestions();
+    this.modalRef.hide();
+  }
+ 
+  decline(): void {
+    this.modalRef.hide();
   }
 
   getDataFromLocalStorage() {
@@ -68,25 +90,21 @@ export class SubmitquestionComponent implements OnInit {
   }
 
   submitQuestions() {
-    this.utilityService.setJsonDataToLocalStorage('questionModels', this.questionModels);
-    this.utilityService.setBooleanDataToLocalStorage('hideSubmitPreviewButton', this.hideSubmitPreviewButton);
-    if (this.validateQuestionModels()) {
-      this.questionService.insertQuestionModels(this.questionModels)
-      .subscribe(
-        data => {
-          this.showNotification('Questions inserted successfully in database.', 'success', 2000);
-          this.hideSubmitPreviewButton = true;
-          this.questionModels = [];
-          this.removeDataFromLocalStorage();
-        },
-        error => {
-          if (error.status === 401) {
-            this.userService.logout();
-          }
-          this.showNotification('Some error occured while inserting questions in database. Please retry.', 'danger', 5000);
+    this.questionService.insertQuestionModels(this.questionModels)
+    .subscribe(
+      data => {
+        this.showNotification('Questions inserted successfully in database.', 'success', 2000);
+        this.hideSubmitPreviewButton = true;
+        this.questionModels = [];
+        this.removeDataFromLocalStorage();
+      },
+      error => {
+        if (error.status === 401) {
+          this.userService.logout();
         }
-      );
-    }
+        this.showNotification('Some error occured while inserting questions in database. Please retry.', 'danger', 5000);
+      }
+    );
   }
 
   validateQuestionModels(): boolean {

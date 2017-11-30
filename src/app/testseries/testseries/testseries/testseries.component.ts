@@ -60,6 +60,7 @@ export class TestseriesComponent implements OnInit {
     this.imageBaseUrl = this.questionService.getImageUrl;
     this.isTestStarted = false;
     this.isEnrolledForTestSeries = true;
+    debugger;
     if(this.utilityService.getBooleanDataFromLocalStorage('isEnrolledForTestSeries')) {
       if(this.utilityService.getBooleanDataFromLocalStorage('isTestStarted')) {
         this.isTestStarted = true;
@@ -138,6 +139,7 @@ export class TestseriesComponent implements OnInit {
         this.utilityService.setJsonDataToLocalStorage('data', this.data);
         this.utilityService.setJsonDataToLocalStorage('answerModels', this.answerModels);
         this.utilityService.setJsonDataToLocalStorage('testSeriesStatus', this.testSeriesStatus);
+        this.onChangeTable(this.config);
       } else {
         this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);  
       }
@@ -148,7 +150,6 @@ export class TestseriesComponent implements OnInit {
       }
       this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
     });
-    this.onChangeTable(this.config);
   }
 
   submitTestSeries() {
@@ -166,6 +167,14 @@ export class TestseriesComponent implements OnInit {
           this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
         }
       );
+  }
+
+  goToTestList(page: number) {
+    this.isTestStarted = false;
+    this.utilityService.setBooleanDataToLocalStorage('isTestStarted', this.isTestStarted);
+    this.utilityService.setIntDataToLocalStorage('pageNo', page);
+    this.utilityService.setJsonDataToLocalStorage('answerModels', this.answerModels);
+    this.utilityService.setJsonDataToLocalStorage('testSeriesStatus', this.testSeriesStatus);
   }
 
   showNotification(msg: string, type: string, timeout: number) {

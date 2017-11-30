@@ -2,8 +2,9 @@
   <div class="col">
     <input type="submit" class="btn btn-primary addnew float-sm-left"
         value="Question Submit Form" disabled="disabled"> 
-    <input type="button" class="btn btn-primary addnew float-sm-right"
-        (click)="addQuestion()" value="+" /> 
+    <button class="btn btn-sm btn-primary addnew float-sm-right" (click)="addQuestion()" >
+      <i class="fa fa-plus" aria-hidden="true"></i>
+    </button> 
   </div>
 </div>
 <accordion closeOthers="true">
@@ -24,6 +25,21 @@
 <app-notification></app-notification>
 <div class="row" [hidden]="hideSubmitPreviewButton" >
   <div class="btn-group col" >
-    <button class="btn btn-success ml-auto " (click)="submitQuestions()" >Submit</button>
+    <button class="btn btn-success ml-auto " (click)="validateAndOpenModal(template)" >Preview And Submit</button>
   </div>
 </div>
+<ng-template #template>
+  <div class="modal-content modal-lg">
+    <div class="modal-header text-center">
+      <h5 class="modal-title">Question Preview</h5>
+    </div>
+    <div class="modal-body">
+      <div *ngFor="let questionModel of questionModels; let index=index">
+        <app-previewtemplate [questionModel]="questionModel" [isSubmitPreview]="true"></app-previewtemplate>
+      </div>
+      <br/>
+      <button type="button" class="btn btn-danger" (click)="decline()" >Cancel</button>
+      <button type="button" class="btn btn-success" (click)="confirm()" >Submit</button>
+    </div>
+  </div>
+</ng-template>

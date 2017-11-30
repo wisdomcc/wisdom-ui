@@ -33,13 +33,4 @@ export class PreviewComponent implements OnInit {
     return false;
   }
 
-  previewQuestion() {
-    MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.questionModel.question ]);
-    if (this.questionModel.options.type !== 'NoOption') {
-      for (let i = 0; i < this.questionModel.options.option.length; i++) {
-        MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.questionModel.options.option[i] ]);
-      }
-    }
-  }
-
 }

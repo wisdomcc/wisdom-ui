@@ -106,5 +106,9 @@ export class ParagraphComponent implements OnInit {
     }
   }
 
+  previewQuestion() {
+    this.questionService.previewQuestion(this.questionModel);
+  }
+
 }
 

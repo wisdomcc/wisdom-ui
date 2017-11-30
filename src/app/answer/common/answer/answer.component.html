@@ -5,7 +5,7 @@
 </div>
 <div class="row">
 	<div class="col">
-		<textarea rows="5" class="form-control"
+		<textarea rows="5" class="form-control" (blur)="previewQuestion()"
 					[(ngModel)]="answerModel.explanation.description" placeholder="Enter your explanation for option selected or answer entered"></textarea>
 	</div>
 </div>

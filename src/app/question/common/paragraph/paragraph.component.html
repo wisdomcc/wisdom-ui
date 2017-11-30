@@ -21,7 +21,7 @@
 <div *ngIf="questionModel.paragraph != undefined" [hidden]="!isParagraphAvailable">
   <div class="row">
     <div class="col">
-      <textarea rows="5" class="form-control"
+      <textarea rows="5" class="form-control" (blur)="previewQuestion()"
             [(ngModel)]="questionModel.paragraph.paragraph" placeholder="Enter your paragraph here"></textarea>
     </div>
   </div>

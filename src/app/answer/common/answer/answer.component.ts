@@ -92,5 +92,9 @@ export class AnswerComponent implements OnInit {
     }
   }
 
+  previewQuestion() {
+    MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.answerModel.explanation.description ]);
+  }
+
 }
 

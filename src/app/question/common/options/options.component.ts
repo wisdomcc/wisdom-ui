@@ -97,6 +97,7 @@ export class OptionsComponent implements OnInit {
           .push(this.newOptionVal);
       this.newOptionVal = '';
     }
+    this.previewQuestion();
   }
 
   removeOption(index: number) {
@@ -124,6 +125,10 @@ export class OptionsComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  previewQuestion() {
+    this.questionService.previewQuestion(this.questionModel);
   }
 
 }
