@@ -1,5 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { QuestionModel } from '../../../../models/question/question.model';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { SearchfilterComponent } from '../../../question/common/searchfilter/searchfilter.component';
 import { SearchCriteria } from '../../../../models/question/searchcriteria.model';
 import { QuestionService } from '../../../../services/question/question.service';
@@ -18,17 +20,47 @@ export class UpdatequestionComponent implements OnInit {
   hideSubmitPreviewButton: boolean;
   questionModels: QuestionModel[];
   isDataPresent: boolean;
+  modalRef: BsModalRef;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
   @ViewChild(SearchfilterComponent) searchFilter: SearchfilterComponent;
 
   constructor(private questionService: QuestionService,
               private userService: UserService,
-              private utilityService: UtilityService) { }
+              private utilityService: UtilityService,
+              private modalService: BsModalService) { }
 
   ngOnInit() {
     this.id = 'updatequestion';
     this.getDataFromLocalStorage();
     this.utilityService.setStringDataToLocalStorage('page', this.id);
+  }
+
+  validateAndOpenModal(template: TemplateRef<any>) {
+    this.utilityService.setJsonDataToLocalStorage('questionModels', this.questionModels);
+    this.utilityService.setBooleanDataToLocalStorage('hideSubmitPreviewButton', this.hideSubmitPreviewButton);
+    if (this.validateQuestionModels()) {
+      MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+      this.modalRef = this.modalService.show(template);
+    }
+  }
+ 
+  confirm(): void {
+    this.submitQuestions();
+    this.modalRef.hide();
+  }
+ 
+  decline(): void {
+    this.modalRef.hide();
+  }
+
+  validateQuestionModels(): boolean {
+    let errorMsg = this.questionService.validate(this.questionModels);
+    if (errorMsg !== '') {
+      this.notification.showNotification(errorMsg, 'danger', 5000);
+      errorMsg = '';
+      return false;
+    }
+    return true;
   }
 
   getDataFromLocalStorage() {

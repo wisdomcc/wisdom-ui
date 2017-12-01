@@ -25,18 +25,20 @@ export class SearchfilterComponent implements OnInit {
   topics: string[];
   fromYears: number[];
   toYears: number[];
-  isTypeAheadHidden: boolean;
+  types: string[];
+  //isTypeAheadHidden: boolean;
   @Output() searchEvent = new EventEmitter<string>();
   @ViewChild(NotificationComponent) notification: NotificationComponent;
-  @ViewChildren('filterResult') filterResult;
+  //@ViewChildren('filterResult') filterResult;
 
   constructor(private questionService: QuestionService,
               private userService: UserService) { }
 
   ngOnInit() {
+    this.types = ['Previous Year', 'Test Series', 'Normal'];
     this.searchCriteria = new SearchCriteria();
     this.id = 'searchfilter';
-    this.isTypeAheadHidden = true;
+    //this.isTypeAheadHidden = true;
     this.subjects = [];
     this.topics = [];
     this.fromYears = [];
@@ -49,20 +51,32 @@ export class SearchfilterComponent implements OnInit {
     this.getSubjects();
   }
 
+  get enabled(): any {
+    return localStorage.getItem('enabled');
+  }
+
+  get username(): any {
+    return localStorage.getItem('username');
+  }
+
+  get role(): any {
+    return localStorage.getItem('role');
+  }
+
   /*showTypeAheadOption() {
     if(this.searchText === undefined || this.searchText === '') {
       this.isTypeAheadHidden = true;
     } else {
       this.isTypeAheadHidden = false;
     }
-    console.log(this.filterResult);
+    //console.log(this.filterResult);
     if(this.filterResult.length === 0) {
       this.isTypeAheadHidden = true;
     }
     if(this.searchText.length > 2) {
       let search = this.searchText.split(':');
       for(let i = 0; i < search.length; i++) {
-        console.log(search[i].trim());
+        //console.log(search[i].trim());
       }
     }
 }

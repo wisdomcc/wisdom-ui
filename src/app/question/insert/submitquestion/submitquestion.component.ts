@@ -16,6 +16,7 @@ import { NotificationComponent } from '../../../common/notification/notification
 export class SubmitquestionComponent implements OnInit {
 
   id: string;
+  imageBaseUrl: string;
   hideSubmitPreviewButton: boolean;
   questionModels: QuestionModel[];
   categoryData: any;
@@ -31,6 +32,7 @@ export class SubmitquestionComponent implements OnInit {
 
   ngOnInit() {
     this.id = 'submitquestion';
+    this.imageBaseUrl = this.questionService.getImageUrl;
     this.getDataFromLocalStorage();
     this.utilityService.setStringDataToLocalStorage('page', this.id);
   }
@@ -108,56 +110,7 @@ export class SubmitquestionComponent implements OnInit {
   }
 
   validateQuestionModels(): boolean {
-    debugger;
-    let errorMsg = '';
-    this.questionModels.forEach(function(question) {
-      if (question.question.trim() === '') {
-        errorMsg = 'Question should not be empty. For QuestionId : ' + question.id;
-        return;
-      }
-      if (question.options.type === 'Text' &&
-         question.options.option.length === 0) {
-          errorMsg = 'Options Text is not added. For QuestionId : ' + question.id;
-          return;
-      }
-      if (question.options.type === 'Image' &&
-          question.options.imagePath.length === 0) {
-          errorMsg = 'Options Image is not added. For QuestionId : ' + question.id;
-          return;
-      }
-      if (question.relatedTo.exam.length === 0) {
-        errorMsg = 'Related To is not added. For QuestionId : ' + question.id;
-        return;
-      }
-      if (question.marks.trim() === '') {
-        errorMsg = 'Marks is not added. For QuestionId : ' + question.id;
-        return;
-      }
-      if (question.year.trim() === '') {
-        errorMsg = 'Year is not added. For QuestionId : ' + question.id;
-        return;
-      }
-      question.linkedQuestions.forEach(function(linkedQuestion) {
-        if (linkedQuestion.question.trim() === '') {
-          errorMsg = 'Question should not be empty. For Linked QuestionId : ' + linkedQuestion.id;
-          return;
-        }
-        if (linkedQuestion.options.type === 'Text' &&
-            linkedQuestion.options.option.length === 0) {
-            errorMsg = 'Options Text is not added. For Linked QuestionId : ' + linkedQuestion.id;
-            return;
-        }
-        if (linkedQuestion.options.type === 'Image' &&
-            linkedQuestion.options.imagePath.length === 0) {
-            errorMsg = 'Options Image is not added. For Linked QuestionId : ' + linkedQuestion.id;
-            return;
-        }
-        if (linkedQuestion.marks.trim() === '') {
-          errorMsg = 'Marks is not added. For Linked QuestionId : ' + linkedQuestion.id;
-          return;
-        }
-      });
-    });
+    let errorMsg = this.questionService.validate(this.questionModels);
     if (errorMsg !== '') {
       this.notification.showNotification(errorMsg, 'danger', 5000);
       errorMsg = '';

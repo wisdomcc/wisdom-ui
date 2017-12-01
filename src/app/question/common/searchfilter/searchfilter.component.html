@@ -1,7 +1,7 @@
 <br/>
 <app-notification></app-notification>
 <div class="input-group" id="boot-search-box">
-    <input type="text" (keyup.enter)="validateTextAndSearch()" [typeahead]="subjects" [(ngModel)]="searchText" class="form-control" [value]="searchText" placeholder="Enter subject to search previous year question" />
+    <input type="text" (keyup.enter)="validateTextAndSearch()" [typeahead]="subjects" [(ngModel)]="searchText" class="form-control" [value]="searchText" placeholder="Enter subject to search question" />
     <!--<div class="wisdom-typeahead" [hidden]="isTypeAheadHidden" (blur)="setHidden()" >
       <div *ngFor="let subj of subjects | filter: searchText" #filterResult>  
         <span class="fake-link" (click)="setSearchText(subj)" >{{subj}}</span><br/>
@@ -65,8 +65,16 @@
                             </select>
                         </div>
                       </div>
+                      <div *ngIf="enabled && role == 'admin'" class="row form-group">
+                        <div class="col-4"><label for="type">Type</label></div>
+                        <div class="col-8">
+                          <select class="form-control" name="type" [(ngModel)]="searchCriteria.type" id="type">
+                            <option *ngFor="let type of types" value="{{type}}">{{type}}</option>
+                          </select>
+                        </div>
+                      </div>
                     </form>
-                    <button type="submit" (click)="validateAndSearch()" class="btn btn-primary btn-block">Search Previous Year Question</button>
+                    <button type="submit" (click)="validateAndSearch()" class="btn btn-primary btn-block">Search Question&nbsp;<i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
             </div>
             <button type="button" (click)="validateTextAndSearch()" class="btn btn-success "><i class="fa fa-search" aria-hidden="true"></i></button>

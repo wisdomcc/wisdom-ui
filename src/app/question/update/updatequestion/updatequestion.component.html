@@ -22,8 +22,26 @@
         <app-notification></app-notification>
         <div class="row" [hidden]="hideSubmitPreviewButton" >
           <div class="btn-group col" >
-            <button class="btn btn-success ml-auto " (click)="submitQuestions()" >Submit</button>
+            <button class="btn btn-success ml-auto " (click)="validateAndOpenModal(template)" >Preview and Submit</button>
           </div>
         </div>
   </div>
 </div>
+<ng-template #template>
+  <div class="modal-content custom-modal" >
+    <div class="modal-header">
+      <h5 class="modal-title">Question Preview</h5>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div *ngFor="let questionModel of questionModels; let index=index">
+        <app-previewtemplate [questionModel]="questionModel" [imageBaseUrl]="imageBaseUrl" [isSubmitPreview]="true"></app-previewtemplate>
+      </div>
+      <br/>
+      <button type="button" class="btn btn-danger" (click)="decline()" >Cancel</button>
+      <button type="button" class="btn btn-success" (click)="confirm()" >Submit</button>
+    </div>
+  </div>
+</ng-template>

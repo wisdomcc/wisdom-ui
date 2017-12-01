@@ -20,7 +20,7 @@
   <tbody>
         <tr *ngFor="let row of rows">
           <td>
-            <app-previewtemplate [questionModel]="row"></app-previewtemplate>
+            <app-previewtemplate [questionModel]="row" [imageBaseUrl]="imageBaseUrl"></app-previewtemplate>
           </td>
           <td>{{row.year}}</td>
         </tr>

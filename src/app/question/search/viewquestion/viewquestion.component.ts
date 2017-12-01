@@ -28,6 +28,7 @@ export class ViewquestionComponent implements OnInit {
     this.isDataPresent = false;
     this.id = 'viewquestion';
     this.imageBaseUrl = this.questionService.getImageUrl;
+    //console.log(this.questionService.getImageUrl);
     this.categoryData = JSON.parse(localStorage.getItem("categoryData"));
   }
 
@@ -35,7 +36,7 @@ export class ViewquestionComponent implements OnInit {
     this.questionService.viewQuestion(this.searchFilter.searchCriteria)
       .subscribe(data => {
         this.previewQuestion.data = JSON.parse(data);
-        console.log(this.previewQuestion.data);
+        //console.log(this.previewQuestion.data);
         this.previewQuestion.onChangeTable(this.previewQuestion.config);
         if (this.previewQuestion.data.length > 0) {
           this.isDataPresent = true;

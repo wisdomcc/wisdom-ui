@@ -68,10 +68,10 @@ export class UserService {
       .map((res: Response) => res)
       .subscribe(
         data => {
-          console.log('logout successful');
+          //console.log('logout successful');
         },
         error => {
-          console.log('logout failed');
+          //console.log('logout failed');
         }
       );
     localStorage.clear();

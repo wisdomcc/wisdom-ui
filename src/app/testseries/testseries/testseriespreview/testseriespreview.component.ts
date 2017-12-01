@@ -19,7 +19,7 @@ export class TestseriespreviewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {  
-    console.log(this.answerModel);
+    //console.log(this.answerModel);
   }
 
   changeAnswerStatus() {

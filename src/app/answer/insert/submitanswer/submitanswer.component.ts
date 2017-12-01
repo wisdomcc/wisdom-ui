@@ -74,7 +74,7 @@ export class SubmitanswerComponent implements OnInit {
     if (this.questionModels.length === 1) {
       this.hideSubmitPreviewButton = true;
     }
-    console.log('qid:' + this.questionModels[index].id + '#aqid:' + this.answerModels[index].questionId);
+    //console.log('qid:' + this.questionModels[index].id + '#aqid:' + this.answerModels[index].questionId);
     this.questionModels.splice(index, 1);
     this.answerModels.splice(index, 1);
   }
@@ -102,7 +102,7 @@ export class SubmitanswerComponent implements OnInit {
 
   validateAnswerModels(): boolean {
     let errorMsg = '';
-    console.log(this.answerModels);
+    //console.log(this.answerModels);
     this.answerModels.forEach(function(answerModel) {
       if (answerModel.answer === '') {
         errorMsg = 'No Option selected or answer provided. For QuestionId : ' + answerModel.questionId;

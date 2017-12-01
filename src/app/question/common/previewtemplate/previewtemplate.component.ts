@@ -8,6 +8,7 @@ import { QuestionModel } from '../../../../models/question/question.model';
 })
 export class PreviewtemplateComponent implements OnInit {
 
+  @Input() imageBaseUrl: string;
   @Input() isSubmitPreview: boolean;
   @Input() questionModel: QuestionModel;
   constructor() { }

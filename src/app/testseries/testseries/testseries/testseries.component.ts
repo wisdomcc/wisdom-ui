@@ -60,7 +60,6 @@ export class TestseriesComponent implements OnInit {
     this.imageBaseUrl = this.questionService.getImageUrl;
     this.isTestStarted = false;
     this.isEnrolledForTestSeries = true;
-    debugger;
     if(this.utilityService.getBooleanDataFromLocalStorage('isEnrolledForTestSeries')) {
       if(this.utilityService.getBooleanDataFromLocalStorage('isTestStarted')) {
         this.isTestStarted = true;

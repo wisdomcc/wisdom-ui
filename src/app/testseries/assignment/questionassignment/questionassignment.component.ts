@@ -55,7 +55,6 @@ export class QuestionassignmentComponent implements OnInit {
   }
 
   searchQuestion(event) {
-    this.searchFilter.searchCriteria.type = 'Test Series';
     this.questionService.viewQuestion(this.searchFilter.searchCriteria)
       .subscribe(data => {
         this.previewQuestion.data = JSON.parse(data);

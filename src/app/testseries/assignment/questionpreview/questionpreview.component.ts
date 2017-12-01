@@ -49,7 +49,7 @@ export class QuestionpreviewComponent implements OnInit {
     } else {
       this.testSeriesQuestionMaps.splice(index, 1);
     }
-    console.log(this.testSeriesQuestionMaps);
+    //console.log(this.testSeriesQuestionMaps);
   }
 
   public changePage(page: any, data: Array<any> = this.data): Array<any> {

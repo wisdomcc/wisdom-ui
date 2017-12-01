@@ -84,4 +84,59 @@ export class QuestionService {
       .map((res: Response) => res.text());
   }
 
+  validate(questionModels: QuestionModel[]): string {
+    let errorMsg = '';
+    questionModels.forEach(function(question) {
+      if (question.question.trim() === '') {
+        errorMsg = 'Question should not be empty. For QuestionId : ' + question.id;
+        return errorMsg;
+      }
+      if (question.options.type === 'Text' &&
+         question.options.option.length === 0) {
+          errorMsg = 'Options Text is not added. For QuestionId : ' + question.id;
+          return errorMsg;
+      }
+      if (question.options.type === 'Image' &&
+          question.options.imagePath.length === 0) {
+          errorMsg = 'Options Image is not added. For QuestionId : ' + question.id;
+          return errorMsg;
+      }
+      if (question.relatedTo.exam.length === 0) {
+        errorMsg = 'Related To is not added. For QuestionId : ' + question.id;
+        return errorMsg;
+      }
+      if (question.marks === '') {
+        errorMsg = 'Marks is not added. For QuestionId : ' + question.id;
+        return errorMsg;
+      }
+      if (question.year === '') {
+        errorMsg = 'Year is not added. For QuestionId : ' + question.id;
+        return errorMsg;
+      }
+      if(question.linkedQuestions !== undefined && question.linkedQuestions !== null) {
+        question.linkedQuestions.forEach(function(linkedQuestion) {
+          if (linkedQuestion.question.trim() === '') {
+            errorMsg = 'Question should not be empty. For Linked QuestionId : ' + linkedQuestion.id;
+            return errorMsg;
+          }
+          if (linkedQuestion.options.type === 'Text' &&
+              linkedQuestion.options.option.length === 0) {
+              errorMsg = 'Options Text is not added. For Linked QuestionId : ' + linkedQuestion.id;
+              return errorMsg;
+          }
+          if (linkedQuestion.options.type === 'Image' &&
+              linkedQuestion.options.imagePath.length === 0) {
+              errorMsg = 'Options Image is not added. For Linked QuestionId : ' + linkedQuestion.id;
+              return errorMsg;
+          }
+          if (linkedQuestion.marks === '') {
+            errorMsg = 'Marks is not added. For Linked QuestionId : ' + linkedQuestion.id;
+            return errorMsg;
+          }
+        });
+      }
+    });
+    return errorMsg;
+  }
+
 }

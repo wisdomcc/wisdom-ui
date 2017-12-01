@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
                 }
             },
             error => {
-                console.log(error);
+                //console.log(error);
                 this.showNotification('Technical issue. Please try after sometime.', 'danger', 5000);
             }
         );
