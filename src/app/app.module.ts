@@ -60,7 +60,8 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { ChangepasswordComponent } from './user/changepassword/changepassword.component';
 import { SearchfilterComponent } from './question/common/searchfilter/searchfilter.component';
 import { CustomFilterPipe } from './question/common/searchfilter/customfilter/CustomFilterPipe';
-import { PreviewtemplateComponent } from './question/common/previewtemplate/previewtemplate.component'
+import { PreviewtemplateComponent } from './question/common/previewtemplate/previewtemplate.component';
+import { AnswertemplateComponent } from './answer/common/answertemplate/answertemplate.component'
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { PreviewtemplateComponent } from './question/common/previewtemplate/prev
     ProfileComponent,
     ChangepasswordComponent,
     SearchfilterComponent,
-    PreviewtemplateComponent
+    PreviewtemplateComponent,
+    AnswertemplateComponent
   ],
   imports: [
     AlertModule.forRoot(),

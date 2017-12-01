@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { QuestionModel } from '../../../../models/question/question.model';
 import { AnswerModel } from '../../../../models/answer/answer.model';
 import { LinkedAnswerModel } from '../../../../models/answer/answer.model';
 import { SearchCriteria } from '../../../../models/question/searchcriteria.model';
 import { AnswerService } from '../../../../services/answer/answer.service';
 import { QuestionService } from '../../../../services/question/question.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { UserService } from '../../../../services/user/user.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
 import { AnspreviewComponent } from '../anspreview/anspreview.component';
@@ -23,13 +25,14 @@ export class SubmitanswerComponent implements OnInit {
   questionModels: QuestionModel[];
   isDataPresent: boolean;
   answerModels: AnswerModel[];
+  modalRef: BsModalRef;
   @ViewChild(SearchfilterComponent) searchFilter: SearchfilterComponent;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
-  @ViewChildren(AnspreviewComponent) ansPreviews: QueryList<AnspreviewComponent>;
 
   constructor(private answerService: AnswerService,
               private questionService: QuestionService,
-              private userService: UserService) { }
+              private userService: UserService,
+              private modalService: BsModalService) { }
 
   ngOnInit() {
     this.imageBaseUrl = this.questionService.getImageUrl;
@@ -79,8 +82,23 @@ export class SubmitanswerComponent implements OnInit {
     this.answerModels.splice(index, 1);
   }
 
-  submitAnswers() {
+  validateAndOpenModal(template: TemplateRef<any>) {
     if (this.validateAnswerModels()) {
+      MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+      this.modalRef = this.modalService.show(template);
+    }
+  }
+ 
+  confirm(): void {
+    this.submitAnswers();
+    this.modalRef.hide();
+  }
+ 
+  decline(): void {
+    this.modalRef.hide();
+  }
+
+  submitAnswers() {
       // console.log(this.answerModels);
       this.answerService.insertAnswerModels(this.answerModels)
       .subscribe(
@@ -97,32 +115,11 @@ export class SubmitanswerComponent implements OnInit {
           this.showNotification('Some error occured while inserting answers in database. Please retry.', 'danger', 5000);
         }
       );
-    }
   }
 
   validateAnswerModels(): boolean {
-    let errorMsg = '';
+    let errorMsg = this.answerService.validate(this.answerModels);
     //console.log(this.answerModels);
-    this.answerModels.forEach(function(answerModel) {
-      if (answerModel.answer === '') {
-        errorMsg = 'No Option selected or answer provided. For QuestionId : ' + answerModel.questionId;
-        return;
-      }
-      if (answerModel.explanation.description === '') {
-        errorMsg = 'No explanation for answer provided. For QuestionId : ' + answerModel.questionId;
-        return;
-      }
-      answerModel.linkedAnswers.forEach(function(linkedAnswerModel) {
-        if (linkedAnswerModel.answer === '') {
-          errorMsg = 'No Option selected or answer provided. For linked question of QuestionId : ' + answerModel.questionId;
-          return;
-        }
-        if (linkedAnswerModel.explanation.description === '') {
-          errorMsg = 'No explanation for answer provided. For linked question of QuestionId : ' + answerModel.questionId;
-          return;
-        }
-      });
-    });
     if (errorMsg !== '') {
       this.notification.showNotification(errorMsg, 'danger', 5000);
       errorMsg = '';
