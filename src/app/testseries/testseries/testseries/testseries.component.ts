@@ -12,6 +12,7 @@ import { QuestionService } from '../../../../services/question/question.service'
 import { TestSeriesService } from '../../../../services/testseries/testseries.service';
 import { NotificationComponent } from '../../../common/notification/notification.component';
 import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { WisdomtimerComponent } from '../../../timer/wisdomtimer/wisdomtimer.component';
 
 @Component({
   selector: 'app-testseries',
@@ -38,7 +39,8 @@ export class TestseriesComponent implements OnInit {
   public imageBaseUrl: string;
   public isTestStarted: boolean;
   public isEnrolledForTestSeries: boolean;
-  public testSeriesModels: TestSeries[]; 
+  public testSeriesModels: TestSeries[];
+  public examDuration: number;
   public config:
    any = {
     paging: true,
@@ -46,7 +48,7 @@ export class TestseriesComponent implements OnInit {
     filtering: {filterString: ''},
     className: ['table-striped', 'table-bordered']
   };
-
+  @ViewChild(WisdomtimerComponent) wisdomTimer: WisdomtimerComponent;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
   constructor(private questionService: QuestionService,
@@ -112,18 +114,19 @@ export class TestseriesComponent implements OnInit {
     this.router.navigateByUrl(this.enrollTestSeriesUrl);
   }
 
-  startTest(testSeriesId: any) {
+  startTest(testSeries: TestSeries) {
     let totalQuestions = 0;
-    this.testSeriesService.fetchTestSeriesQuestions(testSeriesId)
+    this.testSeriesService.fetchTestSeriesQuestions(testSeries.id)
     .subscribe(data => {
       this.data = JSON.parse(data);
       if(this.data.length > 0) {
+        this.examDuration = parseInt(testSeries.duration) * 60 * 1000;
         totalQuestions = this.data.length;
         this.questionStatus = [];
         this.answerModels = [];
         for(let i = 0; i < this.data.length; i++) {
           this.questionStatus.push(new QuestionStatus(this.data[i].id));
-          this.answerModels.push(new TestSeriesAnswer(this.data[i].id, testSeriesId));
+          this.answerModels.push(new TestSeriesAnswer(this.data[i].id, testSeries.id));
           if(this.data[i].linkedQuestions !== undefined) {
             totalQuestions = totalQuestions + this.data[i].linkedQuestions.length;
             for(let j = 0; j < this.data[i].linkedQuestions.length; j++) {
@@ -151,13 +154,13 @@ export class TestseriesComponent implements OnInit {
     });
   }
 
-  submitTestSeries() {
+  submitTestSeries(event) {
     this.testSeriesService.submitTestSeries(this.answerModels)
       .subscribe(
         data => {
-        this.isTestStarted = false;
-        this.removeDataFromLocalStorage();
-        this.showNotification('Answers submitted successfully. Please visit result link to view result analysis.', 'warning', 10000);
+          this.isTestStarted = false;
+          this.removeDataFromLocalStorage();
+          this.showNotification('Answers submitted successfully. Please visit result link to view result analysis.', 'warning', 10000);
         },
         error => {
           if (error.status === 401) {

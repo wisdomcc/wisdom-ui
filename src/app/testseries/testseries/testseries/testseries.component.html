@@ -30,11 +30,18 @@
     <div class="col">{{testSeries.type}}</div>
     <div class="col">{{testSeries.duration}}</div>
     <div class="col">{{testSeries.noOfQuestion}}</div>
-    <div class="col"><button class="btn btn-success ml-auto " [disabled]="checkActivationDate(testSeries.activateDate)" (click)="startTest(testSeries.id)" >Start Test</button></div>
+    <div class="col">
+      <button class="btn btn-success ml-auto " [disabled]="checkActivationDate(testSeries.activateDate)" (click)="startTest(testSeries)" >Start Test</button>
+    </div>
   </div>
 </div>
 <app-notification></app-notification>
 <div *ngIf="isTestStarted">
+    <div class="row">
+      <div class="col">
+        <app-wisdomtimer [examDuration]="examDuration" (timerEvent)="submitTestSeries($event)" ></app-wisdomtimer>
+      </div>
+    </div>
   <div class="row">
     <div class="col">
       <button class="btn btn-primary" (click)="goToTestList(page)" >Go Back to Test List</button>

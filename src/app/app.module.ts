@@ -61,7 +61,8 @@ import { ChangepasswordComponent } from './user/changepassword/changepassword.co
 import { SearchfilterComponent } from './question/common/searchfilter/searchfilter.component';
 import { CustomFilterPipe } from './question/common/searchfilter/customfilter/CustomFilterPipe';
 import { PreviewtemplateComponent } from './question/common/previewtemplate/previewtemplate.component';
-import { AnswertemplateComponent } from './answer/common/answertemplate/answertemplate.component'
+import { AnswertemplateComponent } from './answer/common/answertemplate/answertemplate.component';
+import { WisdomtimerComponent } from './timer/wisdomtimer/wisdomtimer.component'
 
 @NgModule({
   declarations: [
@@ -108,7 +109,8 @@ import { AnswertemplateComponent } from './answer/common/answertemplate/answerte
     ChangepasswordComponent,
     SearchfilterComponent,
     PreviewtemplateComponent,
-    AnswertemplateComponent
+    AnswertemplateComponent,
+    WisdomtimerComponent
   ],
   imports: [
     AlertModule.forRoot(),
