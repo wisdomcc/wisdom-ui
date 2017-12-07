@@ -35,8 +35,7 @@
     </div>
     <div class="modal-body">
       <div *ngFor="let questionModel of questionModels; let index=index">
-        <app-previewtemplate [questionModel]="questionModel" [imageBaseUrl]="imageBaseUrl" [isSubmitPreview]="true"></app-previewtemplate>
-        <app-answertemplate [imageBaseUrl]="imageBaseUrl" [answerModel]="answerModels[index]"></app-answertemplate>
+        <app-previewtemplate [questionModel]="questionModel" [imageBaseUrl]="imageBaseUrl" [isSubmitPreview]="true" [answerModel]="answerModels[index]" [isAnswerPreview]="true"></app-previewtemplate>
       </div>
       <br/>
       <button type="button" class="btn btn-danger" (click)="decline()" >Cancel</button>

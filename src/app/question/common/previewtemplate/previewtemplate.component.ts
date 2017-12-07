@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { QuestionModel } from '../../../../models/question/question.model';
+import { AnswerModel } from '../../../../models/answer/answer.model';
 
 @Component({
   selector: 'app-previewtemplate',
@@ -10,8 +11,27 @@ export class PreviewtemplateComponent implements OnInit {
 
   @Input() imageBaseUrl: string;
   @Input() isSubmitPreview: boolean;
+  @Input() isAnswerPreview: boolean;
   @Input() questionModel: QuestionModel;
+  @Input() answerModel: AnswerModel;
   constructor() { }
+
+  isSelected(index: number) {
+    const option = 'option' + (index + 1);
+    if (this.answerModel.answer === option) {
+      return true;
+    }
+    return false;
+  }
+
+  isLinkedSelected(pIndex: number, index: number) {
+    debugger;
+    const option = 'option' + (index + 1);
+    if (this.answerModel.linkedAnswers[pIndex].answer === option) {
+      return true;
+    }
+    return false;
+  }
 
   ngOnInit() {
     MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, this.questionModel.question ]);

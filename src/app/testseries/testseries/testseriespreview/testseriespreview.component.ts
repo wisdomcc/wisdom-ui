@@ -18,13 +18,13 @@ export class TestseriespreviewComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {  
-    //console.log(this.answerModel);
+  ngOnInit() {
+    // console.log(this.answerModel);
   }
 
   changeAnswerStatus() {
-    if(this.answerModel.answer !== undefined) {
-      if(this.answerModel.answer !== '') {
+    if (this.answerModel.answer !== undefined) {
+      if (this.answerModel.answer !== '') {
         this.answerModel.noOfTimesAnswerChanged = this.answerModel.noOfTimesAnswerChanged + 1;
         this.changeStatusToAttempted(this.testSeriesStatus.questionStatus[this.qIndex]);
       } else {
@@ -34,8 +34,8 @@ export class TestseriespreviewComponent implements OnInit {
   }
 
   changeLinkedAnswerStatus(index: number) {
-    if(this.answerModel.linkedAnswers[index].answer !== undefined) {
-      if(this.answerModel.linkedAnswers[index].answer !== '') {
+    if (this.answerModel.linkedAnswers[index].answer !== undefined) {
+      if (this.answerModel.linkedAnswers[index].answer !== '') {
         this.answerModel.linkedAnswers[index].noOfTimesAnswerChanged = this.answerModel.linkedAnswers[index].noOfTimesAnswerChanged + 1;
         this.changeStatusToAttempted(this.testSeriesStatus.questionStatus[this.qIndex].linkedQuestionsStatus[index]);
       } else {
@@ -45,7 +45,7 @@ export class TestseriespreviewComponent implements OnInit {
   }
 
   changeStatusToAttempted(questionStatus: QuestionStatus) {
-    if(questionStatus.status !== 'A') {
+    if (questionStatus.status !== 'A') {
       this.testSeriesStatus.attempted = this.testSeriesStatus.attempted + 1;
       this.testSeriesStatus.unattempted = this.testSeriesStatus.unattempted - 1;
     }
@@ -54,16 +54,16 @@ export class TestseriespreviewComponent implements OnInit {
   }
 
   changeStatusToUnAttempted(questionStatus: QuestionStatus) {
-    if(questionStatus.status !== 'UA') {
+    if (questionStatus.status !== 'UA') {
       this.testSeriesStatus.attempted = this.testSeriesStatus.attempted - 1;
       this.testSeriesStatus.unattempted = this.testSeriesStatus.unattempted + 1;
     }
     questionStatus.status = 'UA';
     questionStatus.color = 'text-danger';
   }
-  
+
   markAnswer(option: string) {
-    if(this.answerModel.answer !== undefined) {
+    if (this.answerModel.answer !== undefined) {
       this.answerModel.noOfTimesAnswerChanged = this.answerModel.noOfTimesAnswerChanged + 1;
     }
     this.answerModel.answer = 'option' + option;
@@ -71,7 +71,7 @@ export class TestseriespreviewComponent implements OnInit {
   }
 
   markLinkedAnswer(option: string, index: number) {
-    if(this.answerModel.linkedAnswers[index] !== undefined) {
+    if (this.answerModel.linkedAnswers[index] !== undefined) {
       this.answerModel.linkedAnswers[index].noOfTimesAnswerChanged = this.answerModel.linkedAnswers[index].noOfTimesAnswerChanged + 1;
     }
     this.answerModel.linkedAnswers[index].answer = 'option' + option;

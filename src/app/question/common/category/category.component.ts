@@ -30,8 +30,12 @@ export class CategoryComponent implements OnInit {
     this.subjects = [];
     this.topics = [];
     this.subTopics = [];
-    this.tags = [ 'Language', 'Project', 'General' ];
+    this.tags = [ 'SET-1', 'SET-2', 'SET-3', 'SET-4', 'Language', 'Project', 'General' ];
     this.categoryData = JSON.parse(localStorage.getItem('categoryData'));
+  }
+
+  clearTags() {
+    this.questionModel.relatedTo.tags = [];
   }
 
   getStreams() {

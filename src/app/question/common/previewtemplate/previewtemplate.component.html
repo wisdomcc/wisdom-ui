@@ -10,18 +10,34 @@
   </div>
   <div *ngIf="questionModel.options.type == 'Text'">
       <div *ngFor="let option of questionModel.options.option; let index=index">
-          {{index+1}})&nbsp;{{option}}<br/>
+          <div *ngIf="isAnswerPreview && isSelected(index)">
+            <i class="fa fa-check text-success" aria-hidden="true"></i>&nbsp;{{option}}<br/>
+          </div>
+          <div *ngIf="!isAnswerPreview || !isSelected(index)">
+                {{index+1}})&nbsp;{{option}}<br/>
+              </div>
       </div>
   </div>
   <div *ngIf="questionModel.options.type == 'Image'">
     <div *ngFor="let path of questionModel.options.imagePath; let index=index">
-        {{index+1}})&nbsp;<img alt="" [src]="imageBaseUrl+path"><br/>
+        <div *ngIf="isAnswerPreview && isSelected(index)">
+            <i class="fa fa-check text-success" aria-hidden="true"></i>&nbsp;<img alt="" [src]="imageBaseUrl+path"><br/>
+        </div>
+        <div *ngIf="!isAnswerPreview || !isSelected(index)">
+                {{index+1}})&nbsp;<img alt="" [src]="imageBaseUrl+path"><br/>
+        </div>
     </div>
   </div>
   <div *ngIf="questionModel.options.type == 'TextAndImage'">
     <div *ngFor="let option of questionModel.options.option; let index=index">
-        {{index+1}})&nbsp;{{option}}<br/>
-        <img alt="" [src]="imageBaseUrl+questionModel.options.imagePath[index]"><br/>
+        <div *ngIf="isAnswerPreview && isSelected(index)">
+            <i class="fa fa-check text-success" aria-hidden="true"></i>&nbsp;{{option}}<br/>
+            <img alt="" [src]="imageBaseUrl+questionModel.options.imagePath[index]"><br/>
+        </div>
+        <div *ngIf="!isAnswerPreview || !isSelected(index)">
+                {{index+1}})&nbsp;{{option}}<br/>
+                <img alt="" [src]="imageBaseUrl+questionModel.options.imagePath[index]"><br/>
+        </div>
     </div>
   </div>
   <div class="float-right" *ngIf="!isSubmitPreview">
@@ -30,29 +46,70 @@
   <div class="float-right" *ngIf="isSubmitPreview">
       [Gate {{questionModel.year}}]&nbsp;[{{questionModel.marks}} Marks]
       &nbsp;[{{questionModel.type}}]
-  </div>
-  <div *ngFor="let linkedQuestion of questionModel.linkedQuestions">
+  </div><br/>
+    <div *ngIf="isAnswerPreview">
+        <div class="row">
+	        <div class="col">
+		        <div [innerHtml]="answerModel.explanation.description" ></div><br/>
+	        </div>
+        </div>
+        <div class="row" *ngFor="let path of answerModel.explanation.imagePath;">
+            <div class="col" >
+                <img alt="" [src]="imageBaseUrl+path"><br/>
+            </div>
+        </div>
+    </div><br/>
+  <div *ngFor="let linkedQuestion of questionModel.linkedQuestions; let pIndex=index">
       <br/><div [innerHtml]="linkedQuestion.question"></div>
       <div *ngFor="let path of linkedQuestion.images.paths">
           <img alt="" [src]="imageBaseUrl+path"><br/>
       </div>
       <div *ngIf="linkedQuestion.options.type == 'Text'">
           <div *ngFor="let option of linkedQuestion.options.option; let index=index">
-              {{index+1}})&nbsp;{{option}}<br/>
+                <div *ngIf="isAnswerPreview && isLinkedSelected(pIndex, index)">
+                    <i class="fa fa-check text-success" aria-hidden="true"></i>&nbsp;{{option}}<br/>
+                </div>
+                <div *ngIf="!isAnswerPreview || !isLinkedSelected(pIndex, index)">
+                        {{index+1}})&nbsp;{{option}}<br/>
+                </div>
           </div>
       </div>
       <div *ngIf="linkedQuestion.options.type == 'Image'">
         <div *ngFor="let path of linkedQuestion.options.imagePath; let index=index">
-            {{index+1}})&nbsp;<img alt="" [src]="imageBaseUrl+path"><br/>
+            <div *ngIf="isAnswerPreview && isLinkedSelected(pIndex, index)">
+                <i class="fa fa-check text-success" aria-hidden="true"></i>&nbsp;
+                <img alt="" [src]="imageBaseUrl+path"><br/>
+            </div>
+            <div *ngIf="!isAnswerPreview || !isLinkedSelected(pIndex, index)">
+                    {{index+1}})&nbsp;<img alt="" [src]="imageBaseUrl+path"><br/>
+            </div>
         </div>
       </div>
       <div *ngIf="linkedQuestion.options.type == 'TextAndImage'">
         <div *ngFor="let option of linkedQuestion.options.option; let index=index">
-            {{index+1}})&nbsp;{{option}}<br/>
-            <img alt="" [src]="imageBaseUrl+linkedQuestion.options.imagePath[index]"><br/>
+            <div *ngIf="isAnswerPreview && isLinkedSelected(pIndex, index)">
+                <i class="fa fa-check text-success" aria-hidden="true"></i>&nbsp;{{option}}<br/>
+                <img alt="" [src]="imageBaseUrl+linkedQuestion.options.imagePath[index]"><br/>
+            </div>
+            <div *ngIf="!isAnswerPreview || !isLinkedSelected(pIndex, index)">
+                    {{index+1}})&nbsp;{{option}}<br/>
+                    <img alt="" [src]="imageBaseUrl+linkedQuestion.options.imagePath[index]"><br/>
+            </div>
         </div>
       </div>
-      <div class="float-right">[{{linkedQuestion.marks}} Marks]</div>
+      <div class="float-right">[{{linkedQuestion.marks}} Marks]</div><br/>
+        <div *ngIf="isAnswerPreview">
+            <div class="row">
+                <div class="col">
+                    <div [innerHtml]="answerModel.linkedAnswers[pIndex].explanation.description" ></div><br/>
+                </div>
+            </div>
+            <div class="row" *ngFor="let path of answerModel.linkedAnswers[pIndex].explanation.imagePath;">
+                <div class="col" >
+                    <img alt="" [src]="imageBaseUrl+path"><br/>
+                </div>
+            </div>
+        </div><br/>
   </div>
-  <br/>
-  <hr>
+  <div *ngIf="isSubmitPreview"><hr></div>
+ 
