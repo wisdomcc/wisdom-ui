@@ -31,7 +31,7 @@
 		  <img [src]="previewQuestionImage" />
 	</div>
 	<div class="col">
-		<input type="button" class="btn btn-success addnew float-sm-right"
+		<input type="button" class="btn btn-success addnew float-sm-right" [disabled]="isUploadDisabled"
 				(click)="uploadQuestionImage()" value="Upload" />
 	</div>
 </div>

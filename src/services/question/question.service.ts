@@ -17,7 +17,7 @@ export class QuestionService {
   insertCategoryUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/insertcategory';
   updateQuestionUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/update';
   uploadImageUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/uploadImage';
-  getImageUrl = window.location.protocol + '//' + window.location.hostname + ':8080';
+  getImageUrl = 'http://wisdomcc.s3-website.us-east-2.amazonaws.com/';
 
   constructor(private http: Http, private userService: UserService) {
   }

@@ -52,7 +52,7 @@
         <img [src]="previewParagraphImage" />
     </div>
     <div class="col">
-      <input type="button" class="btn btn-success addnew float-sm-right"
+      <input type="button" class="btn btn-success addnew float-sm-right" [disabled]="isUploadDisabled"
           (click)="uploadParagraphImage()" value="Upload" />
     </div>
   </div>

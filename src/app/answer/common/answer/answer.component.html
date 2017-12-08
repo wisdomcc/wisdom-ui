@@ -36,7 +36,7 @@
 		  <img [src]="previewAnswerImage" />
 	</div>
 	<div class="col">
-		<input type="button" class="btn btn-success addnew float-sm-right"
+		<input type="button" class="btn btn-success addnew float-sm-right" [disabled]="isUploadDisabled"
 				(click)="uploadAnswerImage()" value="Upload" />
 	</div>
 </div>

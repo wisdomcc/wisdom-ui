@@ -16,6 +16,7 @@ export class OptionsComponent implements OnInit {
   optionImage: string;
   previewOptionImage: string;
   optionState: string;
+  isUploadDisabled: boolean;
   @Input() questionModel: QuestionModel;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
 
@@ -23,6 +24,7 @@ export class OptionsComponent implements OnInit {
               private userService: UserService) {}
 
   ngOnInit() {
+    this.isUploadDisabled = false;
     this.optionState = 'Text';
     this.id = 'options';
   }
@@ -48,13 +50,14 @@ export class OptionsComponent implements OnInit {
   }
 
   uploadOptionsImage() {
+    this.isUploadDisabled = true;
     this.questionService.uploadImage(this.optionImage, this.questionModel.id, 'option')
     .subscribe(
       data => {
-        setTimeout(() => {
-          this.questionModel.options.imagePath.push(this.questionService.getImageUrl + JSON.parse(data).path);
-          this.showNotification('Image uploaded successfully.', 'success', 2000);
-        }, 2000);
+        this.questionModel.options.imagePath.push(JSON.parse(data).path);
+        this.showNotification('Image uploaded successfully.', 'success', 2000);
+        this.previewOptionImage = '';
+        this.isUploadDisabled = false;
         // this.getUploadedImage(JSON.parse(data).path);
       },
       error => {
@@ -62,6 +65,7 @@ export class OptionsComponent implements OnInit {
           this.userService.logout();
         }
         this.showNotification('Image not uploaded.', 'danger', 5000);
+        this.isUploadDisabled = false;
       }
     );
   }
@@ -70,7 +74,7 @@ export class OptionsComponent implements OnInit {
     this.questionService.getUploadedImage(path)
       .subscribe(
         data => {
-          this.questionModel.options.imagePath.push(this.questionService.getImageUrl + path);
+          this.questionModel.options.imagePath.push(path);
           this.showNotification('Image uploaded successfully.', 'success', 2000);
         },
         error => {

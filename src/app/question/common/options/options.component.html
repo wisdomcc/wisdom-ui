@@ -41,7 +41,7 @@
 		<img [src]="previewOptionImage" />
 	</div>
 	<div class="col">
-		<input type="button" class="btn btn-success addnew float-sm-right"
+		<input type="button" class="btn btn-success addnew float-sm-right" [disabled]="isUploadDisabled"
 		(click)="uploadOptionsImage()" value="Upload" />
 	</div>
 	<div class="col">
@@ -66,7 +66,7 @@
 		<img [src]="previewOptionImage" />
 	</div>
 	<div class="col">
-		<input type="button" class="btn btn-success addnew float-sm-right"
+		<input type="button" class="btn btn-success addnew float-sm-right" [disabled]="isUploadDisabled"
 		(click)="uploadOptionsImage()" value="Upload" />
 	</div>
 </div>

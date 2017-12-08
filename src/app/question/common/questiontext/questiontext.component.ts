@@ -11,6 +11,7 @@ import { NotificationComponent } from '../../../common/notification/notification
 })
 export class QuestiontextComponent implements OnInit {
 
+  isUploadDisabled: boolean;
   isImageAvailable: boolean;
   questionImage: any;
   previewQuestionImage: string;
@@ -25,6 +26,7 @@ export class QuestiontextComponent implements OnInit {
               private userService: UserService) { }
 
   ngOnInit() {
+    this.isUploadDisabled = false;
     this.isImageAvailable = false;
     this.id = 'questiontext';
   }
@@ -45,13 +47,14 @@ export class QuestiontextComponent implements OnInit {
   }
 
   uploadQuestionImage() {
+    this.isUploadDisabled = true;
     this.questionService.uploadImage(this.questionImage, this.questionModel.id, 'question')
     .subscribe(
       data => {
-        setTimeout(() => {
-          this.questionModel.images.paths.push(JSON.parse(data).path);
-          this.showNotification('Image uploaded successfully.', 'success', 2000);
-        }, 2000);
+        this.questionModel.images.paths.push(JSON.parse(data).path);
+        this.showNotification('Image uploaded successfully.', 'success', 2000);
+        this.previewQuestionImage = '';
+        this.isUploadDisabled = false;
         // this.getUploadedImage(JSON.parse(data).path);
       },
       error => {
@@ -59,6 +62,7 @@ export class QuestiontextComponent implements OnInit {
           this.userService.logout();
         }
         this.showNotification('Image not uploaded.', 'danger', 5000);
+        this.isUploadDisabled = false;
       }
     );
   }
