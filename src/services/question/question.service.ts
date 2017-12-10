@@ -17,7 +17,7 @@ export class QuestionService {
   insertCategoryUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/insertcategory';
   updateQuestionUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/update';
   uploadImageUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/question/uploadImage';
-  getImageUrl = 'http://wisdomcc.s3-website.us-east-2.amazonaws.com/';
+  getImageUrl = 'http://wisdomcc.s3-website.us-east-2.amazonaws.com';
 
   constructor(private http: Http, private userService: UserService) {
   }
@@ -28,10 +28,11 @@ export class QuestionService {
         MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, questionModel.question ]);
     }
     if (questionModel.options.type !== 'NoOption') {
-      if(questionModel.options !== undefined && questionModel.options !== null
-        && questionModel.options.option !== undefined && questionModel.options.option !== null)
-      for (let i = 0; i < questionModel.options.option.length; i++) {
-        MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, questionModel.options.option[i] ]);
+      if (questionModel.options !== undefined && questionModel.options !== null
+        && questionModel.options.option !== undefined && questionModel.options.option !== null) {
+        for (let i = 0; i < questionModel.options.option.length; i++) {
+          MathJax.Hub.Queue([ 'Typeset', MathJax.Hub, questionModel.options.option[i] ]);
+        }
       }
     }
   }

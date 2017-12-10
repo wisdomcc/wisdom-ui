@@ -13,8 +13,10 @@ export class TestSeriesService {
 
   categoryData: any;
   responseData: any;
+  viewTestSeriesAnswerUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/fetchanswer';
   viewTestSeriesQuestionsUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/fetchquestions';
   viewTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/fetchall';
+  viewTestSeriesEnrollmentUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/fetchenrollment';
   viewEnrolledTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/fetch';
   enrollTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/enroll';
   submitTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/submit';
@@ -39,6 +41,18 @@ export class TestSeriesService {
 
   fetchTestSeriesModels() {
     return this.http.get(this.viewTestSeriesUrl, {withCredentials: true})
+      .map((res: Response) => res.text());
+  }
+
+  fetchTestSeriesEnrollments() {
+    return this.http.get(this.viewTestSeriesEnrollmentUrl, {withCredentials: true})
+      .map((res: Response) => res.text());
+  }
+
+  fetchTestSeriesAnswerModels(testSeriesId: any) {
+    const formData = new FormData();
+    formData.append('testSeriesId', testSeriesId);
+    return this.http.post(this.viewTestSeriesAnswerUrl, formData, { withCredentials: true })
       .map((res: Response) => res.text());
   }
 

@@ -4,7 +4,8 @@ import { QuestionModel } from '../../../../models/question/question.model';
 import { TestSeriesAnswer } from '../../../../models/testseries/testseries.model';
 import { TestSeriesLinkedAnswer } from '../../../../models/testseries/testseries.model';
 import { TestSeriesStatus } from '../../../../models/testseries/testseries.model';
-import { TestSeries } from '../../../../models/testseries/testseries.model';
+import { TestSeriesEnrollmentStatus } from '../../../../models/testseries/testseries.model';
+import { TestSeriesEnrollment } from '../../../../models/testseries/testseries.model';
 import { QuestionStatus } from '../../../../models/testseries/testseries.model';
 import { UserService } from '../../../../services/user/user.service';
 import { UtilityService } from '../../../../services/utility/utility.service';
@@ -36,10 +37,12 @@ export class TestseriesComponent implements OnInit {
   public questionStatus: QuestionStatus[];
   public data: QuestionModel[];
   public id: string;
+  public enrollmentId: any;
+  public testSeriesId: any;
   public imageBaseUrl: string;
   public isTestStarted: boolean;
   public isEnrolledForTestSeries: boolean;
-  public testSeriesModels: TestSeries[];
+  public testSeriesEnrollmentModels: TestSeriesEnrollmentStatus[];
   public examDuration: number;
   public config:
    any = {
@@ -56,23 +59,23 @@ export class TestseriesComponent implements OnInit {
               private testSeriesService: TestSeriesService,
               private utilityService: UtilityService,
               private router: Router) { }
-   
+
   public ngOnInit(): void {
-    this.id = "testseries";
+    this.id = 'testseries';
     this.imageBaseUrl = this.questionService.getImageUrl;
     this.isTestStarted = false;
     this.isEnrolledForTestSeries = true;
-    if(this.utilityService.getBooleanDataFromLocalStorage('isEnrolledForTestSeries')) {
-      if(this.utilityService.getBooleanDataFromLocalStorage('isTestStarted')) {
+    if (this.utilityService.getBooleanDataFromLocalStorage('isEnrolledForTestSeries')) {
+      if (this.utilityService.getBooleanDataFromLocalStorage('isTestStarted')) {
         this.isTestStarted = true;
         this.page = this.utilityService.getIntDataFromLocalStorage('pageNo');
         this.data = this.utilityService.getJsonDataFromLocalStorage('data');
         this.answerModels = this.utilityService.getJsonDataFromLocalStorage('answerModels');
         this.testSeriesStatus = this.utilityService.getJsonDataFromLocalStorage('testSeriesStatus');
+        this.examDuration = this.utilityService.getIntDataFromLocalStorage('examDuration');
         this.onChangeTable(this.config);
-        this.changePage({page: this.page, itemsPerPage: this.itemsPerPage}, this.data);
       } else {
-        this.testSeriesModels = this.utilityService.getJsonDataFromLocalStorage('testSeriesModels');
+        this.testSeriesEnrollmentModels = this.utilityService.getJsonDataFromLocalStorage('testSeriesEnrollmentModels');
       }
     } else {
       this.fetchEnrolledTestSeriesDetails();
@@ -80,11 +83,11 @@ export class TestseriesComponent implements OnInit {
   }
 
   removeDataFromLocalStorage() {
-    let keys: string[] = [];
+    const keys: string[] = [];
     keys.push('data');
     keys.push('pageNo');
     keys.push('answerModels');
-    keys.push('testSeriesModels');
+    keys.push('testSeriesEnrollmentModels');
     keys.push('testSeriesStatus');
     keys.push('isTestStarted');
     keys.push('isEnrolledForTestSeries');
@@ -94,12 +97,11 @@ export class TestseriesComponent implements OnInit {
   fetchEnrolledTestSeriesDetails() {
     this.testSeriesService.fetchEnrolledTestSeriesModels()
     .subscribe(tsdata => {
-      this.testSeriesModels = JSON.parse(tsdata);
-      if(this.testSeriesModels.length === 0) {
-        this.showNotification('Not enrolled. Please enroll to test series. Click <strong>"Enroll Test Series"</strong> to enroll.', 'warning', 10000);
+      this.testSeriesEnrollmentModels = JSON.parse(tsdata);
+      if (this.testSeriesEnrollmentModels.length === 0) {
         this.isEnrolledForTestSeries = false;
       }
-      this.utilityService.setJsonDataToLocalStorage('testSeriesModels', this.testSeriesModels);
+      this.utilityService.setJsonDataToLocalStorage('testSeriesEnrollmentModels', this.testSeriesEnrollmentModels);
       this.utilityService.setBooleanDataToLocalStorage('isEnrolledForTestSeries', this.isEnrolledForTestSeries);
     },
     error => {
@@ -114,24 +116,27 @@ export class TestseriesComponent implements OnInit {
     this.router.navigateByUrl(this.enrollTestSeriesUrl);
   }
 
-  startTest(testSeries: TestSeries) {
+  startTest(testSeries: TestSeriesEnrollmentStatus) {
     let totalQuestions = 0;
+    this.enrollmentId = testSeries.enrollmentId;
+    this.testSeriesId = testSeries.id;
     this.testSeriesService.fetchTestSeriesQuestions(testSeries.id)
     .subscribe(data => {
       this.data = JSON.parse(data);
-      if(this.data.length > 0) {
-        this.examDuration = parseInt(testSeries.duration) * 60 * 1000;
+      if (this.data.length > 0) {
+        this.examDuration = parseInt(testSeries.duration, 10) * 60 * 1000;
         totalQuestions = this.data.length;
         this.questionStatus = [];
         this.answerModels = [];
-        for(let i = 0; i < this.data.length; i++) {
+        for (let i = 0; i < this.data.length; i++) {
           this.questionStatus.push(new QuestionStatus(this.data[i].id));
           this.answerModels.push(new TestSeriesAnswer(this.data[i].id, testSeries.id));
-          if(this.data[i].linkedQuestions !== undefined) {
+          if (this.data[i].linkedQuestions !== undefined) {
             totalQuestions = totalQuestions + this.data[i].linkedQuestions.length;
-            for(let j = 0; j < this.data[i].linkedQuestions.length; j++) {
+            for (let j = 0; j < this.data[i].linkedQuestions.length; j++) {
               this.questionStatus[i].linkedQuestionsStatus.push(new QuestionStatus(this.data[i].linkedQuestions[j].id));
-              this.answerModels[i].linkedAnswers.push(new TestSeriesLinkedAnswer(this.answerModels[i].id, this.data[i].linkedQuestions[j].id));
+              this.answerModels[i].linkedAnswers.push(
+                new TestSeriesLinkedAnswer(this.answerModels[i].id, this.data[i].linkedQuestions[j].id));
             }
           }
         }
@@ -142,8 +147,9 @@ export class TestseriesComponent implements OnInit {
         this.utilityService.setJsonDataToLocalStorage('answerModels', this.answerModels);
         this.utilityService.setJsonDataToLocalStorage('testSeriesStatus', this.testSeriesStatus);
         this.onChangeTable(this.config);
+        this.changeEnrollmentStatus('Resume Test', parseInt(testSeries.duration, 10) * 60 * 1000);
       } else {
-        this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);  
+        this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
       }
     },
     error => {
@@ -154,6 +160,110 @@ export class TestseriesComponent implements OnInit {
     });
   }
 
+  resumeTest(testSeries: TestSeriesEnrollmentStatus) {
+    let totalQuestions = 0;
+    let attempted = 0;
+    this.enrollmentId = testSeries.enrollmentId;
+    this.testSeriesId = testSeries.id;
+    this.testSeriesService.fetchTestSeriesQuestions(testSeries.id)
+    .subscribe(data => {
+      this.data = JSON.parse(data);
+      if (this.data.length > 0) {
+        this.examDuration = testSeries.remainingExamDuration;
+        totalQuestions = this.data.length;
+        this.questionStatus = [];
+        this.answerModels = [];
+        this.testSeriesService.fetchTestSeriesAnswerModels(testSeries.id)
+          .subscribe(tsaData => {
+            let answerModels: TestSeriesAnswer[];
+            answerModels = JSON.parse(tsaData);
+            for (let i = 0; i < this.data.length; i++) {
+              for (let j = 0; j < answerModels.length; j++) {
+                if (answerModels[j].questionId === this.data[i].id) {
+                  this.answerModels.push(answerModels[j]);
+                  this.questionStatus.push(new QuestionStatus(answerModels[j].questionId));
+                  if (answerModels[j].answer !== undefined && answerModels[j].answer !== null) {
+                    // console.log(answerModels[j].answer);
+                    this.questionStatus[i].setStatus('A');
+                    this.questionStatus[i].setColor('text-success');
+                    attempted = attempted + 1;
+                  }
+                  if (answerModels[j].linkedAnswers !== undefined) {
+                    totalQuestions = totalQuestions + answerModels[j].linkedAnswers.length;
+                    for (let k = 0; k < answerModels[j].linkedAnswers.length; k++) {
+                      this.questionStatus[i].linkedQuestionsStatus.push(
+                        new QuestionStatus(answerModels[j].linkedAnswers[k].questionId));
+                      if (answerModels[j].linkedAnswers[k].answer !== undefined && answerModels[j].linkedAnswers[k].answer !== null) {
+                        this.questionStatus[i].linkedQuestionsStatus[k].setStatus('A');
+                        this.questionStatus[i].linkedQuestionsStatus[k].setColor('text-success');
+                        attempted = attempted + 1;
+                      }
+                    }
+                  }
+                  break;
+                }
+              }
+            }
+            this.testSeriesStatus = new TestSeriesStatus(this.questionStatus, totalQuestions);
+            this.testSeriesStatus.setAttempted(attempted);
+            this.testSeriesStatus.setUnattempted(totalQuestions - attempted);
+            this.isTestStarted = true;
+            this.utilityService.setBooleanDataToLocalStorage('isTestStarted', this.isTestStarted);
+            this.utilityService.setJsonDataToLocalStorage('data', this.data);
+            this.utilityService.setJsonDataToLocalStorage('answerModels', this.answerModels);
+            this.utilityService.setJsonDataToLocalStorage('testSeriesStatus', this.testSeriesStatus);
+            this.utilityService.setIntDataToLocalStorage('examDuration', this.examDuration);
+            this.onChangeTable(this.config);
+          },
+          error => {
+            if (error.status === 401) {
+              this.userService.logout();
+            }
+            this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
+          });
+      } else {
+        this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
+      }
+    },
+    error => {
+      if (error.status === 401) {
+        this.userService.logout();
+      }
+      this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
+    });
+  }
+
+  resultAnalysis(testSeries: TestSeriesEnrollmentStatus) {
+    this.router.navigateByUrl('/testseriesresult');
+  }
+
+  changeEnrollmentStatus(status: string, remainingExamDuration: number) {
+    if (this.testSeriesId !== undefined && this.enrollmentId !== undefined) {
+      if (this.testSeriesEnrollmentModels !== undefined) {
+        for ( let i = 0; i < this.testSeriesEnrollmentModels.length; i++) {
+          if (this.testSeriesEnrollmentModels[i].id === this.testSeriesId) {
+            this.testSeriesEnrollmentModels[i].testSeriesStatus = status;
+            break;
+          }
+        }
+      }
+      const testSeriesEnrollments = [];
+      const testSeriesEnrollment = new TestSeriesEnrollment(this.testSeriesId, status, remainingExamDuration);
+      testSeriesEnrollment.setId(this.enrollmentId);
+      testSeriesEnrollments.push(testSeriesEnrollment);
+      this.testSeriesService.enrollTestSeries(testSeriesEnrollments)
+        .subscribe(tsdata => {
+            if (tsdata) {
+            }
+        },
+        error => {
+          if (error.status === 401) {
+            this.userService.logout();
+          }
+        });
+    }
+  }
+
   submitTestSeries(event) {
     this.testSeriesService.submitTestSeries(this.answerModels)
       .subscribe(
@@ -161,6 +271,7 @@ export class TestseriesComponent implements OnInit {
           this.isTestStarted = false;
           this.removeDataFromLocalStorage();
           this.showNotification('Answers submitted successfully. Please visit result link to view result analysis.', 'warning', 10000);
+          this.changeEnrollmentStatus('Result Analysis', 0);
         },
         error => {
           if (error.status === 401) {
@@ -186,7 +297,7 @@ export class TestseriesComponent implements OnInit {
   checkActivationDate(activationDate: string) {
     const todayDate = new Date();
     const date = new Date(activationDate);
-    if(todayDate > date) {
+    if (todayDate > date) {
       return false;
     }
     return true;
@@ -196,12 +307,38 @@ export class TestseriesComponent implements OnInit {
     this.utilityService.setIntDataToLocalStorage('pageNo', page.page);
     this.utilityService.setJsonDataToLocalStorage('answerModels', this.answerModels);
     this.utilityService.setJsonDataToLocalStorage('testSeriesStatus', this.testSeriesStatus);
+    if (this.wisdomTimer !== undefined) {
+      this.utilityService.setIntDataToLocalStorage('examDuration', this.wisdomTimer.examDuration);
+    } else {
+      this.utilityService.setIntDataToLocalStorage('examDuration', this.examDuration);
+    }
+    this.submitAnswerModels();
+    this.changeEnrollmentStatus('Resume Test', this.utilityService.getIntDataFromLocalStorage('examDuration'));
     if (data !== null && data !== undefined && data.length > 0) {
       const start = (page.page - 1) * page.itemsPerPage;
       const end = page.itemsPerPage > -1 ? (start + page.itemsPerPage) : data.length;
       return data.slice(start, end);
     }
     return data;
+  }
+
+
+  public changePageTo(pageNo) {
+    this.page = pageNo;
+    this.onChangeTable(this.config);
+  }
+
+  submitAnswerModels() {
+    this.testSeriesService.submitTestSeries(this.answerModels)
+    .subscribe(
+      data => {
+      },
+      error => {
+        if (error.status === 401) {
+          this.userService.logout();
+        }
+      }
+    );
   }
 
   public onChangeTable(config: any, page: any = {page: this.page, itemsPerPage: this.itemsPerPage}): any {

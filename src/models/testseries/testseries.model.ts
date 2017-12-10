@@ -15,6 +15,26 @@ export class TestSeries {
     }
 }
 
+export class TestSeriesEnrollmentStatus {
+    id: any;
+    activateDate: any;
+    deactivateDate: any;
+    type: string;
+    duration: string;
+    exam: string;
+    stream: string;
+    subject: string;
+    topic: string;
+    noOfQuestion: string;
+    testSeriesStatus: string;
+    remainingExamDuration: number;
+    enrollmentId: any;
+
+    constructor() {
+        this.id = Math.random().toString().slice(2, 12);
+    }
+}
+
 export class TestSeriesQuestionMap {
     id: any;
     testSeriesId: any;
@@ -30,16 +50,25 @@ export class TestSeriesEnrollment {
     id: any;
     testSeriesId: any;
     scheme: string;
+    testSeriesStatus: string;
+    remainingExamDuration: number;
 
-    constructor(testSeriesId: any) {
+    constructor(testSeriesId: any, status: string, remainingExamDuration: number) {
         this.id = Math.random().toString().slice(2, 12);
         this.testSeriesId = testSeriesId;
-        this.scheme = "Full Syllabus Test";
+        this.scheme = 'Full Syllabus Test';
+        this.testSeriesStatus = status;
+        this.remainingExamDuration = remainingExamDuration;
+    }
+
+    setId(id: any) {
+        this.id = id;
     }
 }
 
 export class TestSeriesAnswer {
     id: any;
+    timeSpend: number;
     noOfTimesAnswerChanged: number;
     answer: string;
     questionId: any;
@@ -56,6 +85,7 @@ export class TestSeriesAnswer {
 
 export class TestSeriesLinkedAnswer {
     id: any;
+    timeSpend: number;
     noOfTimesAnswerChanged: number;
     answer: string;
     questionId: any;
@@ -77,7 +107,7 @@ export class TestSeriesResult {
     strongSubject: string;
     accuracy: string;
     averageTime: string;
-    confidence: string
+    confidence: string;
     testSeriesDate: any;
 }
 
@@ -93,6 +123,14 @@ export class TestSeriesStatus {
         this.indoubt = 0;
         this.unattempted = totalQuestions;
         this.questionStatus = questionStatus;
+    }
+
+    setAttempted(attempted: number) {
+        this.attempted = attempted;
+    }
+
+    setUnattempted(unattempted: number) {
+        this.unattempted = unattempted;
     }
 
 }
@@ -112,5 +150,13 @@ export class QuestionStatus {
         // attempted = 'A'
         // unattempted = 'UA'
         // indoubt = 'D'
+    }
+
+    setStatus(status: string) {
+        this.status = status;
+    }
+
+    setColor(color: string) {
+        this.color = color;
     }
 }

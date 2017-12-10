@@ -1,0 +1,40 @@
+.status-button {
+    border: none;
+    background-color: rgb(223, 230, 217);
+    padding: 5px 15px 5px 15px;
+    text-align: center;
+    font-size: 16px;
+    font-stretch: ultra-expanded;
+    cursor: pointer;
+    border-radius: 12px 12px 0px 0px;
+}
+
+.status-red-button {
+    border: none;
+    background-color: red;
+    padding: 5px 15px 5px 15px;
+    text-align: center;
+    font-size: 16px;
+    font-stretch: expanded;
+    border-radius: 12px 12px 0px 0px;
+}
+
+.status-green-button {
+    border: none;
+    background-color: green;
+    padding: 5px 15px 5px 15px;
+    text-align: center;
+    font-size: 16px;
+    font-stretch: expanded;
+    border-radius: 12px 12px 0px 0px;
+}
+
+.text-danger {
+    background-color: red;
+    color: black;
+}
+
+.text-success {
+    background-color: green;
+    color: black;
+}

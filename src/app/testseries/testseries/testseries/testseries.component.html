@@ -1,12 +1,16 @@
 <div *ngIf="!isEnrolledForTestSeries">
     <div class="row" >
       <div class="col">
+          <alert type="warning">
+            Not enrolled. Click <strong>"Enroll Test Series"</strong> to get enrolled.
+          </alert>
+      </div>
+      <div class="col">
         <div class="btn-group col" >
           <button class="btn btn-success ml-auto " (click)="enrollTestSeries()" >Enroll Test Series</button>
         </div>
       </div>
     </div>
-    <app-notification></app-notification>
 </div>
 <div *ngIf="isEnrolledForTestSeries && !isTestStarted">
   <div class="row" >
@@ -24,14 +28,20 @@
     <div class="col"><strong>No Of Question</strong></div>
     <div class="col"></div>
   </div>
-  <div class="row" *ngFor="let testSeries of testSeriesModels; let index=index">
+  <div class="row" *ngFor="let testSeries of testSeriesEnrollmentModels; let index=index">
     <div class="col">{{index+1}}</div>
     <div class="col">{{testSeries.activateDate}}</div>
     <div class="col">{{testSeries.type}}</div>
-    <div class="col">{{testSeries.duration}}</div>
+    <div class="col">{{testSeries.duration}} minute</div>
     <div class="col">{{testSeries.noOfQuestion}}</div>
-    <div class="col">
-      <button class="btn btn-success ml-auto " [disabled]="checkActivationDate(testSeries.activateDate)" (click)="startTest(testSeries)" >Start Test</button>
+    <div class="col" *ngIf="testSeries.testSeriesStatus == 'Start Test'">
+      <button class="btn btn-success ml-auto " [disabled]="checkActivationDate(testSeries.activateDate)" (click)="startTest(testSeries)" >{{testSeries.testSeriesStatus}}</button>
+    </div>
+    <div class="col" *ngIf="testSeries.testSeriesStatus == 'Resume Test'">
+      <button class="btn btn-success ml-auto " [disabled]="checkActivationDate(testSeries.activateDate)" (click)="resumeTest(testSeries)" >{{testSeries.testSeriesStatus}}</button>
+    </div>
+    <div class="col" *ngIf="testSeries.testSeriesStatus == 'Result Analysis'">
+      <button class="btn btn-success ml-auto " [disabled]="checkActivationDate(testSeries.activateDate)" (click)="resultAnalysis(testSeries)" >{{testSeries.testSeriesStatus}}</button>
     </div>
   </div>
 </div>
@@ -44,7 +54,6 @@
     </div>
   <div class="row">
     <div class="col">
-      <button class="btn btn-primary" (click)="goToTestList(page)" >Go Back to Test List</button>
       <button class="btn btn-success float-right" (click)="submitTestSeries()" >Submit Test Series</button>
     </div>
   </div>
@@ -82,7 +91,7 @@
         <pre *ngIf="config.paging" class="card card-block card-header">Page: {{page}} / {{numPages}}</pre>      
     </div>
     <div class="col-3">
-      <app-testseriesstatus [testSeriesStatus]="testSeriesStatus" ></app-testseriesstatus>
+      <app-testseriesstatus [testSeriesStatus]="testSeriesStatus" (changePageEvent)="changePageTo($event)" ></app-testseriesstatus>
     </div>
   </div>
 </div>

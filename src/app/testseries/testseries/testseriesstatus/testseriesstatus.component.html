@@ -1,31 +1,37 @@
 <div *ngIf="testSeriesStatus !== undefined">
   <div class="row">
-    <div class="col text-success"><Strong>Attempted(A)</Strong></div>
-    <div class="col text-success">{{testSeriesStatus.attempted}}</div>
+    <div class="col"><Strong style="color: green;">Attempted(A)</Strong></div>
+    <div class="col">
+      <button class="status-green-button">{{testSeriesStatus.attempted}}</button>
+    </div>
   </div>
   <div class="row">
-    <div class="col text-danger"><Strong>UnAttempted(UA)</Strong></div>
-    <div class="col text-danger">{{testSeriesStatus.unattempted}}</div>
+    <div class="col"><Strong style="color: red;">UnAttempted(UA)</Strong></div>
+    <div class="col">
+      <button class="status-red-button">{{testSeriesStatus.unattempted}}</button>
+    </div>
   </div>
   <!-- <div class="row">
     <div class="col text-info"><Strong>InDoubt(D)</Strong></div>
     <div class="col text-info">{{testSeriesStatus.indoubt}}</div>
   </div> -->
   <hr>
-  <div class="row">
+  <!-- div class="row">
     <div class="col"><Strong>Question No</Strong></div>
     <div class="col"><Strong>Status</Strong></div>
-  </div>
+  </div -->
   <div *ngFor="let questionStatus of testSeriesStatus.questionStatus; let pindex=index">
     <div class = "row">
-      <div class="col">{{pindex+1}}</div>
-      <div class="col {{questionStatus.color}}">{{questionStatus.status}}</div>
-    </div>
-    <div *ngFor="let qStatus of questionStatus.linkedQuestionsStatus;let index=index">
-        <div class = "row">
-          <div class="col">{{pindex+1}}->{{index+1}}</div>
-          <div class="col {{qStatus.color}}">{{qStatus.status}}</div>
+      <div class="col">
+        <button class="status-button {{questionStatus.color}}" (click)="gotoPage(pindex+1)" >{{pindex+1}}</button>
+      </div>
+      <!-- div class="col {{questionStatus.color}}">{{questionStatus.status}}</div -->
+      <div *ngFor="let qStatus of questionStatus.linkedQuestionsStatus;let index=index">
+        <div class="col">
+          <button class="status-button {{qStatus.color}}" (click)="gotoPage(pindex+1)" >{{pindex+1}}.{{index+1}}</button>
         </div>
+        <!-- div class="col {{qStatus.color}}">{{qStatus.status}}</div -->
+      </div>
     </div>
   </div>
 </div>

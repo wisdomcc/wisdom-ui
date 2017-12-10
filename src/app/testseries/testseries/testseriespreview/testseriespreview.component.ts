@@ -91,12 +91,12 @@ export class TestseriespreviewComponent implements OnInit {
   }
 
   clearAnswer() {
-    this.answerModel.answer = '';
+    this.answerModel.answer = undefined;
     this.changeStatusToUnAttempted(this.testSeriesStatus.questionStatus[this.qIndex]);
   }
 
   clearLinkedAnswer(index: number) {
-    this.answerModel.linkedAnswers[index].answer = '';
+    this.answerModel.linkedAnswers[index].answer = undefined;
     this.changeStatusToUnAttempted(this.testSeriesStatus.questionStatus[this.qIndex].linkedQuestionsStatus[index]);
   }
 
