@@ -15,7 +15,7 @@ import { ContactusComponent } from './common/contactus/contactus.component';
 import { ProductsComponent } from './products/products.component';
 import { SubmitanswerComponent } from './answer/insert/submitanswer/submitanswer.component';
 import { UpdateanswerComponent } from './answer/update/updateanswer/updateanswer.component';
-import { QuestionassignmentComponent } from './testseries/assignment/questionassignment/questionassignment.component';
+import { TestseriesassignmentComponent } from './testseries/assignment/testseriesassignment/testseriesassignment.component';
 import { TestseriesComponent } from './testseries/testseries/testseries/testseries.component';
 import { EnrolltestseriesComponent } from './testseries/enrolltestseries/enrolltestseries.component';
 import { TestseriesresultComponent } from './testseries/result/testseriesresult/testseriesresult.component';
@@ -50,7 +50,7 @@ const appRoutes: Routes = [
     { path: 'enrolltestseries', component: EnrolltestseriesComponent, canActivate: [UrlSecurityService] },
     { path: 'submittestseries', component: SubmittestseriesComponent, canActivate: [UrlSecurityService] },
     { path: 'testseriesresult', component: TestseriesresultComponent, canActivate: [UrlSecurityService] },
-    { path: 'questionassignment', component: QuestionassignmentComponent, canActivate: [UrlSecurityService] },
+    { path: 'questionassignment', component: TestseriesassignmentComponent, canActivate: [UrlSecurityService] },
 
    // otherwise redirect to home
    { path: '**', redirectTo: '' }

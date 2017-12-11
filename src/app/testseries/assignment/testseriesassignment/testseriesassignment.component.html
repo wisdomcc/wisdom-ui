@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col"></div>
+  <div class="col text-center">
+    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+      <div class="input-group-addon">Select Test Series to proceed for Question Assignment</div>
+      <select class="custom-select mb-2 mr-sm-2 mb-sm-0" (ngModelChange)="setAllFalse()" [(ngModel)]="selectedTestSeriesId" >
+          <option value="" >Select Test Series</option>
+          <option *ngFor="let testSeries of testSeriesModels" value="{{testSeries.id}}">
+            {{testSeries.id}}#{{testSeries.activateDate}}#{{testSeries.type}}
+          </option>
+      </select>
+    </div>
+  </div>
+</div>
+<div *ngIf="selectedTestSeriesId === ''">
+  <app-notification></app-notification>
+</div>
+<div *ngIf="selectedTestSeriesId !== ''">
+  <div class="row">
+    <div class="col" ></div>
+    <div class="col" ></div>
+    <div class="col" >
+      <button class="btn btn-success" (click)="setAssignQuestionSelected()" >Assign Questions</button>
+    </div>
+    <div class="col" >
+      <button class="btn btn-success" (click)="setViewAssignedQuestionSelected()" >View Assigned Question</button>
+    </div>
+    <div class="col" >
+      <button class="btn btn-success" (click)="setUnassignQuestionSelected()" >Un-Assign Questions</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="isAssignQuestionSelected">
+  <app-questionassignment [selectedTestSeriesId]="selectedTestSeriesId"></app-questionassignment>
+</div>
+<div *ngIf="isViewAssignedQuestionSelected">
+  <app-assignedquestion [selectedTestSeriesId]="selectedTestSeriesId" [imageBaseUrl]="imageBaseUrl"></app-assignedquestion>
+</div>
+<div *ngIf="isUnassignQuestionSelected">
+  <app-questionunassignment [selectedTestSeriesId]="selectedTestSeriesId" [imageBaseUrl]="imageBaseUrl"></app-questionunassignment>
+</div>

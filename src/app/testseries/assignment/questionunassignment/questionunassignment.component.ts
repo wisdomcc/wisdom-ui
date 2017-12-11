@@ -9,18 +9,16 @@ import { NotificationComponent } from '../../../common/notification/notification
 import { QuestionpreviewComponent } from '../questionpreview/questionpreview.component';
 
 @Component({
-  selector: 'app-questionassignment',
-  templateUrl: './questionassignment.component.html',
-  styleUrls: ['./questionassignment.component.css']
+  selector: 'app-questionunassignment',
+  templateUrl: './questionunassignment.component.html',
+  styleUrls: ['./questionunassignment.component.css']
 })
-export class QuestionassignmentComponent implements OnInit {
+export class QuestionunassignmentComponent implements OnInit {
 
   id: string;
   isDataPresent: boolean;
   selectedQuestions: boolean[];
-  imageBaseUrl: string;
-  data: QuestionModel[];
-  tempData: QuestionModel[];
+  @Input() imageBaseUrl: string;
   @Input() selectedTestSeriesId: any;
   @ViewChild(SearchfilterComponent) searchFilter: SearchfilterComponent;
   @ViewChild(NotificationComponent) notification: NotificationComponent;
@@ -33,48 +31,26 @@ export class QuestionassignmentComponent implements OnInit {
   ngOnInit() {
     this.isDataPresent = false;
     this.imageBaseUrl = this.questionService.getImageUrl;
-    this.id = 'questionassignment';
+    this.id = 'questionunassignment';
+    this.searchAssignedQuestion();
   }
 
-  searchQuestion(event) {
-    this.tempData = [];
-    this.questionService.viewQuestion(this.searchFilter.searchCriteria)
+  searchAssignedQuestion() {
+    this.testSeriesService.fetchTestSeriesQuestions(this.selectedTestSeriesId)
       .subscribe(data => {
-        this.testSeriesService.fetchTestSeriesQuestions(this.selectedTestSeriesId)
-        .subscribe(aqData => {
-          this.previewQuestion.data = JSON.parse(data);
-          this.data = JSON.parse(aqData);
-          for (let i = 0; i < this.previewQuestion.data.length; i++) {
-            let isPresent = false;
-            for (let j = 0; j < this.data.length; j++) {
-              if (this.data[j].id === this.previewQuestion.data[i].id) {
-                isPresent = true;
-              }
-            }
-            if (!isPresent) {
-              this.tempData.push(this.previewQuestion.data[i]);
-            }
+        this.previewQuestion.data = JSON.parse(data);
+        // console.log(this.previewQuestion.data);
+        this.previewQuestion.onChangeTable(this.previewQuestion.config);
+        if (this.previewQuestion.data.length > 0) {
+          this.selectedQuestions = [];
+          for (let i = 0; i < this.previewQuestion.length; i++) {
+            this.selectedQuestions.push(false);
           }
-          this.previewQuestion.data = this.tempData;
-          // console.log(this.previewQuestion.data);
-          this.previewQuestion.onChangeTable(this.previewQuestion.config);
-          if (this.previewQuestion.data.length > 0) {
-            this.selectedQuestions = [];
-            for (let i = 0; i < this.previewQuestion.length; i++) {
-              this.selectedQuestions.push(false);
-            }
-            this.isDataPresent = true;
-          } else {
-            this.isDataPresent = false;
-            this.showNotification('No result for your criteria.', 'warning', 10000);
-          }
-        },
-        error => {
-          if (error.status === 401) {
-            this.userService.logout();
-          }
-          this.showNotification('Some technical issue. Please try after sometime.', 'danger', 5000);
-        });
+          this.isDataPresent = true;
+        } else {
+          this.isDataPresent = false;
+          this.showNotification('No result for your criteria.', 'warning', 10000);
+        }
       },
       error => {
         if (error.status === 401) {
@@ -84,14 +60,14 @@ export class QuestionassignmentComponent implements OnInit {
       });
   }
 
-  assignQuestions() {
+  unassignQuestions() {
     for (let i = 0; i < this.previewQuestion.testSeriesQuestionMaps.length; i++) {
       this.previewQuestion.testSeriesQuestionMaps[i].testSeriesId = this.selectedTestSeriesId;
     }
-    this.testSeriesService.insertTestSeriesQuestionMapModels(this.previewQuestion.testSeriesQuestionMaps)
+    this.testSeriesService.deleteTestSeriesQuestionMapModels(this.previewQuestion.testSeriesQuestionMaps)
     .subscribe(data => {
       this.previewQuestion.testSeriesQuestionMaps = [];
-      this.showNotification('Question Assigned to Test Series Successfully.', 'success', 2000);
+      this.showNotification('Question Un-Assigned from Test Series Successfully.', 'success', 2000);
     },
     error => {
       if (error.status === 401) {
@@ -106,3 +82,4 @@ export class QuestionassignmentComponent implements OnInit {
   }
 
 }
+

@@ -62,7 +62,10 @@ import { SearchfilterComponent } from './question/common/searchfilter/searchfilt
 import { CustomFilterPipe } from './question/common/searchfilter/customfilter/CustomFilterPipe';
 import { PreviewtemplateComponent } from './question/common/previewtemplate/previewtemplate.component';
 import { AnswertemplateComponent } from './answer/common/answertemplate/answertemplate.component';
-import { WisdomtimerComponent } from './timer/wisdomtimer/wisdomtimer.component'
+import { WisdomtimerComponent } from './timer/wisdomtimer/wisdomtimer.component';
+import { QuestionunassignmentComponent } from './testseries/assignment/questionunassignment/questionunassignment.component';
+import { TestseriesassignmentComponent } from './testseries/assignment/testseriesassignment/testseriesassignment.component';
+import { AssignedquestionComponent } from './testseries/assignment/assignedquestion/assignedquestion.component'
 
 @NgModule({
   declarations: [
@@ -110,7 +113,10 @@ import { WisdomtimerComponent } from './timer/wisdomtimer/wisdomtimer.component'
     SearchfilterComponent,
     PreviewtemplateComponent,
     AnswertemplateComponent,
-    WisdomtimerComponent
+    WisdomtimerComponent,
+    QuestionunassignmentComponent,
+    TestseriesassignmentComponent,
+    AssignedquestionComponent
   ],
   imports: [
     AlertModule.forRoot(),

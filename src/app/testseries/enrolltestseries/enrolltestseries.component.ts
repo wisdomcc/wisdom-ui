@@ -17,6 +17,7 @@ export class EnrolltestseriesComponent implements OnInit {
   id: string;
   isEnrollmentSuccessful: boolean;
   isAlreadyEnrolled: boolean;
+  isTestSeriesAvailable: boolean;
   startTestSeriesUrl: string;
   testSeriesModels: TestSeries[];
   testSeriesEnrollments: TestSeriesEnrollment[];
@@ -31,6 +32,7 @@ export class EnrolltestseriesComponent implements OnInit {
     this.id = 'enrolltestseries';
     this.isEnrollmentSuccessful = false;
     this.isAlreadyEnrolled = false;
+    this.isTestSeriesAvailable = true;
     this.startTestSeriesUrl = '/testseries';
     if (this.utilityService.getBooleanDataFromLocalStorage('isAlreadyEnrolled')) {
       this.isAlreadyEnrolled = true;
@@ -66,6 +68,7 @@ export class EnrolltestseriesComponent implements OnInit {
     .subscribe(tsdata => {
       this.testSeriesModels = JSON.parse(tsdata);
       if (this.testSeriesModels.length === 0) {
+        this.isTestSeriesAvailable = false;
         this.showNotification('No Test Series is Available for Enrollment.', 'warning', 10000);
       }
     },

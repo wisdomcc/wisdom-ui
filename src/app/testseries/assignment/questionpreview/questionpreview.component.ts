@@ -29,7 +29,7 @@ export class QuestionpreviewComponent implements OnInit {
   data: QuestionModel[];
   testSeriesQuestionMaps: TestSeriesQuestionMap[];
   @Input() selectedQuestions: boolean[];
-  @Input() imageBaseUrl: string; 
+  @Input() imageBaseUrl: string;
 
   public constructor() {
   }
@@ -38,18 +38,18 @@ export class QuestionpreviewComponent implements OnInit {
     this.onChangeTable(this.config);
   }
 
-  setTestSeriesQuestionMap(questionId: any) {   
-    if(this.testSeriesQuestionMaps === undefined) {
+  setTestSeriesQuestionMap(questionId: any) {
+    if (this.testSeriesQuestionMaps === undefined) {
       this.testSeriesQuestionMaps = [];
     }
     const index = this.testSeriesQuestionMaps.findIndex(
         data =>  data.questionId === questionId);
-    if(index === -1) {
+    if (index === -1) {
       this.testSeriesQuestionMaps.push(new TestSeriesQuestionMap(questionId));
     } else {
       this.testSeriesQuestionMaps.splice(index, 1);
     }
-    //console.log(this.testSeriesQuestionMaps);
+    // console.log(this.testSeriesQuestionMaps);
   }
 
   public changePage(page: any, data: Array<any> = this.data): Array<any> {

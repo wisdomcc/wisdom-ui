@@ -23,6 +23,7 @@ export class TestSeriesService {
   insertTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/insert';
   updateTestSeriesUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/update';
   insertTestSeriesQuestionMapUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/insertmap';
+  deleteTestSeriesQuestionMapUrl = window.location.protocol + '//' + window.location.hostname + ':8080' + '/testseries/deletemap';
 
   constructor(private http: Http, private userService: UserService) {
   }
@@ -81,6 +82,13 @@ export class TestSeriesService {
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers, withCredentials: true });
     return this.http.post(this.insertTestSeriesQuestionMapUrl, testSeriesQuestionMapModels, options)
+      .map((res: Response) => res.text());
+  }
+
+  deleteTestSeriesQuestionMapModels(testSeriesQuestionMapModels: TestSeriesQuestionMap[]) {
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers, withCredentials: true });
+    return this.http.post(this.deleteTestSeriesQuestionMapUrl, testSeriesQuestionMapModels, options)
       .map((res: Response) => res.text());
   }
 
