@@ -27,10 +27,12 @@ export class TestseriesComponent implements OnInit {
     {title: 'Question', width: 10, name: 'question'}
   ];
   public page = 1;
+  public previousPage = 1;
   public itemsPerPage = 1;
   public maxSize = 5;
   public numPages = 1;
   public length = 0;
+  public startTime = 0;
   public enrollTestSeriesUrl = '/enrolltestseries';
   public answerModels: TestSeriesAnswer[];
   public testSeriesStatus: TestSeriesStatus;
@@ -69,6 +71,7 @@ export class TestseriesComponent implements OnInit {
       if (this.utilityService.getBooleanDataFromLocalStorage('isTestStarted')) {
         this.isTestStarted = true;
         this.page = this.utilityService.getIntDataFromLocalStorage('pageNo');
+        this.previousPage = this.utilityService.getIntDataFromLocalStorage('pageNo');
         this.data = this.utilityService.getJsonDataFromLocalStorage('data');
         this.answerModels = this.utilityService.getJsonDataFromLocalStorage('answerModels');
         this.testSeriesStatus = this.utilityService.getJsonDataFromLocalStorage('testSeriesStatus');
@@ -180,6 +183,13 @@ export class TestseriesComponent implements OnInit {
             for (let i = 0; i < this.data.length; i++) {
               for (let j = 0; j < answerModels.length; j++) {
                 if (answerModels[j].questionId === this.data[i].id) {
+                  // below value are set because in parsing JSON 0 is eliminated.
+                  if (!answerModels[j].timeSpend) {
+                    answerModels[j].timeSpend = 0;
+                  }
+                  if (!answerModels[j].noOfTimesAnswerChanged) {
+                    answerModels[j].noOfTimesAnswerChanged = 0;
+                  }
                   this.answerModels.push(answerModels[j]);
                   this.questionStatus.push(new QuestionStatus(answerModels[j].questionId));
                   if (answerModels[j].answer !== undefined && answerModels[j].answer !== null) {
@@ -191,6 +201,12 @@ export class TestseriesComponent implements OnInit {
                   if (answerModels[j].linkedAnswers !== undefined) {
                     totalQuestions = totalQuestions + answerModels[j].linkedAnswers.length;
                     for (let k = 0; k < answerModels[j].linkedAnswers.length; k++) {
+                      if (!answerModels[j].linkedAnswers[k].timeSpend) {
+                        answerModels[j].linkedAnswers[k].timeSpend = 0;
+                      }
+                      if (!answerModels[j].linkedAnswers[k].noOfTimesAnswerChanged) {
+                        answerModels[j].linkedAnswers[k].noOfTimesAnswerChanged = 0;
+                      }
                       this.questionStatus[i].linkedQuestionsStatus.push(
                         new QuestionStatus(answerModels[j].linkedAnswers[k].questionId));
                       if (answerModels[j].linkedAnswers[k].answer !== undefined && answerModels[j].linkedAnswers[k].answer !== null) {
@@ -305,12 +321,20 @@ export class TestseriesComponent implements OnInit {
 
   public changePage(page: any, data: Array<any> = this.data): Array<any> {
     this.utilityService.setIntDataToLocalStorage('pageNo', page.page);
-    this.utilityService.setJsonDataToLocalStorage('answerModels', this.answerModels);
     this.utilityService.setJsonDataToLocalStorage('testSeriesStatus', this.testSeriesStatus);
     if (this.wisdomTimer !== undefined) {
       this.utilityService.setIntDataToLocalStorage('examDuration', this.wisdomTimer.examDuration);
     } else {
       this.utilityService.setIntDataToLocalStorage('examDuration', this.examDuration);
+    }
+    if (this.previousPage !== page.page) {
+      this.answerModels[this.previousPage - 1].timeSpend = this.answerModels[this.previousPage - 1].timeSpend
+      + (this.startTime - this.utilityService.getIntDataFromLocalStorage('examDuration'));
+      console.log('time Spend : ' + this.answerModels[this.previousPage - 1].timeSpend);
+      this.previousPage = page.page;
+      this.startTime = this.utilityService.getIntDataFromLocalStorage('examDuration');
+    } else {
+      this.startTime = this.utilityService.getIntDataFromLocalStorage('examDuration');
     }
     this.submitAnswerModels();
     this.changeEnrollmentStatus('Resume Test', this.utilityService.getIntDataFromLocalStorage('examDuration'));
@@ -332,6 +356,7 @@ export class TestseriesComponent implements OnInit {
     this.testSeriesService.submitTestSeries(this.answerModels)
     .subscribe(
       data => {
+        this.utilityService.setJsonDataToLocalStorage('answerModels', this.answerModels);
       },
       error => {
         if (error.status === 401) {

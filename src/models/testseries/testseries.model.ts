@@ -80,6 +80,7 @@ export class TestSeriesAnswer {
         this.testSeriesId = testSeriesId;
         this.linkedAnswers = [];
         this.noOfTimesAnswerChanged = 0;
+        this.timeSpend = 0;
     }
 }
 
@@ -95,6 +96,7 @@ export class TestSeriesLinkedAnswer {
         this.questionId = questionId;
         this.parentAnswerId = parentAnswerId;
         this.noOfTimesAnswerChanged = 0;
+        this.timeSpend = 0;
     }
 }
 

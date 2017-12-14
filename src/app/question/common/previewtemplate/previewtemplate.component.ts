@@ -25,7 +25,6 @@ export class PreviewtemplateComponent implements OnInit {
   }
 
   isLinkedSelected(pIndex: number, index: number) {
-    debugger;
     const option = 'option' + (index + 1);
     if (this.answerModel.linkedAnswers[pIndex].answer === option) {
       return true;
